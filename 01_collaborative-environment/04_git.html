@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Stat 585 - git and github</title>
+  <meta charset="utf-8">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="04_git_files/rmdshower/node_modules/shower-ribbon/styles/screen-4x3.css">
+  <link rel="stylesheet" href="04_git_files/rmdshower/style-common.css">
+  <link rel="stylesheet" href="04_git_files/rmdshower/style-ribbon.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.5.1/katex.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.5.1/katex.min.js"></script>
+  <script src="04_git_files/rmdshower/auto-render.min.js" type="text/javascript"></script>
+  
+  
+  
+  
+  
+</head>
+
+<body class="shower list">
+
+  <header class="caption">
+    <h1>Stat 585 - git and github</h1>
+    <p>Heike Hofmann</p>
+  </header>
+
+    
+  
+<section id="git-and-github" class="titleslide slide level1"><h2 class="shout">git and github</h2></section><section id="why-git" class="slide level2">
+<h2>Why git?</h2>
+<p><img src="http://imgs.xkcd.com/comics/git_2x.png" width=300></p>
+<p><a href="http://xkcd.com/1597/" class="uri">http://xkcd.com/1597/</a></p>
+</section><section id="what-is-git" class="slide level2">
+<h2>What is git?</h2>
+<ul>
+<li><strong>Git</strong> is a <em>version control system</em> that was created to help developers manage collaborative software projects. Git tracks the evolution of a set of files, called a <strong>repository</strong> or <strong>repo</strong>.</li>
+<li>This helps us
+<ul>
+<li><em>merge</em> conflicts that arise from collaboration</li>
+<li><em>rollback</em> to previous versions of files as necessary</li>
+<li>store <em>master</em> versions of files, no more <code>paper_final_final_I_really_mean_it.docx</code></li>
+</ul></li>
+</ul>
+</section><section id="github" class="slide level2">
+<h2>GitHub</h2>
+<p><a href="github.com">GitHub</a> is one of many hosting services (others are e.g. <a href="bitbucket.org">Bitbucket</a>, <a href="about.gitlab.com">GitLab</a>, etc.).</p>
+<p><img src="images/github.png" width=400></p>
+</section><section id="your-turn-5-min" class="slide level2">
+<h2>Your Turn (5 min)</h2>
+<p><img src="images/stones-faded.png" class="cover"></p>
+<p>This Your Turn is just a prep to get ready for a bigger Your Turn later. It’ll take a couple of minutes of your time, but may need more time from github …</p>
+<p>Here goes: Do you have a github account?</p>
+<ul>
+<li>No? Create a <em>free</em> account at <a href="https://github.com/" class="uri">https://github.com/</a></li>
+<li>Yes? Then log into it.
+<ul>
+<li>Do you remember your login and password? If not, try out different emails and let github send you the info.</li>
+</ul></li>
+</ul>
+</section><section id="git-terminology" class="slide level2">
+<h2>Git Terminology</h2>
+<p>from <a href="https://help.github.com/articles/github-glossary/">github glossary</a></p>
+<ul>
+<li><strong>Repository:</strong> the basic element of git - like a project’s folder. A repository contains all of the project files, and their <strong>revision history</strong>. One person owns a repository, multiple people can collaborate. Can be either public or private.</li>
+<li><strong>Remote:</strong> This is the version of something that is hosted on a server. It can be (and usually is) connected to a local clone.</li>
+<li><strong>Clone:</strong> A local copy of a repository that lives on your computer instead of on a website’s server somewhere</li>
+<li><strong>Fork:</strong> a remote copy of a repository stored under your account.Forks allow you to freely make changes to a project without affecting the original.</li>
+</ul>
+</section><section id="terminology-contd" class="slide level2">
+<h2>Terminology (cont’d)</h2>
+<ul>
+<li><strong>Pull:</strong> When you are fetching changes from the remote repository and merging them with your local clone.</li>
+<li><strong>Commit:</strong> A checkpoint for the local clone to save changes to a file (or set of files). Every time you commit, git creates a unique ID that allows you to keep record of what changes were made when and by who.</li>
+<li><strong>Push:</strong> Sending your committed changes to the remote repository.</li>
+</ul>
+</section><section id="terminology-contd-1" class="slide level2">
+<h2>Terminology (cont’d)</h2>
+<ul>
+<li><strong>Pull Request:</strong> Proposed changes to a repository submitted by a user and accepted or rejected by a repository’s collaborators.</li>
+<li><strong>Issue:</strong> Issues are suggested improvements, tasks or questions related to the repository.</li>
+</ul>
+</section><section id="repositories" class="slide level2">
+<h2>Repositories</h2>
+<p>By default, all materials on GitHub are <strong>public</strong>. This is <em>good</em> because you are getting your work out there and contributing to the open source community!</p>
+<p>If you need <strong>private</strong> repos, checkout <a href="https://education.github.com/">GitHub for Education</a> - free private repos for students/postdocs/professors.</p>
+<p><img src="images/github-icon.png" /></p>
+</section>
+<section id="big-your-turn-coming-up" class="titleslide slide level1"><h2 class="shout">Big ‘Your turn’ coming up!</h2></section><section id="overview" class="slide level2">
+<h2>Overview</h2>
+<p>In this activity you are going to learn how to collaborate using Github. With a partner you will learn some basics which allow you to share and edit files on Github.</p>
+<ol type="1">
+<li>Create a git repository hosted at GitHub</li>
+<li>Build <code>README.md</code> file</li>
+<li>Commit changes to repository</li>
+<li>Collaborate by forking and editing partners file</li>
+<li>Explore Github features: graphs, diff, blame, ect.</li>
+</ol>
+</section><section id="create-a-repository-with-a-readme.md-file-10-minutes" class="slide level2">
+<h2>Create a repository with a README.md file (10 minutes)</h2>
+<p><strong>Step 1</strong>: First we are going to create a repository within our Github user account.</p>
+<p>Follow along with your instructor and perform these steps:</p>
+<ol type="1">
+<li>Go to your Github profile. The url should be <a href="">http://github/your-user-name</a>.</li>
+<li>Create a new Github repository, click <span style="background:limegreen; color:white">new</span> button, under the repositories tab.</li>
+<li>Name your repository <code>work-organization-your-name</code></li>
+<li>In the details write “tips to organizing research”.</li>
+<li>Click the initiate a <code>README.md file</code> option.</li>
+</ol>
+</section><section id="so-far" class="slide level2">
+<h2>So far</h2>
+<ul>
+<li>Once the repository is created you will be directed to the repository page which now has its own web address.</li>
+<li>Each repository on Github has a unique url so you can easily share.</li>
+<li>The git history is a detailed history of all the changes made to that file. One of the features of using Github is the ability to view your repository history which are displayed in the Graphs section of your Github repository page.</li>
+<li>At this point in the git history of your <code>work-organization-your-name</code> repository there is only one commit.</li>
+</ul>
+</section><section id="edit-the-readme.md-file-5-minutes" class="slide level2">
+<h2>Edit the <code>README.md</code> file (5 minutes)</h2>
+<ol type="1">
+<li>Go to the <code>work-organization-your-name</code> repository main page. Click on <code>README.md</code>, then click “edit this file”. Add the following information into the <code>README.md</code> file:
+<ul>
+<li>Name?</li>
+<li>What kind of scientist do you tell people you are at dinner parties?</li>
+<li>In the past month, what are the three main activities you have been doing at work?</li>
+<li>What are the three most important tools/strategies you use for organizing your work?</li>
+</ul></li>
+</ol>
+<p class="note">
+<em>tip</em>: Notice that you can use markdown syntax. Use <a href="https://help.github.com/articles/markdown-basics/">this guide</a> for Github’s flavor of Markdown. Use the “Preview” button to view the formatting of your readme.md file.
+</p>
+</section><section id="commit" class="slide level2">
+<h2>Commit</h2>
+<ul>
+<li><strong>Commit</strong> takes a snap shot of your project. Each commit includes a commit message that concisely defines changes made or project state at the time of the commit.</li>
+</ul>
+<ol type="1">
+<li>Summarize the changes that you have made in 50 characters or less and click the <span style="background:limegreen; color:white"> commit </span> button.</li>
+<li>Check out the git history. You should now see two commits.</li>
+</ol>
+</section><section id="commit-statements" class="slide level2">
+<h2>Commit statements</h2>
+<p>Get into the habit of writing commit statements. They will help you later!</p>
+<p><a href="http://starlogs.net/#heike/rwrks" class="uri">http://starlogs.net/#heike/rwrks</a></p>
+<p><a href="http://starlogs.net/#Stat585-at-ISU/Stat585-at-ISU.github.io" class="uri">http://starlogs.net/#Stat585-at-ISU/Stat585-at-ISU.github.io</a></p>
+</section>
+<section id="edit-and-collaborate-with-your-partner" class="titleslide slide level1"><h2 class="shout">Edit and collaborate with your partner</h2></section><section id="collaborate" class="slide level2">
+<h2>Collaborate</h2>
+<p>Now it is time to collaborate with your partner. Navigate to your partner’s repository by typing the url directly into your address bar. In order to edit someone else’s repository you usually follow this simplified work flow:</p>
+<ol type="1">
+<li>Fork their repository to your user account</li>
+<li>Make edits and commit</li>
+<li>Create a pull request that merges your changes into their repository.</li>
+</ol>
+<p class="note">
+<em>tip</em>: Depending on the project there are variations on the above work flow. Often the rules for contributing to a project are outlined in a file called <code>CONTRIBUTING.md</code> within the repository. One of the more often used works flows is <a href="https://guides.github.com/introduction/flow/">Github Flow</a>.
+</p>
+</section><section id="forking" class="slide level2">
+<h2>Forking</h2>
+<ul>
+<li><strong>Forking</strong> is creating a copy of a git repository into your own account.<br />
+</li>
+<li>Forking allows you to make changes to a repository without affecting the main repository of the project.<br />
+</li>
+<li>This is one of the most exciting aspects of Github - you essentially encouraged to copy and play with anyone’s code!</li>
+</ul>
+</section><section id="forking-1" class="slide level2">
+<h2>Forking</h2>
+<ol type="1">
+<li>To fork your partner’s repository click the “fork” button in the top left hand part of your screen.<br />
+</li>
+<li>When it asks where you would like to fork the repository, choose your user account (if you are new to Github, this should be the only option).</li>
+</ol>
+</section><section id="make-edits-and-commit" class="slide level2">
+<h2>Make edits and commit</h2>
+<ul>
+<li>You should now have a copy of your partners repository, <code>work-organization-their-name</code>.</li>
+<li>Github keeps track of the entire git history of the project and all forked copies made of the project.</li>
+</ul>
+<ol type="1">
+<li>Edit your partners repository by clicking the edit button.<br />
+</li>
+<li>Paste in the answers to your questions under theirs and make a commit.</li>
+</ol>
+</section><section id="create-a-pull-request" class="slide level2">
+<h2>Create a pull request</h2>
+<ul>
+<li>A <strong>pull request</strong> is the final step in the collaboration process, essentially asking if the edits made to your copy can be incorporated into another repository.</li>
+</ul>
+<ol type="1">
+<li>Make sure you are in your copy of your partner’s repository by looking at the url - your user name should preface the repository name.<br />
+</li>
+<li>Click the <span style="background:limegreen; color:white">New Pull Request</span> button. You will get an overview of the changes you made to the repository.</li>
+<li>Click the “Create a Pull Request” button to continue the pull request. Your partner will now get a notification of a pull request on their main repository, as will you if your partner made changes.</li>
+<li>Go ahead and accept this pull request.</li>
+</ol>
+</section><section id="explore-github-features" class="slide level2">
+<h2>Explore Github Features</h2>
+<p>Now that you have accepted the pull request. Take a few minutes to explore the git history using the Graphs section of the repository.</p>
+</section>
+<section id="were-done" class="titleslide slide level1"><h2 class="shout">We’re done!</h2></section><section id="looking-ahead" class="slide level2">
+<h2>Looking ahead …</h2>
+<p>In this class we will use git &amp; github for</p>
+<ul>
+<li>lab assignments,</li>
+<li>blog posts,<br />
+</li>
+<li>for distributing the final project.</li>
+</ul>
+</section><section id="resources" class="slide level2">
+<h2>Resources</h2>
+<ul>
+<li>Jenny Bryant’s: Happy Git with R <a href="http://happygitwithr.com/" class="uri">http://happygitwithr.com/</a></li>
+<li>Data Carpentry’s tutorials: <a href="https://github.com/datacarpentry" class="uri">https://github.com/datacarpentry</a></li>
+<li>Reproducible Science Curriculum intitative: <a href="https://github.com/Reproducible-Science-Curriculum" class="uri">https://github.com/Reproducible-Science-Curriculum</a></li>
+</ul>
+</section>
+
+  <!--
+  To hide progress bar from entire presentation
+  just remove “progress” element.
+  -->
+  <!-- <div class="progress"></div> -->
+  <script src="04_git_files/rmdshower/node_modules/shower/node_modules/shower-core/shower.min.js"></script>
+  <!-- Copyright © 2015 Yours Truly, Famous Inc. -->
+  <!-- Photos by John Carey, fiftyfootshadows.net -->
+
+    <script>renderMathInElement(document.body);</script>
+  
+  
+</body>
+</html>
