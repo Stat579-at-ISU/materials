@@ -1,25 +1,32 @@
 ---
-title: "Stat 480 - What you said"
+title: "Stat 579 - What you said"
 author: "Heike Hofmann"
-ratio: 16x10
+date: "`r Sys.Date()`"
 output:
-  rmdshower::shower_presentation:
-    self_contained: false
-    katex: true
-    theme: ribbon
+  xaringan::moon_reader:
+    lib_dir: libs
+    nature:
+      highlightStyle: github
+      highlightLines: true
+      countIncrementalSlides: false
 ---
+class: inverse, center, middle
+
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 library(tidyverse)
 ```
 # Vote on topics
 
+---
 
 ## ... this is what wufoo tells us
 
 <img src="images/topics.png" width=600>
 
 ... there's nine more of these charts ... which topic is the best?
+
+---
 
 ## 
 
@@ -31,9 +38,11 @@ topics <- topics %>% select(-Entry.Id)
 head(topics)
 ```
 
+---
+
 ## All topics in one
 
-```{r, echo=FALSE, fig.with = 8, fig.height = 4.5}
+```{r, echo=FALSE, fig.width = 10, fig.height = 6}
 tlong <- topics %>% gather(topic, rating, 1:10)
 tlong %>% 
   ggplot(aes(x = rating)) + geom_bar(aes(fill=rating)) +
@@ -42,9 +51,11 @@ tlong %>%
 ```
 
 
+---
+
 ## ... in the right order ...
 
-```{r, echo=FALSE, fig.with = 8, fig.height = 4.5}
+```{r, echo=FALSE, fig.width = 10, fig.height = 6}
 tlong <- tlong %>% mutate(
   rating = factor(rating, 
                   levels= c("Favorite", "Like it very much",
@@ -56,9 +67,11 @@ tlong %>%
   theme(legend.position="bottom")
 ```
 
+---
+
 ## ... better color scheme ...
 
-```{r, echo=FALSE, fig.with = 8, fig.height = 4.5}
+```{r, echo=FALSE, fig.width = 10, fig.height = 6}
 library(RColorBrewer)
 cols <- brewer.pal("RdBu", n = 8)
 
@@ -69,9 +82,11 @@ tlong %>%
   scale_fill_manual(values = cols[c(8,7,6,1)])
 ```
 
+---
+
 ## ... a different picture ...
 
-```{r, echo=FALSE, fig.with = 8, fig.height = 4.5}
+```{r, echo=FALSE, fig.width = 10, fig.height = 6}
 library(RColorBrewer)
 cols <- brewer.pal("RdBu", n = 8)
 
@@ -81,9 +96,11 @@ tlong %>%
   scale_fill_manual(values = cols[c(8,7,6,1)])
 ```
 
+---
+
 ## ... a different picture ...
 
-```{r, echo=FALSE, fig.with = 8, fig.height = 4.5}
+```{r, echo=FALSE, fig.width = 10, fig.height = 6}
 tlong %>% 
   ggplot(aes(x = topic)) + geom_bar(aes(fill=rating)) +
   theme(legend.position="bottom") +
@@ -91,9 +108,11 @@ tlong %>%
   coord_flip()
 ```
 
+---
+
 ## close to a final picture
 
-```{r, echo=FALSE, fig.with = 8, fig.height = 4.5}
+```{r, echo=FALSE, fig.width = 10, fig.height = 6}
 tlong %>% 
   ggplot(aes(x = topic)) + geom_bar(aes(fill=rating)) +
   theme(legend.position="bottom") +
@@ -105,9 +124,11 @@ tlong %>%
             y = -nrow(topics)+1, colour="white", hjust=0)
 ```
 
+---
+
 ##  THIS is what you said:
 
-```{r, echo=FALSE, fig.with = 8, fig.height = 4.5}
+```{r, echo=FALSE, fig.width = 10, fig.height = 6}
 tlong <- tlong %>% 
   mutate(
         topic = reorder(topic, rating, FUN=function(x) 
@@ -127,3 +148,10 @@ tlong %>%
   geom_text(aes(x = topic, label = topic), 
             y = -nrow(topics)+1, colour="white", hjust=0)
 ```
+
+---
+
+## Additional topic suggestions
+
+
+Range of other suggestions: human behavior, sustainability, biodiversity,  genomic data, transportation, stock market, forensic data, test score data
