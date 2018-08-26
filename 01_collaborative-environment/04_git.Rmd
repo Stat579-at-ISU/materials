@@ -1,5 +1,5 @@
 ---
-title: "Stat 585 - git and github"
+title: "Stat 579 - git and github"
 author: "Heike Hofmann"
 ratio: 16x10
 output:
@@ -199,11 +199,7 @@ Now that you have accepted the pull request.  Take a few minutes to explore the 
 
 ## Looking ahead ... 
 
-In this class we will use git & github for 
-
-- lab assignments, 
-- blog posts,  
-- for distributing the final project.
+In this class we will use git & github for the final project
 
 ## Resources
 
