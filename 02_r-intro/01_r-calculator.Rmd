@@ -1,0 +1,278 @@
+---
+title: "R is a Calculator"
+subtitle: "Hello World, this is R"
+author: "Heike Hofmann"
+date: "`r Sys.Date()`"
+output:
+  xaringan::moon_reader:
+    lib_dir: libs
+    nature:
+      highlightStyle: github
+      highlightLines: true
+      countIncrementalSlides: false
+---
+
+# Outline
+
+```{r setup, include=FALSE}
+options(htmltools.dir.version = FALSE)
+```
+
+
+- R is a calculator
+
+- five commands to look at objects
+
+- extracting pieces
+
+- a first glimpse at data
+
+---
+
+## The R language
+
+- Learning a new language: grammar, vocabulary
+
+- Loading, examining, summarizing data
+
+- Creating data
+
+- Getting help
+
+- Miscellaneous useful stuff
+
+
+---
+class: inverse, center
+
+
+<img class="cover" src="images/language.png" alt="", width=2000>
+
+---
+
+## Grammar
+
+- Basic algebra is the same as calculator/mathematics
+
+- explicit operators: `2*x` not `2x`,  `2^p` instead of `2p`
+
+- Applying a function is similar 
+
+- Making a variable, use `<-` or `=`
+
+- Everything in R is a vector
+
+---
+
+## Examples
+
+| Math   | Type          | Code           | 
+|:--- |:-------------:|-------------:|
+|  $$x = \frac{2}{3}$$ | Assignments      | `x <- 2/3` |
+| $$\sqrt{x}$$ | Functions  | `sqrt(x)` |
+| $$y = \left( \begin{array}{c} 1\\4\\5\\2\end{array}\right)$$ | Vectors  | `y <- c(1, 4, 5, 2) ` |
+| $$y_2$$ | Indices | `y[2]`| 
+
+---
+
+## More Examples
+
+| Math   | Type          | Code           | 
+|:--- |:-------------:|-------------:|
+| $$\sum_{i=1}^{4} y_i$$ | Mathematical Operators | `sum(y)` |
+| $$2y$$ |  | `2*y` |
+
+---
+class: inverse
+
+## Your Turn (5 min) 
+
+
+- Introduce vector $x$ defined as $$x = \left( \begin{array}{c} 4\\1\\3\\9\end{array}\right)$$
+
+- Introduce vector $y$ defined as  $$y = \left( \begin{array}{c} 1\\2\\3\\5\end{array}\right)$$
+
+
+- Calculate the Euclidean distance between the two vectors $x$ and $y$, defined as 
+
+$$d = \sqrt{\sum_{i=1}^4 (x_i - y_i)^2}$$
+
+---
+
+## Vocabulary 
+
+- What verbs (=functions) do you need to know?
+
+- Loading data
+
+- Accessing parts of things
+
+- Statistical summaries
+
+- ...
+
+---
+
+## R Reference Card
+
+- Download the R Reference Card from http://cran.r-project.org/doc/contrib/Short-refcard.pdf
+
+- Open/Print it so that you can glance at it while working
+
+
+
+
+---
+
+### Getting help within R
+
+If you want to know what a specific `command` is doing:
+
+```{r, eval=FALSE}
+?command
+
+help("command") 
+
+help.search("command")
+
+??command
+```
+
+<br>
+
+### Getting out
+
+```{r, eval = FALSE}
+q()
+```
+
+Quits out of the console
+
+
+---
+
+## Loading class data
+
+- Some R packages have in-built datasets
+
+- For this class, there is an R package available on github 
+
+- Installing/Updating `classdata` package (once every so often):
+```{r eval=FALSE}
+devtools::install_github("heike/classdata")
+```
+
+- Make the data available (every time you start R):
+```{r}
+library(classdata)
+```
+
+
+---
+class: inverse
+## Your Turn (5 min) 
+
+
+- Install the package `classdata` on your machine <br>
+
+- Make the package active in your current R session:
+```{r, eval=FALSE}
+library(classdata)
+```
+
+- Check the R help on the dataset `fbi`<br>
+
+- What happens if you just type in the name of the dataset?
+
+
+---
+
+## Inspecting objects
+
+for object `x`, we can try out the following commands:
+
+- `x`
+
+- `head(x)`
+
+- `summary(x)`
+
+- `str(x)`
+
+- `dim(x)`
+
+<br><br><br>
+
+<font color="darkblue">Try these commands out for yourself on the `fbi` data.</font>
+
+
+---
+
+## `str` stands for *structure*
+
+- `str` shows us the **str**ucture of an object
+
+- fbi is a data frame with columns (variables) and rows (records)
+
+```{r}
+str(fbi)
+```
+
+---
+
+## Extracting parts of objects
+
+For object `x`, we can extract parts in the following manner:
+
+```
+x$variable
+x[, "variable"]
+
+x[rows, columns]
+x[1:5, 2:3]
+x[c(1,5,6), c("State","Year")]
+
+x$variable[rows]
+```
+`rows` and `columns` are vectors of indices.
+
+<br><br><br>
+
+<font color="darkblue">Try these commands out for yourself on the `fbi` data.</font>
+
+---
+
+## Statistical summaries
+
+Elements of the five point summary: <br>
+`mean, median, min, max, quartiles`
+
+Other summary statistics:<br>
+`range, sd, var`
+
+Summaries of two variables:<br>
+`cor, cov`
+
+
+---
+class: inverse
+## Your turn 
+
+
+- Look at the first 10 data records of the `fbi` data
+
+- Compute mean and standard deviation for the number of counts. Why do you get NAs? (read `?NA`)
+
+- Advanced:  Read `?mean` and `?sd`, and fix missing value problem
+
+
+---
+class: inverse 
+## Your turn - practice to ask questions 
+
+
+Write down questions that you could answer with this data 4 minutes by yourself, then pair up for another 3 minutes, and we'll write ideas on the board
+
+
+
+The types of crimes are defined on the UCR website, see http://www.ucrdatatool.gov/offenses.cfm

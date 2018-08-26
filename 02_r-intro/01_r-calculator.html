@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>R is a Calculator</title>
+    <meta charset="utf-8">
+    <meta name="author" content="Heike Hofmann" />
+    <meta name="date" content="2018-08-25" />
+    <link href="libs/remark-css/default.css" rel="stylesheet" />
+    <link href="libs/remark-css/default-fonts.css" rel="stylesheet" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+# R is a Calculator
+## Hello World, this is R
+### Heike Hofmann
+### 2018-08-25
+
+---
+
+
+# Outline
+
+
+
+
+- R is a calculator
+
+- five commands to look at objects
+
+- extracting pieces
+
+- a first glimpse at data
+
+---
+
+## The R language
+
+- Learning a new language: grammar, vocabulary
+
+- Loading, examining, summarizing data
+
+- Creating data
+
+- Getting help
+
+- Miscellaneous useful stuff
+
+
+---
+class: inverse, center
+
+
+&lt;img class="cover" src="images/language.png" alt="", width=2000&gt;
+
+---
+
+## Grammar
+
+- Basic algebra is the same as calculator/mathematics
+
+- explicit operators: `2*x` not `2x`,  `2^p` instead of `2p`
+
+- Applying a function is similar 
+
+- Making a variable, use `&lt;-` or `=`
+
+- Everything in R is a vector
+
+---
+
+## Examples
+
+| Math   | Type          | Code           | 
+|:--- |:-------------:|-------------:|
+|  `$$x = \frac{2}{3}$$` | Assignments      | `x &lt;- 2/3` |
+| `$$\sqrt{x}$$` | Functions  | `sqrt(x)` |
+| `$$y = \left( \begin{array}{c} 1\\4\\5\\2\end{array}\right)$$` | Vectors  | `y &lt;- c(1, 4, 5, 2) ` |
+| `$$y_2$$` | Indices | `y[2]`| 
+
+---
+
+## More Examples
+
+| Math   | Type          | Code           | 
+|:--- |:-------------:|-------------:|
+| `$$\sum_{i=1}^{4} y_i$$` | Mathematical Operators | `sum(y)` |
+| `$$2y$$` |  | `2*y` |
+
+---
+class: inverse
+
+## Your Turn (5 min) 
+
+
+- Introduce vector `\(x\)` defined as `$$x = \left( \begin{array}{c} 4\\1\\3\\9\end{array}\right)$$`
+
+- Introduce vector `\(y\)` defined as  `$$y = \left( \begin{array}{c} 1\\2\\3\\5\end{array}\right)$$`
+
+
+- Calculate the Euclidean distance between the two vectors `\(x\)` and `\(y\)`, defined as 
+
+`$$d = \sqrt{\sum_{i=1}^4 (x_i - y_i)^2}$$`
+
+---
+
+## Vocabulary 
+
+- What verbs (=functions) do you need to know?
+
+- Loading data
+
+- Accessing parts of things
+
+- Statistical summaries
+
+- ...
+
+---
+
+## R Reference Card
+
+- Download the R Reference Card from http://cran.r-project.org/doc/contrib/Short-refcard.pdf
+
+- Open/Print it so that you can glance at it while working
+
+
+
+
+---
+
+### Getting help within R
+
+If you want to know what a specific `command` is doing:
+
+
+```r
+?command
+
+help("command") 
+
+help.search("command")
+
+??command
+```
+
+&lt;br&gt;
+
+### Getting out
+
+
+```r
+q()
+```
+
+Quits out of the console
+
+
+---
+
+## Loading class data
+
+- Some R packages have in-built datasets
+
+- For this class, there is an R package available on github 
+
+- Installing/Updating `classdata` package (once every so often):
+
+```r
+devtools::install_github("heike/classdata")
+```
+
+- Make the data available (every time you start R):
+
+```r
+library(classdata)
+```
+
+
+---
+class: inverse
+## Your Turn (5 min) 
+
+
+- Install the package `classdata` on your machine &lt;br&gt;
+
+- Make the package active in your current R session:
+
+```r
+library(classdata)
+```
+
+- Check the R help on the dataset `fbi`&lt;br&gt;
+
+- What happens if you just type in the name of the dataset?
+
+
+---
+
+## Inspecting objects
+
+for object `x`, we can try out the following commands:
+
+- `x`
+
+- `head(x)`
+
+- `summary(x)`
+
+- `str(x)`
+
+- `dim(x)`
+
+&lt;br&gt;&lt;br&gt;&lt;br&gt;
+
+&lt;font color="darkblue"&gt;Try these commands out for yourself on the `fbi` data.&lt;/font&gt;
+
+
+---
+
+## `str` stands for *structure*
+
+- `str` shows us the **str**ucture of an object
+
+- fbi is a data frame with columns (variables) and rows (records)
+
+
+```r
+str(fbi)
+```
+
+```
+## 'data.frame':	21992 obs. of  7 variables:
+##  $ State        : chr  "Alabama" "Alabama" "Alabama" "Alabama" ...
+##  $ Abb          : chr  "AL" "AL" "AL" "AL" ...
+##  $ Year         : int  1961 1962 1963 1964 1965 1966 1967 1968 1969 1970 ...
+##  $ Population   : int  3302000 3358000 3347000 3407000 3462000 3517000 3540000 3566000 3531000 3444165 ...
+##  $ Type         : Factor w/ 8 levels "Aggravated.assault",..: 6 6 6 6 6 6 6 6 6 6 ...
+##  $ Count        : int  427 316 340 316 395 384 415 421 485 404 ...
+##  $ Violent.crime: logi  TRUE TRUE TRUE TRUE TRUE TRUE ...
+```
+
+---
+
+## Extracting parts of objects
+
+For object `x`, we can extract parts in the following manner:
+
+```
+x$variable
+x[, "variable"]
+
+x[rows, columns]
+
+x[1:5, 2:3]
+
+x[c(1,5,6), c("State","Year")]
+
+x$variable[rows]
+```
+`rows` and `columns` are vectors of indices.
+
+&lt;br&gt;&lt;br&gt;&lt;br&gt;
+
+&lt;font color="darkblue"&gt;Try these commands out for yourself on the `fbi` data.&lt;/font&gt;
+
+---
+
+## Statistical summaries
+
+Elements of the five point summary: &lt;br&gt;
+`mean, median, min, max, quartiles`
+
+Other summary statistics:&lt;br&gt;
+`range, sd, var`
+
+Summaries of two variables:&lt;br&gt;
+`cor, cov`
+
+
+---
+class: inverse
+## Your turn 
+
+
+- Look at the first 10 data records of the `fbi` data
+
+- Compute mean and standard deviation for the number of counts. Why do you get NAs? (read `?NA`)
+
+- Advanced:  Read `?mean` and `?sd`, and fix missing value problem
+
+
+---
+class: inverse 
+## Your turn - practice to ask questions 
+
+
+Write down questions that you could answer with this data 4 minutes by yourself, then pair up for another 3 minutes, and we'll write ideas on the board
+
+
+
+The types of crimes are defined on the UCR website, see http://www.ucrdatatool.gov/offenses.cfm
+    </textarea>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "github",
+"highlightLines": true,
+"countIncrementalSlides": false
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function() {
+  var d = document, s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})();</script>
+
+<script>
+(function() {
+  var i, text, code, codes = document.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+})();
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://cdn.bootcss.com/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>
