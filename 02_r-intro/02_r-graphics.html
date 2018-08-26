@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Stat 579: Graphics with ggplot2</title>
+    <meta charset="utf-8">
+    <meta name="author" content="Heike Hofmann" />
+    <meta name="date" content="2018-08-25" />
+    <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
+    <link href="libs/remark-css-0.0.1/default-fonts.css" rel="stylesheet" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+# Stat 579: Graphics with ggplot2
+### Heike Hofmann
+### 2018-08-25
+
+---
+
+class: inverse, middle, center
+# Looking at data
+
+---
+class: inverse, middle, center
+## Questions for the fbi data
+
+---
+
+## Plan for answers
+
+- Explore how one (or more) variables are distributed: *barchart or histogram*
+
+- Explore how two variables are related:  *scatterplot, boxplot, tile plot*
+
+- Explore how two variables are related, conditioned on other variables: *facetting, color &amp; other aesthetics*
+
+
+---
+
+## Different version of the data
+
+For the exploration, we will use a different shape of the `fbi` data - a wide form:
+
+
+```r
+library(classdata)
+str(fbiwide)
+```
+
+```
+## 'data.frame':	2749 obs. of  14 variables:
+##  $ State              : chr  "Alabama" "Alabama" "Alabama" "Alabama" ...
+##  $ Abb                : chr  "AL" "AL" "AL" "AL" ...
+##  $ Year               : int  1961 1962 1963 1964 1965 1966 1967 1968 1969 1970 ...
+##  $ Population         : int  3302000 3358000 3347000 3407000 3462000 3517000 3540000 3566000 3531000 3444165 ...
+##  $ Violent.crime      : int  5564 5283 6115 7260 6916 8098 8448 8288 8842 10185 ...
+##  $ Murder             : int  427 316 340 316 395 384 415 421 485 404 ...
+##  $ Legacy.rape        : int  252 218 192 397 367 341 371 396 494 637 ...
+##  $ Rape               : int  NA NA NA NA NA NA NA NA NA NA ...
+##  $ Robbery            : int  630 754 828 992 992 1124 1167 1462 1448 1731 ...
+##  $ Aggravated.assault : int  4255 3995 4755 5555 5162 6249 6495 6009 6415 7413 ...
+##  $ Property.crime     : int  32541 35829 38521 46290 48215 53740 57079 62997 66248 75214 ...
+##  $ Burglary           : int  11205 11722 12614 15898 16398 18551 20227 22403 23559 26739 ...
+##  $ Larceny.theft      : int  18801 21306 22874 26713 28115 30583 31682 34508 36644 40779 ...
+##  $ Motor.vehicle.theft: int  2535 2801 3033 3679 3702 4606 5170 6086 6045 7696 ...
+```
+
+---
+
+## Scatterplots
+
+- need two continuous variables
+
+- we'll be using the `ggplot2` framework for plotting
+
+---
+class: inverse, middle, center
+# Why `ggplot2`?
+
+---
+
+## Why `ggplot2`
+
+- Wildly popular package for statistical graphics: over 2.5 million downloads from CRAN in 2017 (several thousand times per day)
+
+- Developed by Hadley Wickham (An ISU Alumni)
+
+- Designed to adhere to good graphical practices
+
+- Constructs plots using the concept of layers
+
+- Supports a wide variety plot types and extensions
+
+&lt;br&gt;
+
+- http://ggplot2.org/book/ or Hadley's book *ggplot2: Elegant Graphics for Data Analysis* for reference 
+
+---
+
+## Grammar of Graphics
+
+A graphical representation (plot) consists of:
+
+1. **mappings** (`aes`):  data variables are mapped to graphical elements
+
+2. **layers**:  geometric elements (`geoms`, such as points, lines, 
+rectangles, text, ...) and statistical transformations (`stats`, are identity, counts, bins, ...)
+
+3. **scales**: map values in the data space to values in an aesthetic space (e.g. color, size, shape, but also position)
+
+4. **coordinate system** (`coord`): normally Cartesian, but pie charts use e.g. polar coordinates
+
+5. **facetting**: for small multiples (subsets) and their arrangement
+
+6. **theme**: fine-tune display items, such as font and its size, color of background, margins, ...
+
+---
+
+## Scatterplots in `ggplot2`
+
+`aes` allows us to specify mappings; scatterplots need a mapping for `x` and a mapping for `y`:
+
+```
+ggplot(data = fbiwide, aes(x = Burglary, y = Murder)) +
+  geom_point()
+```  
+
+```
+ggplot(data = fbiwide, aes(x = log(Burglary), y = log(Murder))) +
+  geom_point()
+```  
+
+```
+ggplot(data = fbiwide, aes(x = log(Burglary), 
+                           y = log(Motor.vehicle.theft))) +
+  geom_point()
+```  
+
+---
+
+## Revision - Interpreting Scatterplots
+
+- Big patterns
+    - Form and direction
+    - Strength
+    
+- Small patterns
+
+- Deviations from the pattern
+    - Outliers
+    
+---
+
+### **Form**
+
+Is the plot linear?  Is the plot curved?  Is there a distinct pattern in the plot? Are there multiple groups?
+
+
+### **Strength**
+
+Does the plot follow the form very closely?  Or is there a lot of variation?   
+
+### **Direction**
+Is the pattern increasing?  Is the plot decreasing?
+
+*Positively:* Above (below) average in one variable tends to be associated with above (below) average in another variable.
+
+*Negatively:* Opposite pattern.
+
+---
+
+&lt;img class="cover" src="images/positive.png" alt="" width=500&gt;
+
+&gt; 1. &lt;font color="darkorange"&gt;Form: Linear&lt;/font&gt;
+&gt; 2. &lt;font color="darkorange"&gt;Strength: Strong, very close to a straight line.&lt;/font&gt;
+&gt; 3. &lt;font color="darkorange"&gt;Direction: Two variables are positively associated.&lt;/font&gt;
+&gt; 4. &lt;font color="darkorange"&gt;No outliers.&lt;/font&gt;
+
+---
+
+&lt;img class="cover" src="images/negative.png" alt="" width=500&gt;
+
+&gt; 1. &lt;font color="darkorange"&gt;Form: Roughly linear, two distinct groups (more than 40% and less than 40%.)&lt;/font&gt;
+&gt; 2. &lt;font color="darkorange"&gt;Strength: not strong.  Data points are scattered.
+&lt;/font&gt;
+&gt; 3. &lt;font color="darkorange"&gt;Direction: Negatively Associated.
+&lt;/font&gt;
+&gt; 4. &lt;font color="darkorange"&gt;Outliers: None.&lt;/font&gt;
+
+---
+
+## Aesthetics
+
+Can map other variables to size or colour
+
+```
+ggplot(aes(x = log(Burglary), y = log(Motor.vehicle.theft),
+           colour=State), data=fbiwide) + geom_point()
+
+ggplot(aes(x = log(Burglary), y = log(Motor.vehicle.theft),
+           colour=Year), data=fbiwide) + geom_point()
+```
+
+```
+ggplot(aes(x = log(Burglary), y = log(Motor.vehicle.theft),
+           size=Population), data=fbiwide) + geom_point()
+```
+
+other aesthetics: shape
+
+---
+class: inverse
+## Your turn
+
+
+- Work through each of the example plots
+
+- Try variations of the plots to find answers (some of) your questions.
+    </textarea>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "github",
+"highlightLines": true,
+"countIncrementalSlides": false
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function() {
+  var d = document, s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})();</script>
+
+<script>
+(function() {
+  var i, text, code, codes = document.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+})();
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://cdn.bootcss.com/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>

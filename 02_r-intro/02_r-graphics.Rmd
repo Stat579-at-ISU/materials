@@ -1,0 +1,193 @@
+---
+title: "Stat 579: Graphics with ggplot2"
+author: "Heike Hofmann"
+date: "`r Sys.Date()`"
+output:
+  xaringan::moon_reader:
+    lib_dir: libs
+    nature:
+      highlightStyle: github
+      highlightLines: true
+      countIncrementalSlides: false
+---
+class: inverse, middle, center
+# Looking at data
+
+---
+class: inverse, middle, center
+## Questions for the fbi data
+
+---
+
+## Plan for answers
+
+- Explore how one (or more) variables are distributed: *barchart or histogram*
+
+- Explore how two variables are related:  *scatterplot, boxplot, tile plot*
+
+- Explore how two variables are related, conditioned on other variables: *facetting, color & other aesthetics*
+
+
+---
+
+## Different version of the data
+
+For the exploration, we will use a different shape of the `fbi` data - a wide form:
+
+```{r}
+library(classdata)
+str(fbiwide)
+```
+
+---
+
+## Scatterplots
+
+- need two continuous variables
+
+- we'll be using the `ggplot2` framework for plotting
+
+---
+class: inverse, middle, center
+# Why `ggplot2`?
+
+---
+
+## Why `ggplot2`
+
+- Wildly popular package for statistical graphics: over 2.5 million downloads from CRAN in 2017 (several thousand times per day)
+
+- Developed by Hadley Wickham (An ISU Alumni)
+
+- Designed to adhere to good graphical practices
+
+- Constructs plots using the concept of layers
+
+- Supports a wide variety plot types and extensions
+
+<br>
+
+- http://ggplot2.org/book/ or Hadley's book *ggplot2: Elegant Graphics for Data Analysis* for reference 
+
+---
+
+## Grammar of Graphics
+
+A graphical representation (plot) consists of:
+
+1. **mappings** (`aes`):  data variables are mapped to graphical elements
+
+2. **layers**:  geometric elements (`geoms`, such as points, lines, 
+rectangles, text, ...) and statistical transformations (`stats`, are identity, counts, bins, ...)
+
+3. **scales**: map values in the data space to values in an aesthetic space (e.g. color, size, shape, but also position)
+
+4. **coordinate system** (`coord`): normally Cartesian, but pie charts use e.g. polar coordinates
+
+5. **facetting**: for small multiples (subsets) and their arrangement
+
+6. **theme**: fine-tune display items, such as font and its size, color of background, margins, ...
+
+---
+
+## Scatterplots in `ggplot2`
+
+`aes` allows us to specify mappings; scatterplots need a mapping for `x` and a mapping for `y`:
+
+```
+ggplot(data = fbiwide, aes(x = Burglary, y = Murder)) +
+  geom_point()
+```  
+
+```
+ggplot(data = fbiwide, aes(x = log(Burglary), y = log(Murder))) +
+  geom_point()
+```  
+
+```
+ggplot(data = fbiwide, aes(x = log(Burglary), 
+                           y = log(Motor.vehicle.theft))) +
+  geom_point()
+```  
+
+---
+
+## Revision - Interpreting Scatterplots
+
+- Big patterns
+    - Form and direction
+    - Strength
+    
+- Small patterns
+
+- Deviations from the pattern
+    - Outliers
+    
+---
+
+### **Form**
+
+Is the plot linear?  Is the plot curved?  Is there a distinct pattern in the plot? Are there multiple groups?
+
+
+### **Strength**
+
+Does the plot follow the form very closely?  Or is there a lot of variation?   
+
+### **Direction**
+Is the pattern increasing?  Is the plot decreasing?
+
+*Positively:* Above (below) average in one variable tends to be associated with above (below) average in another variable.
+
+*Negatively:* Opposite pattern.
+
+---
+
+<img class="cover" src="images/positive.png" alt="" width=500>
+
+> 1. <font color="darkorange">Form: Linear</font>
+> 2. <font color="darkorange">Strength: Strong, very close to a straight line.</font>
+> 3. <font color="darkorange">Direction: Two variables are positively associated.</font>
+> 4. <font color="darkorange">No outliers.</font>
+
+---
+
+<img class="cover" src="images/negative.png" alt="" width=500>
+
+> 1. <font color="darkorange">Form: Roughly linear, two distinct groups (more than 40% and less than 40%.)</font>
+> 2. <font color="darkorange">Strength: not strong.  Data points are scattered.
+</font>
+> 3. <font color="darkorange">Direction: Negatively Associated.
+</font>
+> 4. <font color="darkorange">Outliers: None.</font>
+
+---
+
+## Aesthetics
+
+Can map other variables to size or colour
+
+```
+ggplot(aes(x = log(Burglary), y = log(Motor.vehicle.theft),
+           colour=State), data=fbiwide) + geom_point()
+
+ggplot(aes(x = log(Burglary), y = log(Motor.vehicle.theft),
+           colour=Year), data=fbiwide) + geom_point()
+```
+
+```
+ggplot(aes(x = log(Burglary), y = log(Motor.vehicle.theft),
+           size=Population), data=fbiwide) + geom_point()
+```
+
+other aesthetics: shape
+
+---
+class: inverse
+## Your turn
+
+
+- Work through each of the example plots
+
+- Try variations of the plots to find answers (some of) your questions. 
+
