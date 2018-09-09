@@ -1,0 +1,182 @@
+---
+title: "Stat 579: Logical variables and Filters"
+author: Heike Hofmann
+date: "`r Sys.Date()`"
+output:
+  xaringan::moon_reader:
+    lib_dir: libs
+    nature:
+      highlightStyle: github
+      highlightLines: true
+      countIncrementalSlides: false
+---
+class: inverse, center, middle
+# Logical variables and Filters
+
+---
+
+## Logical vectors
+
+- Vectors consisting of values `TRUE` and `FALSE`
+
+- Usually created with a logical comparison
+
+  - `<, >, ==, !=, <=, >=`
+
+  - `x %in% c(1, 4, 3, 7)`
+
+- Used in `subset` or `dplyr::filter`
+
+---
+
+## Combining logical expressions
+
+- `&` and `|` are the logical *and* and *or*
+
+- `!` is the logical negation
+
+- use parentheses () when linking expressions to avoid mis-interpretation
+
+---
+
+## Logical Operations
+
+![](images/logical.png)
+
+
+---
+class: inverse
+## Your turn 
+
+
+Define vector `a` to be `a <- c(1, 15, 3, 20, 5, 8, 9, 10, 1, 3)`
+
+
+Find the expression for the logical vector that is TRUE where `a` is:
+
+- less than 20
+- squared value is at least 100 or less than 10
+- equals 1 or 3
+- even 
+Hint: have a look at the help for the operator `%%`
+
+---
+
+## `filter {dplyr}`
+
+`filter` is a command of package `dplyr`
+
+`filter(data, ...)` finds subset of `data` where conditions specified by logical expression in `...` are true, e.g.
+
+  - `filter(fbi, Year == 2014)`
+  - `filter(fbi, Type == "Larceny.Theft", State %in% c("Iowa", "Minnesota"))`
+
+multiple expressions are implicitly combined by a logical and `&`
+
+Note that the command `subset` works very similarly.
+
+Caution! there is another function called `filter` in the `stats` package. Use `::` to make sure you use the right one: `dplyr::filter`
+
+---
+class: inverse
+## Your turn 
+
+Use the `fbi` data from the `classdata` package
+
+- Get a subset of all crimes in Iowa, Plot incidences/rates for one type of crime over time.
+
+- Get a subset of all crimes in 2009. Plot the number or rate for one type of crime by state.
+
+- Get a subset of the data that includes number of homicides for the last five years. Find the rate of homicides, extract all states that have a rate of greater than 90% of the rates across all states, and plot (Hint: `?quantile`).
+
+
+Extra credit (1 point): submit your code (regardless of whether it works or not) in Canvas (yourturn-checkin-1).
+
+---
+
+## Information extraction: useful commands
+
+Number of records in a data set:
+```
+nrow(dataset)  
+```
+
+Quantiles:
+```
+quantile(variable, probs=0.001, na.rm=T)  
+```
+
+Find all indices for which an expression is TRUE:
+```
+which(logical variable)  
+```
+
+Retrieve index of maximum/minimum value:
+```
+which.max(variable)
+which.min(variable) 
+```
+
+---
+class: inverse
+## Your turn 
+
+
+Use the `fbi` data object to answer the following questions: 
+
+- how many reports of Burglaries are there for California?
+
+- for any of the violent crimes, which state had the highest rate (and for which crime) in 2014? in 1961? 
+
+
+Use the `fbiwide` data object to answer the following question: 
+
+- in how many states in 2011 were there more vehicle thefts than robberies? (which states are those?)
+
+
+
+---
+
+## Updating elements in a vector
+
+You can take a subset and update the original data:
+```{r}
+a <- 1:4
+a
+
+a[2:3] <- 0
+a
+
+replace(a, a == 0, -1)
+```
+
+Very useful in combination with logical subsetting
+
+---
+
+## Updating elements in a data set
+
+data sets and their parts can be used as right hand side of an assignment:
+
+```{r}
+library(classdata)
+
+# introduces new variable in the data set fbiwide
+fbiwide$murder.rate <- fbiwide$Murder/fbiwide$Population*100000
+
+names(fbiwide)
+```
+
+if that variable exists before, it is being over-written/updated
+
+---
+class: inverse
+## Your turn 
+
+
+The gapminder data from homework 1 is available [here](https://raw.githubusercontent.com/Stat579-at-ISU/stat579-at-isu.github.io/master/homework/data/gapminder-5060.csv). 
+
+- `read.csv` helps you read the gapminder from the given link. Store the result in an object.
+- What format does the object have?
+- Replace the problematic value in life expectancy for Canada in 1957  by the value 69.96. 
+
