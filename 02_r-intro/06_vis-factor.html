@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Stat 579: Visualizing Factor variables</title>
+    <meta charset="utf-8">
+    <meta name="author" content="Heike Hofmann" />
+    <meta name="date" content="2018-09-17" />
+    <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
+    <link href="libs/remark-css-0.0.1/default-fonts.css" rel="stylesheet" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+# Stat 579: Visualizing Factor variables
+### Heike Hofmann
+### 2018-09-17
+
+---
+
+
+# Visualizing factors
+
+- visualize factors directly: barcharts
+
+- use factors in aesthetics (`colour`, `fill`, `shape`) or for facetting
+
+- always make sure that the order in factors is sensible!
+
+
+# Note: factors for fill color
+
+In area plots (histograms and barcharts for now) use aesthetic `fill` for showing colored areas.
+
+Only factor variables can be mapped to `fill`
+
+---
+
+# Example: 
+
+
+
+```r
+library(classdata)
+library(ggplot2)
+ggplot(fbi, aes(x = Type, fill=Year)) + geom_bar() # no color
+```
+
+![](06_vis-factor_files/figure-html/unnamed-chunk-1-1.png)&lt;!-- --&gt;
+
+---
+
+# Example (cont'd) 
+
+Not sensible, but the colors show up:
+
+
+```r
+ggplot(fbi, aes(x = Type, fill=factor(Year))) + geom_bar() 
+```
+
+![](06_vis-factor_files/figure-html/unnamed-chunk-2-1.png)&lt;!-- --&gt;
+
+
+---
+
+# Example: Survival on the titanic
+
+The object `titanic` is a table of a break down of survival of passengers and crew on board the titanic by gender and age.
+
+
+```r
+library(classdata)
+head(titanic)
+```
+
+```
+##   Class  Sex   Age Survived
+## 1   3rd Male Child       No
+## 2   3rd Male Child       No
+## 3   3rd Male Child       No
+## 4   3rd Male Child       No
+## 5   3rd Male Child       No
+## 6   3rd Male Child       No
+```
+
+
+---
+
+# Barcharts of all variables
+
+.pull-left[
+
+```r
+ggplot(titanic, aes(x = Survived)) +
+  geom_bar()
+```
+
+![](06_vis-factor_files/figure-html/unnamed-chunk-4-1.png)&lt;!-- --&gt;
+
+```r
+ggplot(titanic, aes(x = Sex)) + 
+  geom_bar()
+```
+
+![](06_vis-factor_files/figure-html/unnamed-chunk-4-2.png)&lt;!-- --&gt;
+]
+
+.pull-right[
+
+```r
+ggplot(titanic, aes(x = Class)) + 
+  geom_bar()
+```
+
+![](06_vis-factor_files/figure-html/unnamed-chunk-5-1.png)&lt;!-- --&gt;
+
+```r
+ggplot(titanic, aes(x = Age)) + 
+  geom_bar()
+```
+
+![](06_vis-factor_files/figure-html/unnamed-chunk-5-2.png)&lt;!-- --&gt;
+]
+
+---
+
+# `position="fill"`
+
+.pull-left[
+
+```r
+ggplot(titanic, aes(x = Survived, 
+                    fill=Survived)) + 
+  geom_bar(position="fill")
+```
+
+![](06_vis-factor_files/figure-html/unnamed-chunk-6-1.png)&lt;!-- --&gt;
+
+```r
+ggplot(titanic, aes(x = Sex, 
+                    fill=Survived)) + 
+  geom_bar(position="fill")
+```
+
+![](06_vis-factor_files/figure-html/unnamed-chunk-6-2.png)&lt;!-- --&gt;
+]
+
+.pull-right[
+
+```r
+ggplot(titanic, aes(x = Class, 
+                    fill=Survived)) + 
+  geom_bar(position="fill")
+```
+
+![](06_vis-factor_files/figure-html/unnamed-chunk-7-1.png)&lt;!-- --&gt;
+
+```r
+ggplot(titanic, aes(x = Age, 
+                    fill=Survived)) + 
+  geom_bar(position = "fill")
+```
+
+![](06_vis-factor_files/figure-html/unnamed-chunk-7-2.png)&lt;!-- --&gt;
+]
+
+---
+
+# Two and more factor variables
+
+- besides facetting and position, use *mosaic plots*
+
+- there are extension packages for `ggplot2`, e.g. `ggmosaic`
+
+---
+
+# Mosaicplots
+
+
+```r
+library(ggmosaic)
+ggplot(data = titanic)  + 
+  geom_mosaic(aes(x = product(Sex), fill=Survived, weight=1)) +
+  facet_grid(Age~Class)
+```
+
+![](06_vis-factor_files/figure-html/unnamed-chunk-8-1.png)&lt;!-- --&gt;
+
+---
+class: inverse
+# Your turn 
+
+
+For this your turn use the `titanic` object from the `classdata` package. (you might have to update the package using the command `devtools::github_install("heike/classdata")`) 
+
+- Draw a barchart of Gender. Interpret.
+
+- Map survival to fill color in the barchart of Gender. Interpret.
+
+- In the previous barchart change the `position` parameter to `"fill"`. Interpret.
+
+- Read up on the `position` parameter in `?geom_bar`. Try out other options for `position`.
+
+
+---
+
+# Why no pie charts?
+
+## Order of tasks (easiest to hardest)
+
+Cleveland and McGill (1984):
+
+1. Position along a common scale
+2. Positions along non-aligned scales
+3. Length, direction, angle
+6. Area
+7. Volume, curvature
+9. Shading, color saturation
+
+Implications for drawing charts: make main comparisons as easy as possible (i.e. map as position along a common scale). Additional messages can be mapped on other aesthetics.
+    </textarea>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "github",
+"highlightLines": true,
+"countIncrementalSlides": false
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function() {
+  var d = document, s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})();</script>
+
+<script>
+(function() {
+  var i, text, code, codes = document.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+})();
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://cdn.bootcss.com/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>
