@@ -179,7 +179,7 @@ class: inverse
 
 The gapminder data from homework 2 is available [here](https://raw.githubusercontent.com/Stat579-at-ISU/stat579-at-isu.github.io/master/homework/data/gapminder-5060.csv). 
 
-- `read.csv` helps you read the gapminder from the given link. Store the result in an object.
+- `read.csv` helps you read the gapminder data from the given link. Store the result in an object.
 
 - What format does the object have?
 
