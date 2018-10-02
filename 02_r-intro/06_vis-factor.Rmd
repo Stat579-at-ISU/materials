@@ -137,7 +137,7 @@ class: inverse
 # Your turn 
 
 
-For this your turn use the `titanic` object from the `classdata` package. (you might have to update the package using the command `devtools::github_install("heike/classdata")`) 
+For this your turn use the `titanic` object from the `classdata` package. (you might have to update the package using the command `devtools::install_github("heike/classdata")`) 
 
 - Draw a barchart of Gender. Interpret.
 
