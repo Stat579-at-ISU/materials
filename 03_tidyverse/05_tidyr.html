@@ -4,7 +4,7 @@
     <title>Reshaping data with tidyr</title>
     <meta charset="utf-8">
     <meta name="author" content="Heike Hofmann" />
-    <meta name="date" content="2018-10-07" />
+    <meta name="date" content="2018-10-11" />
     <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
     <link href="libs/remark-css-0.0.1/default-fonts.css" rel="stylesheet" />
   </head>
@@ -14,7 +14,7 @@ class: center, middle, inverse, title-slide
 
 # Reshaping data with tidyr
 ### Heike Hofmann
-### 2018-10-07
+### 2018-10-11
 
 ---
 
@@ -5497,7 +5497,8 @@ For this your turn use the `fbiwide` data from the `classdata` package: `data("f
 
 ```r
 library(classdata)
-fbi %&gt;% filter(Year==2014, State %in% c("Iowa", "Minnesota"), Type=="Burglary")
+fbi %&gt;% filter(Year==2014, State %in% c("Iowa", "Minnesota"),
+               Type=="Burglary")
 ```
 
 ```
@@ -5510,7 +5511,8 @@ Other state specific values don't allow spread to collapse the front part and in
 
 
 ```r
-fbi %&gt;% filter(Year==2014, State %in% c("Iowa", "Minnesota"), Type=="Burglary") %&gt;% 
+fbi %&gt;% filter(Year==2014, State %in% c("Iowa", "Minnesota"),
+               Type=="Burglary") %&gt;% 
   spread(State, Count)
 ```
 
@@ -5528,7 +5530,8 @@ Negative selection of all state specific variables gets the example to "work":
 
 
 ```r
-fbi %&gt;% filter(Year==2014, State %in% c("Iowa", "Minnesota"), Type=="Burglary") %&gt;% 
+fbi %&gt;% filter(Year==2014, State %in% c("Iowa", "Minnesota"),
+               Type=="Burglary") %&gt;% 
   select(-Abb, -Population) %&gt;% 
   spread(State, Count)
 ```

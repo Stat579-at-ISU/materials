@@ -231,13 +231,15 @@ For this your turn use the `fbiwide` data from the `classdata` package: `data("f
 
 ```{r, message=FALSE, warning=FALSE}
 library(classdata)
-fbi %>% filter(Year==2014, State %in% c("Iowa", "Minnesota"), Type=="Burglary")
+fbi %>% filter(Year==2014, State %in% c("Iowa", "Minnesota"),
+               Type=="Burglary")
 ```
 
 Other state specific values don't allow spread to collapse the front part and introduce missing values:
 
 ```{r}
-fbi %>% filter(Year==2014, State %in% c("Iowa", "Minnesota"), Type=="Burglary") %>% 
+fbi %>% filter(Year==2014, State %in% c("Iowa", "Minnesota"),
+               Type=="Burglary") %>% 
   spread(State, Count)
 ```
 
@@ -248,7 +250,8 @@ fbi %>% filter(Year==2014, State %in% c("Iowa", "Minnesota"), Type=="Burglary") 
 Negative selection of all state specific variables gets the example to "work": 
 
 ```{r}
-fbi %>% filter(Year==2014, State %in% c("Iowa", "Minnesota"), Type=="Burglary") %>% 
+fbi %>% filter(Year==2014, State %in% c("Iowa", "Minnesota"),
+               Type=="Burglary") %>% 
   select(-Abb, -Population) %>% 
   spread(State, Count)
 ```
