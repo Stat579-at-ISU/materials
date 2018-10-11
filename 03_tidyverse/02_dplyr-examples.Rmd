@@ -71,7 +71,7 @@ class: inverse
 # Helper functions (1)
 
 - `n()` provides the number of rows of a subset:
-```{r}
+```{r, warning=FALSE, message = FALSE}
 library(dplyr)
 happy %>% group_by(sex) %>% summarise(n = n())
 ```
@@ -90,4 +90,15 @@ happy %>% group_by(sex) %>% tally()
 ```{r}
 happy %>% count(sex, degree)
 ```
+
+- `count()` doesn't introduce any grouping
+
+
+---
+
+# Grouping and Ungrouping
+
+- `ungroup` removes a grouping structure from a data set
+- necessary to make changes to a grouping variable (such as re-ordering or re-labelling) 
+
 

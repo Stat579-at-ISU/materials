@@ -4,7 +4,7 @@
     <title>dplyr examples: happiness</title>
     <meta charset="utf-8">
     <meta name="author" content="Heike Hofmann" />
-    <meta name="date" content="2018-09-28" />
+    <meta name="date" content="2018-10-11" />
     <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
     <link href="libs/remark-css-0.0.1/default-fonts.css" rel="stylesheet" />
   </head>
@@ -14,7 +14,7 @@ class: center, middle, inverse, title-slide
 
 # dplyr examples: happiness
 ### Heike Hofmann
-### 2018-09-28
+### 2018-10-11
 
 ---
 
@@ -101,26 +101,6 @@ class: inverse
 
 ```r
 library(dplyr)
-```
-
-```
-## 
-## Attaching package: 'dplyr'
-```
-
-```
-## The following objects are masked from 'package:stats':
-## 
-##     filter, lag
-```
-
-```
-## The following objects are masked from 'package:base':
-## 
-##     intersect, setdiff, setequal, union
-```
-
-```r
 happy %&gt;% group_by(sex) %&gt;% summarise(n = n())
 ```
 
@@ -174,6 +154,16 @@ happy %&gt;% count(sex, degree)
 ## 11 male   graduate        2357
 ## 12 male   &lt;NA&gt;              78
 ```
+
+- `count()` doesn't introduce any grouping
+
+
+---
+
+# Grouping and Ungrouping
+
+- `ungroup` removes a grouping structure from a data set
+- necessary to make changes to a grouping variable (such as re-ordering or re-labelling)
     </textarea>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
 <script>var slideshow = remark.create({
