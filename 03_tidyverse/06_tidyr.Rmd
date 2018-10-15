@@ -1,0 +1,80 @@
+---
+title: "Reshaping data with tidyr - Messy (2)"
+author: "Heike Hofmann"
+date: "`r Sys.Date()`"
+output:
+  xaringan::moon_reader:
+    lib_dir: libs
+    nature:
+      highlightStyle: github
+      highlightLines: true
+      countIncrementalSlides: false
+---
+class: middle, inverse, center
+# Messy (2)
+
+---
+
+# separate
+
+```{r, message=FALSE, warning = FALSE}
+library(tidyverse)
+df <- data.frame(x = c(NA, "a.b", "a.d", "b.c"))
+df
+df %>% separate(x, into = c("A", "B"))
+```
+
+---
+class: inverse
+# Your Turn (5 min)
+
+
+The Iowa Data Portal is a wealth of information on and about the State of Iowa. 
+
+The website 
+[Campaign Expenditures](https://data.iowa.gov/Government/Campaign-Expenditures/3adi-mht4/data) provides data on campaign expenditures. The code below reads the data into an R session.
+
+```
+url <- "https://data.iowa.gov/api/views/3adi-mht4/rows.csv"
+campaign <- readr::read_csv(url)
+```
+
+Assess the 'messiness' of the data. List issues that prevent us from working with the data directly. Which of these issues are of type (1) or (2) of messiness?
+
+---
+
+# Problems with the data
+
+- `Date` is text, in the format of Month/Day/Year (Messy 2)
+
+- city coordinates are a combination of City name, state, zip code and geographic latitude and longitude. (Messy 2)
+
+- expenditure amount is a textual expression, not a number (Messy different)
+
+no Messy 1? - problems of type Messy 1 are typically hard to detect and often up to interpretation/dependent on the analysis to be done.
+
+---
+class: inverse
+# Your Turn (10 min)
+
+
+- Check the help for the function `parse_number` in the `readr` package and use it on the campaign expenditure data.
+
+- Use `separate` to split the date variable into year, month and day.
+
+- Use `separate` again to extract geographic latitude and longitude (Hint - you might need several steps of `separate`)
+
+---
+class: inverse
+# Your Turn - exploration (10 mins)
+
+Use `dplyr` functionality to answer the following questions:
+
+  1. What is the total amount of campaign expenditure?
+
+  2. What is the single largest cost in the campaign expenditures?
+<!--  3. What time frame does the campaign expenditure cover?-->
+
+  4. Plot geographic longitude and latitude. Do campaign expenditures stay in the State of IA? Investigate oddities.
+
+

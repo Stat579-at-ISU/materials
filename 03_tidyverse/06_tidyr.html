@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Reshaping data with tidyr - Messy (2)</title>
+    <meta charset="utf-8">
+    <meta name="author" content="Heike Hofmann" />
+    <meta name="date" content="2018-10-15" />
+    <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
+    <link href="libs/remark-css-0.0.1/default-fonts.css" rel="stylesheet" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+# Reshaping data with tidyr - Messy (2)
+### Heike Hofmann
+### 2018-10-15
+
+---
+
+class: middle, inverse, center
+# Messy (2)
+
+---
+
+# separate
+
+
+```r
+library(tidyverse)
+df &lt;- data.frame(x = c(NA, "a.b", "a.d", "b.c"))
+df
+```
+
+```
+##      x
+## 1 &lt;NA&gt;
+## 2  a.b
+## 3  a.d
+## 4  b.c
+```
+
+```r
+df %&gt;% separate(x, into = c("A", "B"))
+```
+
+```
+##      A    B
+## 1 &lt;NA&gt; &lt;NA&gt;
+## 2    a    b
+## 3    a    d
+## 4    b    c
+```
+
+---
+class: inverse
+# Your Turn (5 min)
+
+
+The Iowa Data Portal is a wealth of information on and about the State of Iowa. 
+
+The website 
+[Campaign Expenditures](https://data.iowa.gov/Government/Campaign-Expenditures/3adi-mht4/data) provides data on campaign expenditures. The code below reads the data into an R session.
+
+```
+url &lt;- "https://data.iowa.gov/api/views/3adi-mht4/rows.csv"
+campaign &lt;- readr::read_csv(url)
+```
+
+Assess the 'messiness' of the data. List issues that prevent us from working with the data directly. Which of these issues are of type (1) or (2) of messiness?
+
+---
+
+# Problems with the data
+
+- `Date` is text, in the format of Month/Day/Year (Messy 2)
+
+- city coordinates are a combination of City name, state, zip code and geographic latitude and longitude. (Messy 2)
+
+- expenditure amount is a textual expression, not a number (Messy different)
+
+no Messy 1? - problems of type Messy 1 are typically hard to detect and often up to interpretation/dependent on the analysis to be done.
+
+---
+
+# Your Turn (10 min)
+
+
+- Check the help for the function `parse_number` in the `readr` package and use it on the campaign expenditure data.
+
+- Use `separate` to split the date variable into year, month and day.
+
+- Use `separate` again to extract geographic latitude and longitude (Hint - you might need several steps of `separate`)
+
+---
+class: inverse
+# Your Turn - exploration (10 mins)
+
+Use `dplyr` functionality to answer the following questions:
+
+  1. What is the total amount of campaign expenditure?
+
+  2. What is the single largest cost in the campaign expenditures?
+&lt;!--  3. What time frame does the campaign expenditure cover?--&gt;
+
+  4. Plot geographic longitude and latitude. Do campaign expenditures stay in the State of IA? Investigate oddities.
+    </textarea>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "github",
+"highlightLines": true,
+"countIncrementalSlides": false
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function() {
+  var d = document, s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})();</script>
+
+<script>
+(function() {
+  var i, text, code, codes = document.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+})();
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://cdn.bootcss.com/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>
