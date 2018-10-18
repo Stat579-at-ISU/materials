@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Cleaning data: messy 3</title>
+    <meta charset="utf-8">
+    <meta name="author" content="Heike Hofmann" />
+    <meta name="date" content="2018-10-18" />
+    <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
+    <link href="libs/remark-css-0.0.1/default-fonts.css" rel="stylesheet" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+# Cleaning data: messy 3
+### Heike Hofmann
+### 2018-10-18
+
+---
+
+class: middle, inverse, center
+# Messy (3)
+
+
+Multiple observational units are stored in the same table.
+
+
+
+---
+
+# Keys and Measurements
+
+## Finding your keys - Example (1)
+
+100 patients are randomly assigned to a treatment for heart attack, measured 5 different clinical outcomes.
+
+--
+
+- key: patient ID
+
+- factor variable (design): treatment
+
+- measured variables: 5 clinical outcomes
+
+---
+
+# Finding your keys - Example (2)
+
+Randomized complete block trial with four fields, four different types of fertilizer, over four years.  Recorded total corn yield, and fertilizer run off
+
+--
+
+- key: fields, types of fertilizer, year
+
+- measurement: total corn yield, fertilizer run off
+
+---
+
+# Finding your keys - Example (3)
+
+Cluster sample of twenty students in thirty different schools.  For each school, recorded distance from ice rink.  For each student, asked how often they go ice skating, and whether or not their parents like ice skating
+
+
+--
+
+- key: student ID, school ID
+
+- measurement: distance to rink, #times ice skating, parents' preference
+
+---
+
+# Finding your keys - Example (4)
+
+For each person, recorded age, sex, height and target weight, and then at multiple times recorded their weight
+
+--
+
+- key: *patient ID*, date
+
+- measurement: *age, sex, height, target weight*, current weight
+
+*only patient ID is needed for variables in italics*
+
+---
+
+# Messy (3)
+
+Messy (3): *Multiple observational units are stored in the same table.*
+
+What does that mean? The *key is split*, i.e. for some values all key variables are necessary, while other values only need some key variables.
+
+![](images/normal-not-2.png)
+
+---
+
+# Why do we need to take care of split keys?
+
+- Data redundancy introduces potential problems (same student *should* have the same student ID)
+
+- to check data consistency, we split data set into parts - this process is called *normalizing*
+
+- normalization reduces overall data size
+
+- useful way of thinking about objects under study
+
+---
+
+# Tidying Messy (3)
+
+Splitting into separate datasets:
+
+![](images/normal-split.png)
+
+---
+
+# Example: Box office gross
+
+The-Numbers website publishes [weekly charts](http://www.the-numbers.com/weekend-box-office-chart) of the gross income of all movies playing across the US. A set of cleaned data called `box` with movies for the last five years is available in the `classdata` package.
+
+
+```r
+# devtools::install_github("heike/classdata")
+library(classdata)
+head(box, 4)
+```
+
+```
+##   Rank Rank.Last.Week                       Movie        Distributor
+## 1    1              1           Crazy Rich Asians       Warner Bros.
+## 2    2              2                     The Meg       Warner Bros.
+## 3    3             NA       The Happytime Murders  STX Entertainment
+## 4    4              4 Mission: Impossible—Fallout Paramount Pictures
+##      Gross Change Thtrs. Per Thtr. Total.Gross Week       Date
+## 1 24808202     -6   3526      7036    76617149    2 2018-08-24
+## 2 12812615    -39   4031      3179   105083261    3 2018-08-24
+## 3  9532425     NA   3256      2928     9532425    1 2018-08-24
+## 4  8087385    -25   3052      2650   193988045    5 2018-08-24
+```
+
+What are the key variables? Why is the key split?
+
+---
+
+# Keys and measurements
+
+- Key variables: `Movie` name,  `Date` and `Distributor`. 
+
+- Measurement variables: `Gross`, `Thtrs.`
+
+- All other variables are derived from these variables
+
+- good practice: re-calculate the derived variabes to check for consistency. 
+
+---
+
+# Taking care of the split key
+
+Plan: separate movie information from box office information
+
+Idea for separation: we want to get a set of movies together with their Distributor and ideally their release date (which we do not have).
+
+Instead of release date we want to get the date of the first time that we see a movie in the boxoffice.
+
+Let's also keep track of how many weeks a movie has been released at that time (should be 1 - when will it be different for sure?)
+
+---
+class: inverse
+# Your turn 
+
+For this your turn use the `box` data from the `classdata` package 
+
+- Big goal: we want to create a new dataset `movie` that consists of movie, distributor, date of first time the movie shows up in the box office, and the number of weeks the movie has been released at that time.
+
+- First: what are the key variables for the new dataset?
+
+- Second: for the key variable(s) use `summarize` to find the first time a movie shows up in the box office and find the related number of weeks. 
+
+---
+
+# Key variables 
+
+Does `Movie` uniquely describe a movie?
+
+
+```r
+movies &lt;- box %&gt;% select(Movie, Distributor) %&gt;% unique()
+```
+
+Does that make a movie unique?
+
+
+```r
+movies %&gt;% count(Movie) %&gt;% arrange(desc(n))
+```
+
+```
+## # A tibble: 3,473 x 2
+##    Movie                            n
+##    &lt;chr&gt;                        &lt;int&gt;
+##  1 24 Frames: Before and After…     2
+##  2 Agent Mr. Chan                   2
+##  3 American Socialist: The Lif…     2
+##  4 Beauty and the Beast             2
+##  5 Blood Feast                      2
+##  6 Bombshell: The Hedy Lamarr …     2
+##  7 Breathe                          2
+##  8 Champion                         2
+##  9 Concussion                       2
+## 10 Detective K: Secret of the …     2
+## # ... with 3,463 more rows
+```
+
+---
+
+# Movie data - take 2
+
+
+Get the Week info  for the first time we see  each Movie and Distributor combo:
+
+
+```r
+movies &lt;- box %&gt;% group_by(Movie, Distributor) %&gt;% 
+  summarise(
+    firstDate = Date[which.min(Week)], 
+    firstWeek = min(Week, na.rm=TRUE))
+head(movies)
+```
+
+```
+## # A tibble: 6 x 4
+## # Groups:   Movie [6]
+##   Movie                 Distributor          firstDate  firstWeek
+##   &lt;chr&gt;                 &lt;chr&gt;                &lt;date&gt;         &lt;dbl&gt;
+## 1 ’71                   Roadside Attractions 2015-02-27         1
+## 2 [REC] 4: Apocalypse   Magnolia Pictures    2015-01-02         1
+## 3 1,000 Rupee Note      Kino Lorber          2016-09-23         1
+## 4 1,000 Times Goodnight Film Movement        2014-10-24         1
+## 5 10 Cloverfield Lane   Paramount Pictures   2016-03-11         1
+## 6 10 Days in a Madhouse Cafe Pictures        2015-11-20         2
+```
+
+---
+
+# Looking into inconsistencies
+
+
+```r
+movies %&gt;% group_by(Movie) %&gt;% mutate(n = n()) %&gt;% arrange(desc(n))
+```
+
+```
+## # A tibble: 3,496 x 5
+## # Groups:   Movie [3,473]
+##    Movie                Distributor          firstDate  firstWeek     n
+##    &lt;chr&gt;                &lt;chr&gt;                &lt;date&gt;         &lt;dbl&gt; &lt;int&gt;
+##  1 Beauty and the Beast Lopert Pictures Cor… 2016-02-12         1     2
+##  2 Beauty and the Beast Walt Disney          2017-03-17         1     2
+##  3 Blood Feast          Crimson Forest Ente… 2018-04-06        42     2
+##  4 Blood Feast          Hannover House       2018-04-20        44     2
+##  5 Breathe              Bleecker Street      2017-10-13         1     2
+##  6 Breathe              Film Movement        2015-09-11         1     2
+##  7 Champion             ArtAffects           2017-05-26         2     2
+##  8 Champion             Well Go USA          2018-05-11         1     2
+##  9 Concussion           Radius               2013-10-04         1     2
+## 10 Concussion           Sony Pictures        2015-12-25         1     2
+## # ... with 3,486 more rows
+```
+
+---
+
+# Using IMDb
+
+- Girlhood is the name of two movies - one that was released in 2003, one in 2014; most likely the Oct 4 boxoffice mention is only mistakenly referring to the 2003 movie
+
+
+```r
+box %&gt;% filter(Movie=="Girlhood") %&gt;% head(6)
+```
+
+```
+##   Rank Rank.Last.Week    Movie Distributor Gross Change Thtrs. Per Thtr.
+## 1   80             88 Girlhood      Strand  1763    278      1      1763
+## 2   88             99 Girlhood      Strand   467    -67      1       467
+## 3   99            100 Girlhood      Strand  1431    343      3       477
+## 4  100            102 Girlhood      Strand   323     55      1       323
+## 5  101             NA Girlhood               209     NA      1       209
+## 6  102             81 Girlhood      Strand   209    -90      5        42
+##   Total.Gross Week       Date
+## 1  0.00060019   15 2015-05-08
+## 2  0.00058148   14 2015-05-01
+## 3  0.00056566   13 2015-04-24
+## 4  0.00054712   12 2015-04-17
+## 5  0.00053938  598 2015-04-10
+## 6  0.00052907   11 2015-04-10
+```
+
+---
+
+# Using IMDb (2)
+
+- Mama Africa refers to two movies, one released in 2002, one in 2011; likely the duplicate  on Jan 19 is erroneous, but we still don't know which of the two movies is showing (in 1 theater)
+
+
+```r
+box %&gt;% filter(Movie=="Mama Africa")
+```
+
+```
+##   Rank Rank.Last.Week       Movie           Distributor Gross Change
+## 1   88             79 Mama Africa ArtMattan Productions   481    -72
+## 2   79             67 Mama Africa ArtMattan Productions  1689    -52
+## 3   67             NA Mama Africa ArtMattan Productions  3495     NA
+## 4   69             NA Mama Africa                        3187     NA
+##   Thtrs. Per Thtr. Total.Gross Week       Date
+## 1      2       241   9.808e-05    3 2018-02-02
+## 2      2       845   8.123e-05    2 2018-01-26
+## 3      1      3495   3.495e-05    1 2018-01-19
+## 4      1      3187   3.187e-05  816 2018-01-19
+```
+
+---
+
+# why do we normalize?
+
+- Normalization helps identify inconsistencies in data
+
+- Checking up on inconsistencies is a lot of manual labor
+    </textarea>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "github",
+"highlightLines": true,
+"countIncrementalSlides": false
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function() {
+  var d = document, s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})();</script>
+
+<script>
+(function() {
+  var i, text, code, codes = document.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+})();
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://cdn.bootcss.com/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>
