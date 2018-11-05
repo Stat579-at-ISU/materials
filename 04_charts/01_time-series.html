@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Visualizing time</title>
+    <meta charset="utf-8">
+    <meta name="author" content="Heike Hofmann" />
+    <meta name="date" content="2018-11-05" />
+    <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
+    <link href="libs/remark-css-0.0.1/default-fonts.css" rel="stylesheet" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+# Visualizing time
+### Heike Hofmann
+### 2018-11-05
+
+---
+
+class: middle, inverse, center
+# Visualizing time
+
+
+
+---
+
+# NASA data
+
+- `nasa` is a data set in the `GGally` package
+
+- it consists of atmospheric measurements across a grid of locations in Middle America
+
+
+```r
+data(nasa, package="GGally")
+head(nasa)
+```
+
+```
+##   time y x   lat      long       date cloudhigh cloudlow cloudmid ozone
+## 1    1 1 1 -21.2 -113.8000 1995-01-01       0.5     31.0      2.0   260
+## 2    1 1 2 -21.2 -111.2957 1995-01-01       1.5     31.5      2.5   260
+## 3    1 1 3 -21.2 -108.7913 1995-01-01       1.5     32.5      3.5   260
+## 4    1 1 4 -21.2 -106.2870 1995-01-01       1.0     39.0      4.0   258
+## 5    1 1 5 -21.2 -103.7826 1995-01-01       0.5     48.0      4.5   258
+## 6    1 1 6 -21.2 -101.2783 1995-01-01       0.0     50.0      2.5   258
+##   pressure surftemp temperature  id day month year
+## 1     1000    297.4       296.9 1-1   0     1 1995
+## 2     1000    297.4       296.5 2-1   0     1 1995
+## 3     1000    297.4       296.0 3-1   0     1 1995
+## 4     1000    296.9       296.5 4-1   0     1 1995
+## 5     1000    296.5       295.5 5-1   0     1 1995
+## 6     1000    296.5       295.0 6-1   0     1 1995
+```
+
+---
+
+# Time series
+
+- for each observational unit we have multiple measurements:
+
+
+```r
+library(tidyverse)
+nasa %&gt;% filter(x == 1, y == 1) %&gt;%
+  ggplot(aes(x = time, y = temperature)) + geom_point()
+```
+
+![](01_time-series_files/figure-html/unnamed-chunk-2-1.png)&lt;!-- --&gt;
+
+---
+
+# Time series (2)
+
+- for each observational unit we have multiple measurements,
+
+- which we connect by a line:
+
+
+```r
+nasa %&gt;% filter(x == 1, y == 1) %&gt;%
+  ggplot(aes(x = time, y = temperature)) + geom_line()
+```
+
+![](01_time-series_files/figure-html/unnamed-chunk-3-1.png)&lt;!-- --&gt;
+
+---
+
+# Time series (3)
+
+- for each observational unit we have multiple measurements,
+
+- which we connect by a line.
+
+- Each observational unit forms a group, we only connect points within a group by a line.
+
+
+```r
+nasa %&gt;% filter(x == 1, y %in% c(1, 10)) %&gt;%
+  ggplot(aes(x = time, y = temperature, group=id)) + geom_line()
+```
+
+![](01_time-series_files/figure-html/unnamed-chunk-4-1.png)&lt;!-- --&gt;
+
+---
+class: inverse
+# Your Turn (6 mins)
+
+
+
+- Load the `nasa` data from the package `GGally`,
+
+- for one location, draw a time line of Ozone over the time frame (`time`).
+
+- Plot separate lines for each of the years, i.e. put `month` on the x-axis and `ozone` on the y-axis for the same location. Is there a seasonal pattern apparent?
+
+
+- Pick a location with x in 1:10 and y in 7:10. Plot temperature over time. Comment on the result.
+
+---
+
+# Box office gross
+
+- variables encoded as dates and times work with `ggplot2`
+
+
+```r
+data(box, package="classdata")
+box %&gt;% filter(Movie == "Avengers: Infinity War") %&gt;%
+  ggplot(aes(x = Date, y = Total.Gross)) + geom_line() +
+  ggtitle("Avengers: Infinity War")
+```
+
+![](01_time-series_files/figure-html/unnamed-chunk-5-1.png)&lt;!-- --&gt;
+
+---
+
+# Box office gross (2)
+
+- We would like to label some of the highest grossing movies
+
+
+```r
+box %&gt;% 
+  ggplot(aes(x = Date, y = Total.Gross, 
+             group = interaction(Movie, Distributor))) + geom_line()
+```
+
+![](01_time-series_files/figure-html/unnamed-chunk-6-1.png)&lt;!-- --&gt;
+
+
+---
+class: inverse
+# Your Turn (6 mins) 
+
+
+
+- Load the `box` data from the package `classdata`,
+
+- For each movie and distributor, find the (1) highest total gross, (2) the last date (and week) the movie was shown in theaters, (3) the gross the movie made in the first week it was released.
+
+
+
+
+---
+
+# Labelling outliers
+
+- `geom_text` needs aesthetics `x`, `y` and `label`
+
+
+```r
+box %&gt;% 
+  ggplot(aes(x = Date, y = Total.Gross, 
+             group = interaction(Movie, Distributor))) + geom_line() +
+  geom_text(aes(x = Date, y = Total.Gross, label=Movie), 
+            data = box_summary %&gt;% filter(Total.Gross &gt; 2.5))
+```
+
+![](01_time-series_files/figure-html/unnamed-chunk-8-1.png)&lt;!-- --&gt;
+
+---
+
+# Labelling outliers - less overlap
+
+- `geom_text_repel` from the `ggrepel` package
+
+
+```r
+box %&gt;% 
+  ggplot(aes(x = Date, y = Total.Gross, 
+             group = interaction(Movie, Distributor))) + geom_line() +
+  ggrepel::geom_text_repel(aes(x = Date, y = Total.Gross, label=Movie), 
+            data = box_summary %&gt;% filter(Total.Gross &gt; 2.5), colour="grey50")
+```
+
+![](01_time-series_files/figure-html/unnamed-chunk-9-1.png)&lt;!-- --&gt;
+
+&lt;!--
+## Box office gross (3)
+
+
+
+```r
+box %&gt;% filter(Week &lt;= 5) %&gt;%
+  mutate(Year = year(Date)) %&gt;%
+  ggplot(aes(x = Week, y = Total.Gross, 
+             group = interaction(Movie, Distributor))) + geom_line() +
+  facet_grid(.~Year)
+```
+
+![](01_time-series_files/figure-html/unnamed-chunk-10-1.png)&lt;!-- --&gt;
+
+--&gt;
+    </textarea>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "github",
+"highlightLines": true,
+"countIncrementalSlides": false
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function() {
+  var d = document, s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})();</script>
+
+<script>
+(function() {
+  var i, text, code, codes = document.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+})();
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://cdn.bootcss.com/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>

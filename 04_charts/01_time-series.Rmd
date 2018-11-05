@@ -1,0 +1,178 @@
+---
+title: "Visualizing time"
+author: "Heike Hofmann"
+date: "`r Sys.Date()`"
+output:
+  xaringan::moon_reader:
+    lib_dir: libs
+    nature:
+      highlightStyle: github
+      highlightLines: true
+      countIncrementalSlides: false
+---
+class: middle, inverse, center
+# Visualizing time
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+library(lubridate)
+```
+
+---
+
+# NASA data
+
+- `nasa` is a data set in the `GGally` package
+
+- it consists of atmospheric measurements across a grid of locations in Middle America
+
+```{r}
+data(nasa, package="GGally")
+head(nasa)
+```
+
+---
+
+# Time series
+
+- for each observational unit we have multiple measurements:
+
+```{r, fig.width = 7, fig.height = 3}
+library(tidyverse)
+nasa %>% filter(x == 1, y == 1) %>%
+  ggplot(aes(x = time, y = temperature)) + geom_point()
+```
+
+---
+
+# Time series (2)
+
+- for each observational unit we have multiple measurements,
+
+- which we connect by a line:
+
+```{r, fig.width = 7, fig.height = 3}
+nasa %>% filter(x == 1, y == 1) %>%
+  ggplot(aes(x = time, y = temperature)) + geom_line()
+```
+
+---
+
+# Time series (3)
+
+- for each observational unit we have multiple measurements,
+
+- which we connect by a line.
+
+- Each observational unit forms a group, we only connect points within a group by a line.
+
+```{r, fig.width = 7, fig.height = 3}
+nasa %>% filter(x == 1, y %in% c(1, 10)) %>%
+  ggplot(aes(x = time, y = temperature, group=id)) + geom_line()
+```
+
+---
+class: inverse
+# Your Turn (6 mins)
+
+
+
+- Load the `nasa` data from the package `GGally`,
+
+- for one location, draw a time line of Ozone over the time frame (`time`).
+
+- Plot separate lines for each of the years, i.e. put `month` on the x-axis and `ozone` on the y-axis for the same location. Is there a seasonal pattern apparent?
+
+
+- Pick a location with x in 1:10 and y in 7:10. Plot temperature over time. Comment on the result.
+
+---
+
+# Box office gross
+
+- variables encoded as dates and times work with `ggplot2`
+
+```{r, fig.height = 4}
+data(box, package="classdata")
+box %>% filter(Movie == "Avengers: Infinity War") %>%
+  ggplot(aes(x = Date, y = Total.Gross)) + geom_line() +
+  ggtitle("Avengers: Infinity War")
+```
+
+---
+
+# Box office gross (2)
+
+- We would like to label some of the highest grossing movies
+
+```{r, fig.height = 4}
+box %>% 
+  ggplot(aes(x = Date, y = Total.Gross, 
+             group = interaction(Movie, Distributor))) + geom_line()
+```
+
+
+---
+class: inverse
+# Your Turn (6 mins) 
+
+
+
+- Load the `box` data from the package `classdata`,
+
+- For each movie and distributor, find the (1) highest total gross, (2) the last date (and week) the movie was shown in theaters, (3) the gross the movie made in the first week it was released.
+
+
+```{r, echo=FALSE, fig.height = 4}
+box_summary <- box %>% group_by(Movie, Distributor) %>%
+  summarize(
+    Date = max(Date),
+    Week = max(Week),
+    Total.Gross = max(Total.Gross),
+    Gross = min(Total.Gross)
+  )
+```
+
+---
+
+# Labelling outliers
+
+- `geom_text` needs aesthetics `x`, `y` and `label`
+
+```{r, fig.height = 4}
+box %>% 
+  ggplot(aes(x = Date, y = Total.Gross, 
+             group = interaction(Movie, Distributor))) + geom_line() +
+  geom_text(aes(x = Date, y = Total.Gross, label=Movie), 
+            data = box_summary %>% filter(Total.Gross > 2.5))
+```
+
+---
+
+# Labelling outliers - less overlap
+
+- `geom_text_repel` from the `ggrepel` package
+
+```{r, fig.height = 4}
+box %>% 
+  ggplot(aes(x = Date, y = Total.Gross, 
+             group = interaction(Movie, Distributor))) + geom_line() +
+  ggrepel::geom_text_repel(aes(x = Date, y = Total.Gross, label=Movie), 
+            data = box_summary %>% filter(Total.Gross > 2.5), colour="grey50")
+```
+
+<!--
+## Box office gross (3)
+
+
+```{r}
+box %>% filter(Week <= 5) %>%
+  mutate(Year = year(Date)) %>%
+  ggplot(aes(x = Week, y = Total.Gross, 
+             group = interaction(Movie, Distributor))) + geom_line() +
+  facet_grid(.~Year)
+```
+
+-->
+
