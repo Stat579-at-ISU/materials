@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Layers of plots</title>
+    <meta charset="utf-8">
+    <meta name="author" content="Heike Hofmann" />
+    <meta name="date" content="2018-11-05" />
+    <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
+    <link href="libs/remark-css-0.0.1/default-fonts.css" rel="stylesheet" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+# Layers of plots
+### Heike Hofmann
+### 2018-11-05
+
+---
+
+class: middle, inverse, center
+# Working with date and time
+
+
+
+
+---
+
+# `lubridate` package
+
+- package for working with dates and times
+
+- defines different classes of time: instants, periods, intervals, durations
+
+- defines converter and accessor functions, enables time calculus
+
+---
+
+# Converter functions and instants in time
+
+- time instants: one (absolute) moment in time, e.g. `now()`, `Jan-1-2000`
+
+- easy-to-use converter functions: 
+    - date: `ymd`, `mdy`, `dmy`, ...
+    - time: `hm`, `hms`, ...
+    - date &amp; time: `ymd_hms`, `mdy_hm`, ...
+
+- order of letters determines how strings are parsed
+
+- separators are automatically determined, then assumed to be the same
+
+Example:
+
+```r
+mdy("03-01-2018")
+```
+
+```
+## [1] "2018-03-01"
+```
+
+---
+class: inverse
+# Your Turn 
+
+- Create date objects for today's date by typing the date in text format and converting it with one of the `lubridate` converter functions. 
+
+- Try different formats of writing the date and compare the end results.
+
+
+---
+
+# Accessor functions
+
+
+- accessor functions: `year`, `month`, `week`, `wday`, `mday`, `yday`, `hour`, `minute`, ...
+
+- accessor functions can also be used for setting elements of date and time, e.g. `hour(x) &lt;- 12`
+
+Examples:
+
+
+```r
+month(now())
+```
+
+```
+## [1] 11
+```
+
+```r
+wday(now(), label = TRUE)
+```
+
+```
+## [1] Mon
+## Levels: Sun &lt; Mon &lt; Tue &lt; Wed &lt; Thu &lt; Fri &lt; Sat
+```
+
+---
+
+# Intervals and Durations
+
+- Intervals have a *start* and an *end* date/time: absolute difference
+
+- Durations are potentially of relative length (months, leap year, leap second, ...)
+
+
+```r
+end_date &lt;- now()
+# span is interval, years(1) is duration
+span &lt;- end_date - years(1)
+span
+```
+
+```
+## [1] "2017-11-05 17:20:52 CST"
+```
+
+```r
+end_date - days(10)
+```
+
+```
+## [1] "2018-10-26 17:20:52 CDT"
+```
+
+---
+
+# Example: Movies
+
+
+```r
+library(classdata)
+summary(box$Date) # date variable: allows date calculus
+```
+
+```
+##         Min.      1st Qu.       Median         Mean      3rd Qu. 
+## "2017-01-06" "2017-05-26" "2017-09-22" "2017-09-21" "2018-01-26" 
+##         Max. 
+## "2018-05-25"
+```
+
+
+---
+
+# Example: Movies (cont'd)
+
+
+```r
+library(tidyverse)
+
+box %&gt;% ggplot(aes(x = Date)) + geom_histogram(binwidth=7)
+```
+
+![](04_lubridate_files/figure-html/unnamed-chunk-5-1.png)&lt;!-- --&gt;
+
+---
+
+# Example: Movies (cont'd)
+
+Is there a seasonal effect in the number of movies in the box office?
+
+
+```r
+library(lubridate)
+
+box %&gt;% ggplot(aes(x = month(Date, label=TRUE))) + geom_bar()
+```
+
+![](04_lubridate_files/figure-html/unnamed-chunk-6-1.png)&lt;!-- --&gt;
+
+---
+class: inverse
+# Your Turn (10 min)
+
+- inspect the `budget` data set from the `classdata` package,
+
+- make sure the variable `Release Date` is a date format,
+
+- plot a histogram of the variable.
+
+- merge (`join`) budget and box office data (by movie name) 
+
+- is the time between the release of a movie and the date is equal to the number of weeks in theaters?
+    </textarea>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "github",
+"highlightLines": true,
+"countIncrementalSlides": false
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function() {
+  var d = document, s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})();</script>
+
+<script>
+(function() {
+  var i, text, code, codes = document.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+})();
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://cdn.bootcss.com/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>
