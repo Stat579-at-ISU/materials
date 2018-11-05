@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Layers of plots</title>
+    <meta charset="utf-8">
+    <meta name="author" content="Heike Hofmann" />
+    <meta name="date" content="2018-11-05" />
+    <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
+    <link href="libs/remark-css-0.0.1/default-fonts.css" rel="stylesheet" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+# Layers of plots
+### Heike Hofmann
+### 2018-11-05
+
+---
+
+class: middle, inverse, center
+# Layers in `ggplot2`
+
+
+
+---
+
+# Outline
+
+- grammar of graphics, again
+
+- layer specifications
+
+- 
+
+---
+
+# Grammar of Graphics
+
+A graphical representation (plot) consists of:
+
+1. **mappings** (`aes`):  data variables are mapped to graphical elements
+
+2. **layers**:  geometric elements (`geoms`, such as points, lines, rectangles, text, ...) and statistical transformations (`stats`, are identity, counts, bins, ...)
+
+3. **scales**: map values in the data space to values in an aesthetic space (e.g. color, size, shape, but also position)
+
+4. **coordinate system** (`coord`): normally Cartesian, but pie charts use e.g. polar coordinates
+
+5. **facetting**: for small multiples (subsets) and their arrangement
+
+6. **theme**: fine-tune display items, such as font and its size, color of background, margins, ...
+
+
+---
+
+# Previous example
+
+
+```r
+data(nasa, package="GGally")
+nasa %&gt;% filter(id=="1-1") %&gt;%
+  ggplot(aes(x = time, y= temperature)) + geom_point()
+```
+
+![](03_layers_files/figure-html/unnamed-chunk-1-1.png)&lt;!-- --&gt;
+
+---
+
+# Adding a line
+
+
+```r
+nasa %&gt;% filter(id=="1-1") %&gt;%
+  ggplot(aes(x = time, y= temperature)) + geom_point() +
+  geom_smooth(method="lm")
+```
+
+![](03_layers_files/figure-html/unnamed-chunk-2-1.png)&lt;!-- --&gt;
+
+---
+
+# Adding an additional text
+
+
+```r
+nasa %&gt;% filter(id=="1-1") %&gt;%
+  ggplot(aes(x = time, y= temperature)) + geom_point() +
+  geom_smooth(method="lm") +
+  geom_text(aes(label=id), colour="darkorange", 
+            data=nasa %&gt;% filter(id=="1-1", time==50))
+```
+
+![](03_layers_files/figure-html/unnamed-chunk-3-1.png)&lt;!-- --&gt;
+
+---
+
+# Layers
+
+each layer has several parts, the two most important are:
+
+- mapping: using the `aes()` function, we specify mappings between variables and aesthetics of the chart
+
+- `data`: the dataset used in the layer 
+
+`ggplot` is the layer that sets the defaults, &lt;br&gt;
+
+`geom_XXX` creates a layer: for each aspect it either uses the default or has to specify its own
+
+---
+
+# Default versus Layer Specification
+
+
+```r
+nasa %&gt;% filter(id=="1-1") %&gt;%
+  ggplot(aes(x = time, y= temperature)) + geom_point() +
+  geom_smooth(method="lm") +
+  geom_text(aes(label=id, colour=id),  
+            data=nasa %&gt;% filter(id=="1-1", time==50))
+```
+
+![](03_layers_files/figure-html/unnamed-chunk-4-1.png)&lt;!-- --&gt;
+
+---
+
+
+
+```r
+nasa %&gt;% filter(id=="1-1") %&gt;%
+  ggplot(aes(x = time, y= temperature, colour=id)) + geom_point() +
+  geom_smooth(method="lm") +
+  geom_text(aes(label=id), 
+            data=nasa %&gt;% filter(id=="1-1", time==50))
+```
+
+![](03_layers_files/figure-html/unnamed-chunk-5-1.png)&lt;!-- --&gt;
+
+
+---
+class: inverse
+# Your Turn (6 mins) 
+
+- Load the `box` data from the package `classdata`,
+
+- Plot a time line for each movie: plot total gross by week that the movie is out. 
+
+- Label the three movies with the highest total gross.
+
+- Color the label of these three movies with a color of your choice.
+    </textarea>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "github",
+"highlightLines": true,
+"countIncrementalSlides": false
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function() {
+  var d = document, s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})();</script>
+
+<script>
+(function() {
+  var i, text, code, codes = document.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+})();
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://cdn.bootcss.com/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>
