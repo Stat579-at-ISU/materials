@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Drawing Maps</title>
+    <meta charset="utf-8">
+    <meta name="author" content="Heike Hofmann" />
+    <meta name="date" content="2018-11-05" />
+    <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
+    <link href="libs/remark-css-0.0.1/default-fonts.css" rel="stylesheet" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+# Drawing Maps
+### Heike Hofmann
+### 2018-11-05
+
+---
+
+class: middle, inverse, center
+# Drawing maps
+
+
+
+---
+
+# Outline
+
+- what is a map
+
+- maps and map data in ggplot
+
+- drawing choropleth maps
+
+---
+
+# Maps are ...
+
+
+- ... points in latitude and longitude
+
+![](02_maps_files/figure-html/unnamed-chunk-1-1.png)&lt;!-- --&gt;
+
+
+- that are connected in the 'right' order (determined by order in the data frame)
+
+![](02_maps_files/figure-html/unnamed-chunk-2-1.png)&lt;!-- --&gt;
+
+---
+
+# Maps ...
+
+.pull-left[ 
+- use  `group` parameter to distinguish between different regions
+
+![](02_maps_files/figure-html/unnamed-chunk-3-1.png)&lt;!-- --&gt;
+]
+
+.pull-right[ 
+- are usually filled in
+
+![](02_maps_files/figure-html/unnamed-chunk-4-1.png)&lt;!-- --&gt;
+]
+---
+
+# map data
+
+
+```r
+states &lt;- map_data("state")
+head(states)
+```
+
+```
+##        long      lat group order  region subregion
+## 1 -87.46201 30.38968     1     1 alabama      &lt;NA&gt;
+## 2 -87.48493 30.37249     1     2 alabama      &lt;NA&gt;
+## 3 -87.52503 30.37249     1     3 alabama      &lt;NA&gt;
+## 4 -87.53076 30.33239     1     4 alabama      &lt;NA&gt;
+## 5 -87.57087 30.32665     1     5 alabama      &lt;NA&gt;
+## 6 -87.58806 30.32665     1     6 alabama      &lt;NA&gt;
+```
+
+---
+
+# Maps in code (1)
+
+
+
+```r
+states %&gt;% ggplot(aes(x = long, y = lat)) + geom_point()
+```
+
+![](02_maps_files/figure-html/unnamed-chunk-6-1.png)&lt;!-- --&gt;
+
+---
+
+# Maps in code (2)
+
+
+
+```r
+states %&gt;% ggplot(aes(x = long, y = lat)) + 
+  geom_path(aes(group = group))
+```
+
+![](02_maps_files/figure-html/unnamed-chunk-7-1.png)&lt;!-- --&gt;
+
+---
+
+# Maps in code (3)
+
+
+```r
+states %&gt;% ggplot(aes(x = long, y = lat)) + 
+  geom_polygon(aes(group = group))
+```
+
+![](02_maps_files/figure-html/unnamed-chunk-8-1.png)&lt;!-- --&gt;
+
+---
+
+# Maps in code (4)
+
+
+```r
+states %&gt;% ggplot(aes(x = long, y = lat)) + 
+  geom_polygon(aes(group = group, fill=lat))
+```
+
+![](02_maps_files/figure-html/unnamed-chunk-9-1.png)&lt;!-- --&gt;
+
+
+---
+class: inverse
+# Your Turn (6 mins)
+
+
+- Use ggplot2 and pull out map data for all US counties: 
+
+```
+counties &lt;- map_data("county")
+```
+
+- Draw a map of counties (polygons and path geom)
+
+- Colour all counties called "story"
+
+- Advanced: What county names are used often?
+
+---
+
+# Choropleth maps
+
+- choropleth maps are thematic maps: areas are shaded in proportion to the values of a variable
+
+- join datasets: content and map
+
+---
+
+# Join content and map 
+
+Content:
+
+```r
+data(fbi, package="classdata")
+fbi14 &lt;- fbi %&gt;% filter(Year == 2014)
+head(fbi14)
+```
+
+```
+##        State Abb Year Population                                 Type
+## 1    Alabama  AL 2014    4849377 Murder.and.nonnegligent.Manslaughter
+## 2     Alaska  AK 2014     736732 Murder.and.nonnegligent.Manslaughter
+## 3    Arizona  AZ 2014    6731484 Murder.and.nonnegligent.Manslaughter
+## 4   Arkansas  AR 2014    2966369 Murder.and.nonnegligent.Manslaughter
+## 5 California  CA 2014   38802500 Murder.and.nonnegligent.Manslaughter
+## 6   Colorado  CO 2014    5355866 Murder.and.nonnegligent.Manslaughter
+##   Count Violent.crime
+## 1   276          TRUE
+## 2    41          TRUE
+## 3   319          TRUE
+## 4   165          TRUE
+## 5  1699          TRUE
+## 6   151          TRUE
+```
+
+---
+
+# Join content and map
+
+Map:
+
+```r
+head(states)
+```
+
+```
+##        long      lat group order  region subregion
+## 1 -87.46201 30.38968     1     1 alabama      &lt;NA&gt;
+## 2 -87.48493 30.37249     1     2 alabama      &lt;NA&gt;
+## 3 -87.52503 30.37249     1     3 alabama      &lt;NA&gt;
+## 4 -87.53076 30.33239     1     4 alabama      &lt;NA&gt;
+## 5 -87.57087 30.32665     1     5 alabama      &lt;NA&gt;
+## 6 -87.58806 30.32665     1     6 alabama      &lt;NA&gt;
+```
+
+---
+
+# Prepare for join
+
+- combine fbi and states by state name, but we need to make the spelling the same
+
+- for simplification, introduce new variable with all lower case letters
+
+- generally, content data is more important, but we will see missing states on the map: `anti_join`
+
+
+```r
+fbi14$region &lt;- tolower(fbi14$State)
+
+nomatch1 &lt;- fbi14 %&gt;% anti_join(states, by="region")
+# States for which we do not have map data
+unique(nomatch1$State)
+```
+
+```
+## [1] "Alaska"      "Hawaii"      "Puerto Rico"
+```
+
+```r
+nomatch2 &lt;- states %&gt;% anti_join(fbi14, by="region")
+# States for which we do not have crime data
+unique(nomatch2$State)
+```
+
+```
+## NULL
+```
+
+---
+
+# Join and Map
+
+
+```r
+fbi.map &lt;- fbi14 %&gt;% left_join(states, by="region")
+fbi.map %&gt;% filter(Type=="Burglary") %&gt;% 
+  ggplot(aes(x = long, y = lat, fill=Count/Population*60000)) +
+  geom_polygon(aes(group=group))
+```
+
+![](02_maps_files/figure-html/unnamed-chunk-13-1.png)&lt;!-- --&gt;
+
+---
+class: inverse
+# Your Turn  
+
+
+- Draw a choropleth map of the rate of motor vehicle thefts in 2012 across the US.
+
+- `scale_fill_gradient2` allows you to set a color scheme with two main colors. Read up on it and change the scheme in the first choropleth map.
+
+---
+
+# Geographic data in layers
+
+- For data collected with GPS coordinates we can use maps as background layers
+
+- e.g. campaign expenditures
+
+- In that situation, we do not need to join the map information and the content data, but use layers with separate data sets of the form
+
+```
+map %&gt;% ggplot(aes(x = long, y = lat)) + 
+  geom_polygon(aes(group = group)) +
+  geom_point(aes(x=longitude, y = latitude), data = content) 
+```
+
+---
+
+# FARS data
+
+- US Department of transportation is keeping a record of every accident that results in a fatality in the FARS Data base (fatal accident report system, http://www.nhtsa.gov/FARS)
+
+- FARS consists of 20+ tables consisting of various aspects of each accident
+Documentation at
+
+- https://www-fars.nhtsa.dot.gov/Main/index.aspx
+
+- three of the main tables are `accident`, `person`, and `vehicle`
+
+---
+
+# Data 
+
+- Data of all accidents are available at:
+
+
+```r
+acc &lt;- read.csv("https://raw.githubusercontent.com/DS202-at-ISU/labs/master/data/fars2016/accident.csv", stringsAsFactors = FALSE)
+names(acc)
+```
+
+```
+##  [1] "STATE"      "ST_CASE"    "VE_TOTAL"   "VE_FORMS"   "PVH_INVL"  
+##  [6] "PEDS"       "PERNOTMVIT" "PERMVIT"    "PERSONS"    "COUNTY"    
+## [11] "CITY"       "DAY"        "MONTH"      "YEAR"       "DAY_WEEK"  
+## [16] "HOUR"       "MINUTE"     "NHS"        "RUR_URB"    "FUNC_SYS"  
+## [21] "RD_OWNER"   "ROUTE"      "TWAY_ID"    "TWAY_ID2"   "MILEPT"    
+## [26] "LATITUDE"   "LONGITUD"   "SP_JUR"     "HARM_EV"    "MAN_COLL"  
+## [31] "RELJCT1"    "RELJCT2"    "TYP_INT"    "WRK_ZONE"   "REL_ROAD"  
+## [36] "LGT_COND"   "WEATHER1"   "WEATHER2"   "WEATHER"    "SCH_BUS"   
+## [41] "RAIL"       "NOT_HOUR"   "NOT_MIN"    "ARR_HOUR"   "ARR_MIN"   
+## [46] "HOSP_HR"    "HOSP_MN"    "CF1"        "CF2"        "CF3"       
+## [51] "FATALS"     "DRUNK_DR"
+```
+
+---
+class: inverse
+# Your Turn  
+
+
+- Use the accident data to plot the geographic location of all accidents in the US in 2016.
+
+- Plot accidents on a map of the US (use the map of the US as first layer)
+
+- Why would it be tricky to plot a choropleth map of the number of accidents by state?
+
+---
+class: inverse
+# Your Turn  
+
+
+- The numbers for each state (`STATE`) are so-called fips codes. 
+
+- Sketch out the steps necessary to draw a choropleth map of the rate of fatal accidents by state.
+    </textarea>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "github",
+"highlightLines": true,
+"countIncrementalSlides": false
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function() {
+  var d = document, s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})();</script>
+
+<script>
+(function() {
+  var i, text, code, codes = document.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+})();
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://cdn.bootcss.com/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>
