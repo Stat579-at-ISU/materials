@@ -1,0 +1,131 @@
+---
+title: "Functions in R"
+author: "Heike Hofmann"
+date: "`r Sys.Date()`"
+output:
+  xaringan::moon_reader:
+    lib_dir: libs
+    nature:
+      highlightStyle: github
+      highlightLines: true
+      countIncrementalSlides: false
+---
+class: middle, inverse, center
+# Function writing
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+library(lubridate)
+```
+
+---
+
+# Functions in R
+
+- Have been using functions a lot, now we want to write them ourselves!
+
+- Idea: avoid repetitive coding (errors will creep in)
+
+- Instead: extract common core, wrap it in a function, make it reusable
+
+
+---
+
+# Structure of functions
+
+- Name
+
+- Input arguments
+
+    - names, 
+
+    - default values
+
+- Body
+
+- Output values
+
+---
+
+# A first function
+
+```{r}
+mymean <- function(x) {
+	return(sum(x)/length(x))
+}
+```
+
+```{r}
+mymean(1:15)
+mymean(c(1:15, NA))
+```
+
+---
+
+# A first function (2)
+
+```{r}
+mymean <- function(x, na.rm=F) {
+	if (na.rm) x <- na.omit(x)
+	
+	return(sum(x)/length(x))
+}
+
+mymean(1:15)
+mymean(c(1:15, NA), na.rm=T)
+```
+
+
+---
+class: inverse
+# Your Turn 
+
+The-Numbers website gives an overview of weekly boxoffice gross at https://www.the-numbers.com/weekend-box-office-chart
+
+The package `rvest` allows us to download data from a website with the url `url` using the following lines of code.
+
+```
+library(rvest)
+doc <- read_html(url)
+tables <- doc %>% html_table()
+
+head(tables[[2]])
+```
+
+Write a function that uses the url as input argument, scrapes the data, cleans it up, and returns the cleaned data.
+
+---
+
+# Your turn - solution
+
+```{r warning = FALSE, message = FALSE}
+url <- "https://www.the-numbers.com/weekend-box-office-chart"
+
+boxoffice_scraper <- function(url) {
+  require(rvest)
+  require(readr)
+  html <- read_html(url)
+  tables <- html %>% html_table(fill=TRUE)
+  box <- tables[[2]]
+  names(box)[1:2] <- c("Rank", "Rank.Last.Week")
+  box <- box %>% mutate(
+    Gross = parse_number(Gross),
+    Thtrs. = parse_number(Thtrs.)
+  )
+  box  
+}
+```
+
+---
+
+# Now try it out
+
+```{r, eval=FALSE, cache =TRUE, message=FALSE}
+box <- boxoffice_scraper("https://www.the-numbers.com/weekend-box-office-chart")
+head(box)
+```
+
+---
+class: inverse, center, middle
+# Always scrape data responsibly!
