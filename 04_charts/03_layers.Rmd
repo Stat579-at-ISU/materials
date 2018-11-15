@@ -65,17 +65,17 @@ nasa %>% filter(id=="1-1") %>%
 ```{r, fig.width=9.5, fig.height = 3}
 nasa %>% filter(id=="1-1") %>%
   ggplot(aes(x = time, y= temperature)) + geom_point() +
-  geom_smooth(method="lm")
+  geom_line()
 ```
 
 ---
 
-# Adding an additional text
+# Adding additional text
 
 ```{r, fig.width=9.5, fig.height = 3}
 nasa %>% filter(id=="1-1") %>%
   ggplot(aes(x = time, y= temperature)) + geom_point() +
-  geom_smooth(method="lm") +
+  geom_line() +
   geom_text(aes(label=id), colour="darkorange", 
             data=nasa %>% filter(id=="1-1", time==50))
 ```
@@ -101,7 +101,7 @@ each layer has several parts, the two most important are:
 ```{r, fig.width=9.5, fig.height = 3, message = FALSE}
 nasa %>% filter(id=="1-1") %>%
   ggplot(aes(x = time, y= temperature)) + geom_point() +
-  geom_smooth(method="lm") +
+  geom_line() +
   geom_text(aes(label=id, colour=id),  
             data=nasa %>% filter(id=="1-1", time==50))
 ```
@@ -112,7 +112,7 @@ nasa %>% filter(id=="1-1") %>%
 ```{r, fig.width=9.5, fig.height = 3, message = FALSE}
 nasa %>% filter(id=="1-1") %>%
   ggplot(aes(x = time, y= temperature, colour=id)) + geom_point() +
-  geom_smooth(method="lm") +
+  geom_line() +
   geom_text(aes(label=id), 
             data=nasa %>% filter(id=="1-1", time==50))
 ```
@@ -122,9 +122,9 @@ nasa %>% filter(id=="1-1") %>%
 class: inverse
 # Your Turn (6 mins) 
 
-- Load the `box` data from the package `classdata`,
+- Load the `mojo` data from the package `classdata`,
 
-- Plot a time line for each movie: plot total gross by week that the movie is out. 
+- Plot a time line for each movie: plot total gross by week that the movie is out (restrict the x-axis to a maximum of 30 weeks). 
 
 - Label the three movies with the highest total gross.
 

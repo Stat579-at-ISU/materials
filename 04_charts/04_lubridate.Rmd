@@ -1,5 +1,5 @@
 ---
-title: "Layers of plots"
+title: "Dates and times"
 author: "Heike Hofmann"
 date: "`r Sys.Date()`"
 output:
@@ -47,7 +47,7 @@ library(lubridate)
 
 Example:
 ```{r message=FALSE}
-mdy("03-01-2018")
+mdy("11-15-2018")
 ```
 
 ---
@@ -131,11 +131,9 @@ class: inverse
 
 - make sure the variable `Release Date` is a date format,
 
-- plot a histogram of the variable.
+- plot a histogram of the variable. Set the bin width appropriately.
 
-- merge (`join`) budget and box office data (by movie name) 
-
-- is the time between the release of a movie and the date is equal to the number of weeks in theaters?
+- is there a monthly trend apparent for movies that were released since 2000? draw barcharts of month, facet by year. What about day of the week?
 
 
 

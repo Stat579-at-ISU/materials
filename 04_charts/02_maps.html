@@ -4,7 +4,7 @@
     <title>Drawing Maps</title>
     <meta charset="utf-8">
     <meta name="author" content="Heike Hofmann" />
-    <meta name="date" content="2018-11-05" />
+    <meta name="date" content="2018-11-14" />
     <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
     <link href="libs/remark-css-0.0.1/default-fonts.css" rel="stylesheet" />
   </head>
@@ -14,7 +14,7 @@ class: center, middle, inverse, title-slide
 
 # Drawing Maps
 ### Heike Hofmann
-### 2018-11-05
+### 2018-11-14
 
 ---
 
@@ -260,82 +260,7 @@ class: inverse
 
 - Draw a choropleth map of the rate of motor vehicle thefts in 2012 across the US.
 
-- `scale_fill_gradient2` allows you to set a color scheme with two main colors. Read up on it and change the scheme in the first choropleth map.
-
----
-
-# Geographic data in layers
-
-- For data collected with GPS coordinates we can use maps as background layers
-
-- e.g. campaign expenditures
-
-- In that situation, we do not need to join the map information and the content data, but use layers with separate data sets of the form
-
-```
-map %&gt;% ggplot(aes(x = long, y = lat)) + 
-  geom_polygon(aes(group = group)) +
-  geom_point(aes(x=longitude, y = latitude), data = content) 
-```
-
----
-
-# FARS data
-
-- US Department of transportation is keeping a record of every accident that results in a fatality in the FARS Data base (fatal accident report system, http://www.nhtsa.gov/FARS)
-
-- FARS consists of 20+ tables consisting of various aspects of each accident
-Documentation at
-
-- https://www-fars.nhtsa.dot.gov/Main/index.aspx
-
-- three of the main tables are `accident`, `person`, and `vehicle`
-
----
-
-# Data 
-
-- Data of all accidents are available at:
-
-
-```r
-acc &lt;- read.csv("https://raw.githubusercontent.com/DS202-at-ISU/labs/master/data/fars2016/accident.csv", stringsAsFactors = FALSE)
-names(acc)
-```
-
-```
-##  [1] "STATE"      "ST_CASE"    "VE_TOTAL"   "VE_FORMS"   "PVH_INVL"  
-##  [6] "PEDS"       "PERNOTMVIT" "PERMVIT"    "PERSONS"    "COUNTY"    
-## [11] "CITY"       "DAY"        "MONTH"      "YEAR"       "DAY_WEEK"  
-## [16] "HOUR"       "MINUTE"     "NHS"        "RUR_URB"    "FUNC_SYS"  
-## [21] "RD_OWNER"   "ROUTE"      "TWAY_ID"    "TWAY_ID2"   "MILEPT"    
-## [26] "LATITUDE"   "LONGITUD"   "SP_JUR"     "HARM_EV"    "MAN_COLL"  
-## [31] "RELJCT1"    "RELJCT2"    "TYP_INT"    "WRK_ZONE"   "REL_ROAD"  
-## [36] "LGT_COND"   "WEATHER1"   "WEATHER2"   "WEATHER"    "SCH_BUS"   
-## [41] "RAIL"       "NOT_HOUR"   "NOT_MIN"    "ARR_HOUR"   "ARR_MIN"   
-## [46] "HOSP_HR"    "HOSP_MN"    "CF1"        "CF2"        "CF3"       
-## [51] "FATALS"     "DRUNK_DR"
-```
-
----
-class: inverse
-# Your Turn  
-
-
-- Use the accident data to plot the geographic location of all accidents in the US in 2016.
-
-- Plot accidents on a map of the US (use the map of the US as first layer)
-
-- Why would it be tricky to plot a choropleth map of the number of accidents by state?
-
----
-class: inverse
-# Your Turn  
-
-
-- The numbers for each state (`STATE`) are so-called fips codes. 
-
-- Sketch out the steps necessary to draw a choropleth map of the rate of fatal accidents by state.
+- `scale_fill_gradient2` allows you to set a color scheme with two main colors. Read up on it and change the scheme in the first choropleth map. Make the color change at the median rate of motor vehicle thefts
     </textarea>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
 <script>var slideshow = remark.create({

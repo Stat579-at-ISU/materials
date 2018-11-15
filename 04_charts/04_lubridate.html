@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Layers of plots</title>
+    <title>Dates and times</title>
     <meta charset="utf-8">
     <meta name="author" content="Heike Hofmann" />
-    <meta name="date" content="2018-11-05" />
+    <meta name="date" content="2018-11-14" />
     <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
     <link href="libs/remark-css-0.0.1/default-fonts.css" rel="stylesheet" />
   </head>
@@ -12,9 +12,9 @@
     <textarea id="source">
 class: center, middle, inverse, title-slide
 
-# Layers of plots
+# Dates and times
 ### Heike Hofmann
-### 2018-11-05
+### 2018-11-14
 
 ---
 
@@ -52,11 +52,11 @@ class: middle, inverse, center
 Example:
 
 ```r
-mdy("03-01-2018")
+mdy("11-15-2018")
 ```
 
 ```
-## [1] "2018-03-01"
+## [1] "2018-11-15"
 ```
 
 ---
@@ -93,7 +93,7 @@ wday(now(), label = TRUE)
 ```
 
 ```
-## [1] Mon
+## [1] Wed
 ## Levels: Sun &lt; Mon &lt; Tue &lt; Wed &lt; Thu &lt; Fri &lt; Sat
 ```
 
@@ -114,7 +114,7 @@ span
 ```
 
 ```
-## [1] "2017-11-05 17:20:52 CST"
+## [1] "2017-11-14 19:23:26 CST"
 ```
 
 ```r
@@ -122,7 +122,7 @@ end_date - days(10)
 ```
 
 ```
-## [1] "2018-10-26 17:20:52 CDT"
+## [1] "2018-11-04 19:23:26 CST"
 ```
 
 ---
@@ -179,11 +179,9 @@ class: inverse
 
 - make sure the variable `Release Date` is a date format,
 
-- plot a histogram of the variable.
+- plot a histogram of the variable. Set the bin width appropriately.
 
-- merge (`join`) budget and box office data (by movie name) 
-
-- is the time between the release of a movie and the date is equal to the number of weeks in theaters?
+- is there a monthly trend apparent for movies that were released since 2000? draw barcharts of month, facet by year. What about day of the week?
     </textarea>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
 <script>var slideshow = remark.create({

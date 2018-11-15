@@ -4,7 +4,7 @@
     <title>Layers of plots</title>
     <meta charset="utf-8">
     <meta name="author" content="Heike Hofmann" />
-    <meta name="date" content="2018-11-05" />
+    <meta name="date" content="2018-11-14" />
     <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
     <link href="libs/remark-css-0.0.1/default-fonts.css" rel="stylesheet" />
   </head>
@@ -14,7 +14,7 @@ class: center, middle, inverse, title-slide
 
 # Layers of plots
 ### Heike Hofmann
-### 2018-11-05
+### 2018-11-14
 
 ---
 
@@ -73,20 +73,20 @@ nasa %&gt;% filter(id=="1-1") %&gt;%
 ```r
 nasa %&gt;% filter(id=="1-1") %&gt;%
   ggplot(aes(x = time, y= temperature)) + geom_point() +
-  geom_smooth(method="lm")
+  geom_line()
 ```
 
 ![](03_layers_files/figure-html/unnamed-chunk-2-1.png)&lt;!-- --&gt;
 
 ---
 
-# Adding an additional text
+# Adding additional text
 
 
 ```r
 nasa %&gt;% filter(id=="1-1") %&gt;%
   ggplot(aes(x = time, y= temperature)) + geom_point() +
-  geom_smooth(method="lm") +
+  geom_line() +
   geom_text(aes(label=id), colour="darkorange", 
             data=nasa %&gt;% filter(id=="1-1", time==50))
 ```
@@ -115,7 +115,7 @@ each layer has several parts, the two most important are:
 ```r
 nasa %&gt;% filter(id=="1-1") %&gt;%
   ggplot(aes(x = time, y= temperature)) + geom_point() +
-  geom_smooth(method="lm") +
+  geom_line() +
   geom_text(aes(label=id, colour=id),  
             data=nasa %&gt;% filter(id=="1-1", time==50))
 ```
@@ -129,7 +129,7 @@ nasa %&gt;% filter(id=="1-1") %&gt;%
 ```r
 nasa %&gt;% filter(id=="1-1") %&gt;%
   ggplot(aes(x = time, y= temperature, colour=id)) + geom_point() +
-  geom_smooth(method="lm") +
+  geom_line() +
   geom_text(aes(label=id), 
             data=nasa %&gt;% filter(id=="1-1", time==50))
 ```
@@ -141,9 +141,9 @@ nasa %&gt;% filter(id=="1-1") %&gt;%
 class: inverse
 # Your Turn (6 mins) 
 
-- Load the `box` data from the package `classdata`,
+- Load the `mojo` data from the package `classdata`,
 
-- Plot a time line for each movie: plot total gross by week that the movie is out. 
+- Plot a time line for each movie: plot total gross by week that the movie is out (restrict the x-axis to a maximum of 30 weeks). 
 
 - Label the three movies with the highest total gross.
 
