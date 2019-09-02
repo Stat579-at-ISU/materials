@@ -22,7 +22,7 @@ library(tidyverse)
 
 ## ... this is what wufoo tells us
 
-<img src="images/topics.png" width=600>
+<img src="images/topics-2019.png" width=600>
 
 ... there's nine more of these charts ... which topic is the best?
 
@@ -33,7 +33,7 @@ library(tidyverse)
 ... this is what the raw data looks like ...
 
 ```{r, echo=FALSE}
-topics <- read.csv("data/topics579.csv")
+topics <- read.csv("data/topics-2019.csv")
 topics <- topics %>% select(-Entry.Id)
 head(topics)
 ```
@@ -121,6 +121,7 @@ tlong %>%
   theme(axis.text.y = element_blank()) +
   scale_y_reverse() +
   geom_text(aes(x = topic, label = topic), 
+            data = tlong %>% select(topic) %>% unique(), 
             y = -nrow(topics)+1, colour="white", hjust=0)
 ```
 
@@ -140,13 +141,18 @@ tlong <- tlong %>%
   )
 tlong %>% 
   ggplot(aes(x = topic)) + geom_bar(aes(fill=rating)) +
-  theme(legend.position="bottom") +
   scale_fill_manual(values = cols[c(8,7,6,1)]) +
   coord_flip() + 
-  theme(axis.text.y = element_blank()) +
   scale_y_reverse() +
   geom_text(aes(x = topic, label = topic), 
-            y = -nrow(topics)+1, colour="white", hjust=0)
+            data = tlong %>% select(topic) %>% unique(),
+            y = -nrow(topics)+1, colour="white", hjust=0) +
+  ggtitle("Topics in order of popularity") +
+  xlab("") +
+  theme_bw() +
+  theme(legend.position="bottom") +
+  theme(axis.ticks.y = element_blank(), 
+        axis.text.y = element_blank())
 ```
 
 ---
@@ -154,4 +160,8 @@ tlong %>%
 ## Additional topic suggestions
 
 
-Range of other suggestions: human behavior, sustainability, biodiversity,  genomic data, transportation, stock market, forensic data, test score data
+Range of other suggestions: 
+
+Agricultural studies (overwhelming support from section B `r emo::ji("smile")`), everything else mentioned once ... great for final projects!
+
+video games, social good, genomics, engineering or physics data, demographics, car crashes, behavioral data
