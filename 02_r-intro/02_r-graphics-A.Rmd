@@ -1,0 +1,209 @@
+---
+title: "Stat 579: Graphics with ggplot2"
+author: "Heike Hofmann"
+date: "`r Sys.Date()`"
+output:
+  xaringan::moon_reader:
+    lib_dir: libs
+    nature:
+      highlightStyle: github
+      highlightLines: true
+      countIncrementalSlides: false
+---
+
+# Outline
+
+- Quick overview of a couple of useful R functions (building vocabulary)
+
+- Intro to `ggplot2`
+
+---
+
+# Installing packages
+
+Different ways to install packages, depending on where the package is published:
+
+- package on CRAN (official archive):
+
+```{r eval = FALSE}
+install.packages("pkgname")
+install.packages(c("package1", "package2", "package3"))
+```
+
+- package on github (less official, usually package under development)
+
+```{r eval = FALSE}
+devtools::install_github("github_handle/pkgname")
+```
+
+---
+class: inverse
+## Your Turn (5 min)
+
+1. Install the package `classdata` from Dr Hofmann's github account (handle: `heike`)
+
+2. Activate the package in your session and inspect the object `fbi`
+
+3. What type of object is `fbi`? What are its dimensions? What is the time frame?
+
+---
+
+## Useful Object probing functions
+
+for object `x`, the following commands:
+
+- `x` return the object itself (not advisable for large objects)
+
+- `head(x)` and `tail(x)` return the first\last six rows of data
+
+- `summary(x)` provides a type-dependent summary of the object and its pieces (five-number summary for numeric variables, frequency break down for categorical)
+
+- `str(x)` stands for *str*ucture, shows type of `x` and its parts
+
+- `dim(x)` gives dimensionality of `x` (rows, columns)
+
+
+---
+class: inverse, middle, center
+# Why `ggplot2`?
+
+---
+
+## Why `ggplot2`?
+
+- Wildly popular package for statistical graphics: well over 25k downloads per day
+
+```{r, echo=FALSE, cache = TRUE, fig.height = 5}
+library(dlstats)
+library(ggplot2)
+
+dframe <- cran_stats("ggplot2")
+ggplot(data = dframe[-nrow(dframe),], aes(x = end, y = downloads/1000)) + geom_point() + geom_line() +
+  ylab("Number of monthly downloads (in thousands)") + xlab("Date") +
+  ggtitle("Number of monthly downloads of ggplot2")
+```
+
+---
+
+## `ggplot2`
+
+- Developed by Hadley Wickham (An ISU Alumni)
+
+- Designed to adhere to good graphical practices
+
+- Constructs plots using the concept of layers
+
+- Supports a wide variety plot types and extensions
+
+<br>
+
+- http://ggplot2.org/book/ or Hadley's book *ggplot2: Elegant Graphics for Data Analysis* for reference 
+
+---
+
+## Grammar of Graphics
+
+A graphical representation (plot) consists of:
+
+1. **mappings** (`aes`):  data variables are mapped to graphical elements
+
+2. **layers**:  geometric elements (`geoms`, such as points, lines, 
+rectangles, text, ...) and statistical transformations (`stats`, are identity, counts, bins, ...)
+
+3. **scales**: map values in the data space to values in an aesthetic space (e.g. color, size, shape, but also position)
+
+4. **coordinate system** (`coord`): normally Cartesian, but pie charts use e.g. polar coordinates
+
+5. **facetting**: for small multiples (subsets) and their arrangement
+
+6. **theme**: fine-tune display items, such as font and its size, color of background, margins, ...
+
+---
+
+## Scatterplots in `ggplot2`
+
+`aes` allows us to specify mappings; scatterplots need a mapping for `x` and a mapping for `y`:
+
+```
+data(fbiwide, package = "classdata")
+
+ggplot(data = fbiwide, aes(x = Burglary, y = Murder)) +
+  geom_point()
+```  
+
+```
+ggplot(data = fbiwide, aes(x = log(Burglary), y = log(Murder))) +
+  geom_point()
+```  
+
+```
+ggplot(data = fbiwide, aes(x = log(Burglary), 
+                           y = log(Motor.vehicle.theft))) +
+  geom_point()
+```  
+
+---
+
+## The pipe operator `%>%`
+
+
+`f(x) %>% g(y)` is equivalent to `g(f(x), y)`
+
+i.e. the output of one function is used as input to the next function. This function can be the identity
+
+Consequences:
+
+- `x %>% f(y)` is the same as `f(x, y)`
+
+- statements of the form `k(h(g(f(x, y), z), u), v, w)` become
+`x %>% f(y) %>% g(z) %>% h(u) %>% k(v, w)`
+
+- read `%>%` as "then do"
+
+---
+
+## Using the pipe `%>%`
+
+```
+ggplot(data = filter(fbi, Type=="Murder.and.nonnegligent.Manslaughter", 
+aes(x = Year, y = Count)) + geom_point()
+```
+
+becomes
+
+```
+fbi %>% 
+  filter(Type=="Murder.and.nonnegligent.Manslaughter") %>%
+  ggplot(aes(x = Year, y = Count)) + 
+    geom_point()
+```
+---
+
+## Aesthetics
+
+Can map other variables to size or colour
+
+```
+ggplot(aes(x = log(Burglary), y = log(Motor.vehicle.theft),
+           colour=State), data=fbiwide) + geom_point()
+
+ggplot(aes(x = log(Burglary), y = log(Motor.vehicle.theft),
+           colour=Year), data=fbiwide) + geom_point()
+```
+
+```
+ggplot(aes(x = log(Burglary), y = log(Motor.vehicle.theft),
+           size=Population), data=fbiwide) + geom_point()
+```
+
+other aesthetics: shape
+
+---
+class: inverse
+## Your turn
+
+
+- Work through each of the example plots
+
+- Try variations of the plots to find answers to (some of) your questions. 
+

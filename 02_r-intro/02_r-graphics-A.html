@@ -18,59 +18,60 @@ class: center, middle, inverse, title-slide
 
 ---
 
-class: inverse, middle, center
-# Looking at data
 
----
-class: inverse, middle, center
-## Questions for the fbi data
+# Outline
 
----
+- Quick overview of a couple of useful R functions (building vocabulary)
 
-## Plan for answers
-
-- Explore how one (or more) variables are distributed: *barchart or histogram*
-
-- Explore how two variables are related:  *scatterplot, boxplot, tile plot*
-
-- Explore how two variables are related, conditioned on other variables: *facetting, color &amp; other aesthetics*
-
+- Intro to `ggplot2`
 
 ---
 
-## Different version of the data
+# Installing packages
 
-For the exploration, we will use a different shape of the `fbi` data - a wide form:
+Different ways to install packages, depending on where the package is published:
+
+- package on CRAN (official archive):
 
 
 ```r
-library(classdata)
-str(fbiwide)
+install.packages("pkgname")
+install.packages(c("package1", "package2", "package3"))
 ```
 
-```
-## 'data.frame':	2907 obs. of  12 variables:
-##  $ State              : chr  "Alabama" "Alabama" "Alabama" "Alabama" ...
-##  $ Abb                : chr  "AL" "AL" "AL" "AL" ...
-##  $ Year               : int  1961 1962 1963 1964 1965 1966 1967 1968 1969 1970 ...
-##  $ Population         : int  3302000 3358000 3347000 3407000 3462000 3517000 3540000 3566000 3531000 3444165 ...
-##  $ Aggravated.assault : int  4255 3995 4755 5555 5162 6249 6495 6009 6415 7413 ...
-##  $ Burglary           : int  11205 11722 12614 15898 16398 18551 20227 22403 23559 26739 ...
-##  $ Larceny.theft      : int  18801 21306 22874 26713 28115 30583 31682 34508 36644 40779 ...
-##  $ Legacy.rape        : int  252 218 192 397 367 341 371 396 494 637 ...
-##  $ Motor.vehicle.theft: int  2535 2801 3033 3679 3702 4606 5170 6086 6045 7696 ...
-##  $ Murder             : int  427 316 340 316 395 384 415 421 485 404 ...
-##  $ Rape               : int  NA NA NA NA NA NA NA NA NA NA ...
-##  $ Robbery            : int  630 754 828 992 992 1124 1167 1462 1448 1731 ...
+- package on github (less official, usually package under development)
+
+
+```r
+devtools::install_github("github_handle/pkgname")
 ```
 
 ---
+class: inverse
+## Your Turn (5 min)
 
-## Scatterplots
+1. Install the package `classdata` from Dr Hofmann's github account (handle: `heike`)
 
-- need two continuous variables
+2. Activate the package in your session and inspect the object `fbi`
 
-- we'll be using the `ggplot2` framework for plotting
+3. What type of object is `fbi`? What are its dimensions? What is the time frame?
+
+---
+
+## Useful Object probing functions
+
+for object `x`, the following commands:
+
+- `x` return the object itself (not advisable for large objects)
+
+- `head(x)` and `tail(x)` return the first\last six rows of data
+
+- `summary(x)` provides a type-dependent summary of the object and its pieces (five-number summary for numeric variables, frequency break down for categorical)
+
+- `str(x)` stands for *str*ucture, shows type of `x` and its parts
+
+- `dim(x)` gives dimensionality of `x` (rows, columns)
+
 
 ---
 class: inverse, middle, center
@@ -78,9 +79,15 @@ class: inverse, middle, center
 
 ---
 
-## Why `ggplot2`
+## Why `ggplot2`?
 
-- Wildly popular package for statistical graphics: over 2.5 million downloads from CRAN in 2017 (several thousand times per day)
+- Wildly popular package for statistical graphics: well over 25k downloads per day
+
+![](02_r-graphics-A_files/figure-html/unnamed-chunk-3-1.png)&lt;!-- --&gt;
+
+---
+
+## `ggplot2`
 
 - Developed by Hadley Wickham (An ISU Alumni)
 
@@ -120,6 +127,8 @@ rectangles, text, ...) and statistical transformations (`stats`, are identity, c
 `aes` allows us to specify mappings; scatterplots need a mapping for `x` and a mapping for `y`:
 
 ```
+data(fbiwide, package = "classdata")
+
 ggplot(data = fbiwide, aes(x = Burglary, y = Murder)) +
   geom_point()
 ```  
@@ -137,55 +146,39 @@ ggplot(data = fbiwide, aes(x = log(Burglary),
 
 ---
 
-## Revision - Interpreting Scatterplots
-
-- Big patterns
-    - Form and direction
-    - Strength
-    
-- Small patterns
-
-- Deviations from the pattern
-    - Outliers
-    
----
-
-### **Form**
-
-Is the plot linear?  Is the plot curved?  Is there a distinct pattern in the plot? Are there multiple groups?
+## The pipe operator `%&gt;%`
 
 
-### **Strength**
+`f(x) %&gt;% g(y)` is equivalent to `g(f(x), y)`
 
-Does the plot follow the form very closely?  Or is there a lot of variation?   
+i.e. the output of one function is used as input to the next function. This function can be the identity
 
-### **Direction**
-Is the pattern increasing?  Is the plot decreasing?
+Consequences:
 
-*Positively:* Above (below) average in one variable tends to be associated with above (below) average in another variable.
+- `x %&gt;% f(y)` is the same as `f(x, y)`
 
-*Negatively:* Opposite pattern.
+- statements of the form `k(h(g(f(x, y), z), u), v, w)` become
+`x %&gt;% f(y) %&gt;% g(z) %&gt;% h(u) %&gt;% k(v, w)`
+
+- read `%&gt;%` as "then do"
 
 ---
 
-&lt;img class="cover" src="images/positive.png" alt="" width=500&gt;
+## Using the pipe `%&gt;%`
 
-&gt; 1. &lt;font color="darkorange"&gt;Form: Linear&lt;/font&gt;
-&gt; 2. &lt;font color="darkorange"&gt;Strength: Strong, very close to a straight line.&lt;/font&gt;
-&gt; 3. &lt;font color="darkorange"&gt;Direction: Two variables are positively associated.&lt;/font&gt;
-&gt; 4. &lt;font color="darkorange"&gt;No outliers.&lt;/font&gt;
+```
+ggplot(data = filter(fbi, Type=="Murder.and.nonnegligent.Manslaughter", 
+aes(x = Year, y = Count)) + geom_point()
+```
 
----
+becomes
 
-&lt;img class="cover" src="images/negative.png" alt="" width=500&gt;
-
-&gt; 1. &lt;font color="darkorange"&gt;Form: Roughly linear, two distinct groups (more than 40% and less than 40%.)&lt;/font&gt;
-&gt; 2. &lt;font color="darkorange"&gt;Strength: not strong.  Data points are scattered.
-&lt;/font&gt;
-&gt; 3. &lt;font color="darkorange"&gt;Direction: Negatively Associated.
-&lt;/font&gt;
-&gt; 4. &lt;font color="darkorange"&gt;Outliers: None.&lt;/font&gt;
-
+```
+fbi %&gt;% 
+  filter(Type=="Murder.and.nonnegligent.Manslaughter") %&gt;%
+  ggplot(aes(x = Year, y = Count)) + 
+    geom_point()
+```
 ---
 
 ## Aesthetics
@@ -214,7 +207,7 @@ class: inverse
 
 - Work through each of the example plots
 
-- Try variations of the plots to find answers (some of) your questions.
+- Try variations of the plots to find answers to (some of) your questions.
     </textarea>
 <style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
