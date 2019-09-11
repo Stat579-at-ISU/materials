@@ -18,47 +18,9 @@ class: center, middle, inverse, title-slide
 
 ---
 
-
-## The pipe operator `%&gt;%`
-
-
-`f(x) %&gt;% g(y)` is equivalent to `g(f(x), y)`
-
-i.e. the output of one function is used as input to the next function. This function can be the identity
-
-Consequences:
-
-- `x %&gt;% f(y)` is the same as `f(x, y)`
-
-- statements of the form `k(h(g(f(x, y), z), u), v, w)` become
-`x %&gt;% f(y) %&gt;% g(z) %&gt;% h(u) %&gt;% k(v, w)`
-
-- read `%&gt;%` as "then do"
-
----
-
-## Using the pipe `%&gt;%`
-
-```
-ggplot(data = filter(fbi, Type=="Murder.and.nonnegligent.Manslaughter", 
-aes(x = Year, y = Count)) + geom_point()
-```
-
-becomes
-
-```
-library(tidyverse)
-
-fbi %&gt;% 
-  filter(Type=="Murder.and.nonnegligent.Manslaughter") %&gt;%
-  ggplot(aes(x = Year, y = Count)) + 
-    geom_point()
-```
-
-
----
 class: inverse, center, middle
 # Logical variables, filters, and updating data
+
 
 ---
 
@@ -142,16 +104,36 @@ Use the `fbi` data from the `classdata` package
 
 Extra credit (1 point): submit your code (regardless of whether it works or not) in Canvas (yourturn-checkin-1).
 
+
+
+---
+class: inverse
+## Your turn - Information Retrieval
+
+
+Use the `fbi` data object to answer the following questions: 
+
+- how many reports of Burglaries are there for California?
+
+- for any of the violent crimes, which state had the highest rate (and for which crime) in 2014? in 1961? 
+
+
+Use the `fbiwide` data object to answer the following question: 
+
+- in how many states in 2011 were there more vehicle thefts than robberies? (which states are those?)
+
 ---
 
 ## Information extraction: useful commands
 
 Number of records in a data set:
+
 ```
 nrow(dataset)  
 ```
 
 Quantiles:
+
 ```
 quantile(variable, probs=0.001, na.rm=T)  
 ```
@@ -166,24 +148,6 @@ Retrieve index of maximum/minimum value:
 which.max(variable)
 which.min(variable) 
 ```
-
----
-class: inverse
-## Your turn 
-
-
-Use the `fbi` data object to answer the following questions: 
-
-- how many reports of Burglaries are there for California?
-
-- for any of the violent crimes, which state had the highest rate (and for which crime) in 2014? in 1961? 
-
-
-Use the `fbiwide` data object to answer the following question: 
-
-- in how many states in 2011 were there more vehicle thefts than robberies? (which states are those?)
-
-
 
 ---
 
@@ -211,6 +175,14 @@ a
 
 ```r
 replace(a, a == 0, -1)
+```
+
+```
+## [1]  1 -1 -1  4
+```
+
+```r
+ifelse(a==0, -1, a)
 ```
 
 ```
@@ -247,7 +219,7 @@ if that variable exists before, it is being over-written/updated
 
 ---
 
-## `mutate`
+## `mutate {dplyr}` 
 
 `mutate` is a function from the `dplyr` package
 
@@ -267,14 +239,15 @@ Allows us to focus on the WHAT, rather than the HOW.
 class: inverse
 ## Your turn 
 
+1. Load the 2018 BRFSS data for Iowa from https://raw.githubusercontent.com/Stat579-at-ISU/stat579-at-isu.github.io/master/homework/data/brfss-iowa-2018.csv
 
-The gapminder data from homework 2 is available [here](https://raw.githubusercontent.com/Stat579-at-ISU/stat579-at-isu.github.io/master/homework/data/gapminder-5060.csv). 
+2. How many observations, how many variables does the data set have?
 
-- `read.csv` helps you read the gapminder data from the given link. Store the result in an object.
+3. Draw a barchart of the variable `SLEPTIM1`
 
-- What format does the object have?
+4. Read up on the variable coding in the [codebook](https://www.cdc.gov/brfss/annual_data/2017/pdf/codebook17_llcp-v2-508.pdf)
 
-- Replace the problematic value in life expectancy for Canada in 1957  by the value 69.96.
+5. Some of the values should be encoded as `NA`. Use `mutate` to fix those values. Then re-draw the barchart. Include gender (`SEX1`) into the chart.
     </textarea>
 <style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
