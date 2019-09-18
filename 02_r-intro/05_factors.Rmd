@@ -52,7 +52,7 @@ library(classdata)
 ```
 
 ```{r}
-twoyear <- dplyr::filter(fbi, Year %in% c(1961, 2014))
+twoyear <- dplyr::filter(fbi, Year %in% c(1961, 2016))
 ```
 
 .pull-left[
