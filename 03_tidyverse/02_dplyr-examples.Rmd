@@ -36,9 +36,9 @@ Load the `happy` data from the `classdata` package.
 
 - how many variables, how many observations does the data have? What do the variables mean? 
 
-- Plot the variable `happy`. Introduce a new variable `nhappy` that has values 1 for `not too happy`, 2 for `pretty happy`, 3 for `very happy` and `NA` for missing values. There are multiple ways to get to that. Avoid `for` loops and `ifelse` statements.
+- Plot the variable `happy`. Introduce a new variable `nhappy` that has values 1 for `not too happy`, 2 for `pretty happy`, 3 for `very happy` and `NA` for missing values. There are multiple ways to get to that. Avoid `for` loops.
 
-- Given the scores, what is the average happiness of respondents?
+- Based on the newly introduced numeric scores, what is the average happiness of respondents?
 
 ---
 class: inverse

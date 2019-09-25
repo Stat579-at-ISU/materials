@@ -1,5 +1,5 @@
 ---
-title: "The dplyr package"
+title: "Intro to the tidyverse"
 author: "Heike Hofmann"
 date: "`r Sys.Date()`"
 output:
@@ -22,7 +22,6 @@ output:
 
 - elements of data management: filtering, sorting, and aggregations
 
-- the pipe operator `%>%`
 
 - lots of examples
 
@@ -36,15 +35,17 @@ output:
 
 - share common data representations and API, i.e. work well together
 
+- from the [tidyverse manifesto](https://tidyverse.tidyverse.org/articles/manifesto.html):
+  
+    1. Reuse existing data structures.
+    
+    2. Compose simple functions with the pipe.
+    
+    3. Embrace functional programming.
+    
+    4. Design for humans.
+
 - see https://github.com/hadley/tidyverse for more information
-
-
-### Summaries
-
-- numerical summaries - [elements]() of `dplyr` and `tidyr`
-
-- graphical summaries - [visualizations]() with `ggplot2`
-
 
 ---
 
@@ -54,11 +55,11 @@ There are a couple of primary `dplyr` *verbs*, representing distinct data analys
 
 - `filter`: Select specified rows of a data frame, produce subsets
 
+- `mutate`: Add new or change existing columns of the data frame (as functions of existing columns)
+
 - `arrange`: Reorder the rows of a data frame
 
 - `select`: Select particular columns of a data frame
-
-- `mutate`: Add new or change existing columns of the data frame (as functions of existing columns)
 
 - `summarize`: Create collapsed summaries of a data frame
 
@@ -82,41 +83,6 @@ ggplot(data = fbi, aes(x = Year, y = Count)) +
 filter(fbi, Year >= 2017, State == "Iowa")
 ```
 
----
-
-# The pipe operator `%>%`
-
-`f(x) %>% g(y)` is equivalent to `g(f(x), y)`
-
-i.e. the output of one function is used as input to the next function. This function can be the identity
-
-Consequences:
-
-- `x %>% f(y)` is the same as `f(x, y)`
-
-- statements of the form `k(h(g(f(x, y), z), u), v, w)` become
-`x %>% f(y) %>% g(z) %>% h(u) %>% k(v, w)`
-
-- read `%>%` as "then do"
-
----
-
-# Using the pipe `%>%`
-
-```
-ggplot(data = filter(fbi, Type=="Murder.and.nonnegligent.Manslaughter", 
-aes(x = Year, y = Count)) + 
-geom_point()
-```
-
-becomes
-
-```
-fbi %>% 
-  filter(Type=="Murder.and.nonnegligent.Manslaughter") %>%
-  ggplot(aes(x = Year, y = Count)) + 
-    geom_point()
-```
 
 ---
 
@@ -142,15 +108,46 @@ all constraints are combined by logical and `&`
 
 # `filter` Example
 
-From the `fbi` data, extract all burglaries in 2014:
+From the `fbi` data, extract all burglaries in 2016:
 
 ```{r, message=FALSE}
 library(classdata)
 library(dplyr)
 
-fbi %>% filter(Type=="Burglary", Year==2014) %>% head()
+fbi %>% filter(Type=="Burglary", Year==2016) %>% head()
 ```
 
+---
+
+# `mutate`
+
+.pull-left[
+
+
+`mutate (.data, ...)` 
+
+Introduce new variables into the data set or transform/update  old variables
+
+multiple variables can be changed/introduced
+
+`mutate` works sequentially:
+variables introduced become available in following changes
+]
+
+.pull-right[
+![](images/mutate.png)
+]
+
+
+---
+
+# `mutate` Example
+
+Introduce a variable `Rate` into the `fbi` data:
+
+```{r}
+fbi %>% mutate(Rate = Count/Population*70000) %>% head()
+```
 
 
 ---
@@ -203,36 +200,12 @@ fbi %>% arrange(desc(Year), Type, desc(Count)) %>%
 ```
 
 ---
+class: inverse
+# Your turn
 
-# `mutate`
+Use the `fbiwide` data set from the `classdata` package
 
-.pull-left[
-
-
-`mutate (.data, ...)` 
-
-Introduce new variables into the data set or transform/update  old variables
-
-multiple variables can be changed/introduced
-
-`mutate` works sequentially:
-variables introduced become available in following changes
-]
-
-.pull-right[
-![](images/mutate.png)
-]
-
-
----
-
-# `mutate` Example
-
-Introduce a variable `Rate` into the `fbi` data:
-
-```{r}
-fbi %>% mutate(Rate = Count/Population*70000) %>% head()
-```
+Write out at least three different ways of selecting all variables describing incidences of different types of crimes
 
 ---
 
