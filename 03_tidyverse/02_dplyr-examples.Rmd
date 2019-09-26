@@ -64,6 +64,7 @@ class: inverse
 
 
 - What other variable(s) might be associated with happiness? Plot it.
+
 - Submit your code in Canvas for one point of extra credit.
 
 ---
@@ -99,6 +100,7 @@ happy %>% count(sex, degree)
 # Grouping and Ungrouping
 
 - `ungroup` removes a grouping structure from a data set
+
 - necessary to make changes to a grouping variable (such as re-ordering or re-labelling) 
 
 
