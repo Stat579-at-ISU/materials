@@ -1,5 +1,5 @@
 ---
-title: "Reshaping data with tidyr"
+title: "Reshaping data"
 author: "Heike Hofmann"
 date: "`r Sys.Date()`"
 output:
