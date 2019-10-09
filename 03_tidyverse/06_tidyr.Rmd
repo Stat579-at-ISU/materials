@@ -13,9 +13,12 @@ output:
 class: middle, inverse, center
 # Messy (2)
 
+
 ---
 
 # separate
+
+Messy (2): Multiple variables are stored in one column
 
 ```{r, message=FALSE, warning = FALSE}
 library(tidyverse)
@@ -32,11 +35,11 @@ class: inverse
 The Iowa Data Portal is a wealth of information on and about the State of Iowa. 
 
 The website 
-[Campaign Expenditures](https://data.iowa.gov/Government/Campaign-Expenditures/3adi-mht4/data) provides data on campaign expenditures. The code below reads the data into an R session.
+[Liquor Sales](https://data.iowa.gov/Sales-Distribution/Iowa-Liquor-Sales/m3tr-qhgy) provides data on every liquor sale in a licensed store in Iowa. The code below reads (part of) the data into an R session.
 
 ```
-url <- "https://data.iowa.gov/api/views/3adi-mht4/rows.csv"
-campaign <- readr::read_csv(url)
+url <- ""
+iowa <- readr::read_csv(url)
 ```
 
 Assess the 'messiness' of the data. List issues that prevent us from working with the data directly. Which of these issues are of type (1) or (2) of messiness?
