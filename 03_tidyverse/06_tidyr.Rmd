@@ -39,7 +39,7 @@ The website
 
 ```
 url <- "https://github.com/Stat579-at-ISU/materials/blob/master/03_tidyverse/data/Iowa_Liquor_Sales.csv.zip?raw=TRUE"
-download.file(url, "iowa.zip")
+download.file(url, "iowa.zip", mode="wb")
 iowa <- readr::read_csv("iowa.zip")
 ```
 

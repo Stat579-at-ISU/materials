@@ -1,5 +1,5 @@
 ---
-title: "Cleaning data: messy 3 "
+title: "Normal forms"
 author: "Heike Hofmann"
 date: "`r Sys.Date()`"
 output:
@@ -11,7 +11,7 @@ output:
       countIncrementalSlides: false
 ---
 class: middle, inverse, center
-# Messy (3)
+# Violations to normal form
 
 
 Multiple observational units are stored in the same table.
@@ -25,7 +25,7 @@ library(tidyverse)
 
 # Keys and Measurements
 
-## Finding your keys - Example (1)
+## Finding the keys - Example (1)
 
 100 patients are randomly assigned to a treatment for heart attack, measured 5 different clinical outcomes.
 
@@ -39,7 +39,7 @@ library(tidyverse)
 
 ---
 
-# Finding your keys - Example (2)
+# Finding the keys - Example (2)
 
 Randomized complete block trial with four fields, four different types of fertilizer, over four years.  Recorded total corn yield, and fertilizer run off
 
@@ -51,7 +51,7 @@ Randomized complete block trial with four fields, four different types of fertil
 
 ---
 
-# Finding your keys - Example (3)
+# Finding the keys - Example (3)
 
 Cluster sample of twenty students in thirty different schools.  For each school, recorded distance from ice rink.  For each student, asked how often they go ice skating, and whether or not their parents like ice skating
 
@@ -64,7 +64,7 @@ Cluster sample of twenty students in thirty different schools.  For each school,
 
 ---
 
-# Finding your keys - Example (4)
+# Finding the keys - Example (4)
 
 For each person, recorded age, sex, height and target weight, and then at multiple times recorded their weight
 

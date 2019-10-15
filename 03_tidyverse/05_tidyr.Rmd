@@ -38,7 +38,7 @@ Leo Tolstoy
 
 - Key-Value pairs
 
-- `tidyr`: `spread` and `gather`
+- `tidyr`: `pivot_longer` and `pivot_wider` (former `gather` and `spread`)
 
 
 ---
@@ -126,9 +126,9 @@ One way of telling whether a data set is tidy is to check that all keys for a va
 
 Very few functions are needed for tidying data:
 
-- Messy (1): `tidyr` functions `gather` and `spread`.  
-`gather (data, key, value, ...)`: take multiple columns and collapse into key-value pairs <br>
-`spread (data, key, value, fill = NA)`: spread a key-value pair across multiple columns.
+- Messy (1): `tidyr` functions `pivot_longer` and `pivot_wider`.  
+`pivot_longer(data,  cols, names_to = "name", values_to = "values")`: take multiple columns and collapse into key-value pairs <br>
+`pivot_wider (data, names_from=name, values_from=value)`: spread a key-value pair across multiple columns.
 
 - Messy (2): `tidyr` function `separate (data, col, into, sep = "[^[:alnum:]]+")`:
 separate one column into multiple columns
@@ -155,11 +155,13 @@ french_fries %>% head()
 
 ---
 
-# Gather
+# Gather/Pivot to long
 
 ```{r}
 ffm <- french_fries %>% 
-  gather(key = scale, value = score, potato:painty)
+  pivot_longer(cols = potato:painty, 
+               names_to = "scale", 
+               values_to = "score")
 ffm
 ```
 
@@ -167,10 +169,11 @@ ffm
 
 ---
 
-# Spread
+# Spread/Pivto to wide
 
 ```{r}
 ffm %>% spread(key = rep, value = score)
+ffm %>% pivot_wider(names_from = rep, values_from = score)
 ```
 
 ---
@@ -187,9 +190,9 @@ class: inverse
 
 For this your turn use the `french_fries` data from the `reshape2` package: `data("french_fries", package="reshape2")` 
 
-- Use `gather` from the `tidyr` package to combine the different scales for assessing french fries into a single variable. Call the key-value pair "scale" and "score". 
+- Use `gather` or `pivot_longer` from the `tidyr` package to combine the different scales for assessing french fries into a single variable. Call the key-value pair "scale" and "score". 
 
-- Use `spread` from the `tidyr` package to get a format in which you can directly compare values from week 1 to week 10. Plot a scatterplot of values in week 1 against week 10. Facet by treatment and scale, color by individuals   and use different shapes for the replicates. Is there a pattern visible?
+- Use `spread` or `pivot_wider` from the `tidyr` package to get a format in which you can directly compare values from week 1 to week 10. Plot a scatterplot of values in week 1 against week 10. Facet by treatment and scale, color by individuals   and use different shapes for the replicates. Is there a pattern visible?
 
 ---
 class: inverse
@@ -197,14 +200,15 @@ class: inverse
 
 For this your turn use the `fbiwide` data from the `classdata` package: `data("fbiwide", package="classdata")` 
 
-- Use `gather` from the `tidyr` package to combine the variables for the different types of crimes into one variable. Call the key-value pair "Type" and "Incidences". Compute a crime rate
+- Use `gather` or `pivot_longer` from the `tidyr` package to combine the variables for the different types of crimes into one variable. Call the key-value pair "Type" and "Incidences". Compute a crime rate
 
-- Only consider crime rates for Iowa and Minnesota. Use `spread` to create incidence columns for each of these states. Plot crimes in Iowa against crimes in Minnesota, colour by type of crime. Note: you need to exclude some variables. 
+- Only consider crime rates for Iowa and Minnesota. Use `spread` or `pivot_wider` to create incidence columns for each of these states. Plot crimes in Iowa against crimes in Minnesota, colour by type of crime. Note: you need to exclude some variables. 
 
 ---
 
 # Spread works as inverse of gather
 
+`pivot_wider` works as inverse of `pivot_longer` ...
 ![](images/spread-gather-clean.png)
 
 ---
@@ -215,19 +219,19 @@ For this your turn use the `fbiwide` data from the `classdata` package: `data("f
 
 ---
 
-# Where `spread` is tricky
+# Where using `spread` or `pivot_wider` is tricky
 
-- `spread` is the (almost) inverse operation of `gather`
+- `spread`/`pivot_wider` is the (almost) inverse operation of `gather`/`pivot_longer`
 
-- when we use `gather` the key information is duplicated
+- when we use `gather`/`pivot_longer` the key information is duplicated
 
-- when using `spread` we need to make sure that the information outside the key and value is identical for all levels (and combinations of levels) of the `key` variable.
+- when using `spread`/`pivot_wider` we need to make sure that the information outside the key and value is identical for all levels (and combinations of levels) of the `key` variable.
 
 - If the info is not identical across levels, missing values are introduced into the new data set.
 
 ---
 
-# `spread` in the example
+# `spread`/`pivot_wider` in the example
 
 ```{r, message=FALSE, warning=FALSE}
 library(classdata)
@@ -245,7 +249,7 @@ fbi %>% filter(Year==2014, State %in% c("Iowa", "Minnesota"),
 
 ---
 
-# fixing `spread` in the example
+# fixing `pivot_wder` in the example
 
 Negative selection of all state specific variables gets the example to "work": 
 
@@ -253,5 +257,5 @@ Negative selection of all state specific variables gets the example to "work":
 fbi %>% filter(Year==2014, State %in% c("Iowa", "Minnesota"),
                Type=="Burglary") %>% 
   select(-Abb, -Population) %>% 
-  spread(State, Count)
+  pivot_wider(names_from=State, values_from=Count)
 ```

@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
   <head>
     <title>Cleaning data: messy 3</title>
-    <meta charset="utf-8">
+    <meta charset="utf-8" />
     <meta name="author" content="Heike Hofmann" />
-    <meta name="date" content="2018-10-18" />
+    <meta name="date" content="2019-10-11" />
     <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
     <link href="libs/remark-css-0.0.1/default-fonts.css" rel="stylesheet" />
   </head>
@@ -14,7 +14,7 @@ class: center, middle, inverse, title-slide
 
 # Cleaning data: messy 3
 ### Heike Hofmann
-### 2018-10-18
+### 2019-10-11
 
 ---
 
@@ -125,16 +125,21 @@ head(box, 4)
 ```
 
 ```
-##   Rank Rank.Last.Week                       Movie        Distributor
-## 1    1              1           Crazy Rich Asians       Warner Bros.
-## 2    2              2                     The Meg       Warner Bros.
-## 3    3             NA       The Happytime Murders  STX Entertainment
-## 4    4              4 Mission: Impossible—Fallout Paramount Pictures
-##      Gross Change Thtrs. Per Thtr. Total.Gross Week       Date
-## 1 24808202     -6   3526      7036    76617149    2 2018-08-24
-## 2 12812615    -39   4031      3179   105083261    3 2018-08-24
-## 3  9532425     NA   3256      2928     9532425    1 2018-08-24
-## 4  8087385    -25   3052      2650   193988045    5 2018-08-24
+##   Rank Rank.Last.Week                   Movie        Distributor    Gross
+## 1    1             NA Solo: A Star Wars Story        Walt Disney 84420489
+## 2    2              1              Deadpool 2   20th Century Fox 43463043
+## 3    3              2  Avengers: Infinity War        Walt Disney 17294657
+## 4    4              3               Book Club Paramount Pictures 10071681
+##   Change Thtrs. Per Thtr. Total.Gross Week       Date
+## 1     NA   4381     19270   0.8442049    1 2018-05-25
+## 2    -65   4349      9994   2.0817040    2 2018-05-25
+## 3    -41   3768      4590   6.2248930    5 2018-05-25
+## 4    -26   2810      3584   0.3227969    2 2018-05-25
+##                     Movie-Distributor
+## 1 Solo: A Star Wars Story.Walt Disney
+## 2         Deadpool 2.20th Century Fox
+## 3  Avengers: Infinity War.Walt Disney
+## 4        Book Club.Paramount Pictures
 ```
 
 What are the key variables? Why is the key split?
@@ -194,20 +199,20 @@ movies %&gt;% count(Movie) %&gt;% arrange(desc(n))
 ```
 
 ```
-## # A tibble: 3,473 x 2
-##    Movie                            n
-##    &lt;chr&gt;                        &lt;int&gt;
-##  1 24 Frames: Before and After…     2
-##  2 Agent Mr. Chan                   2
-##  3 American Socialist: The Lif…     2
-##  4 Beauty and the Beast             2
-##  5 Blood Feast                      2
-##  6 Bombshell: The Hedy Lamarr …     2
-##  7 Breathe                          2
-##  8 Champion                         2
-##  9 Concussion                       2
-## 10 Detective K: Secret of the …     2
-## # ... with 3,463 more rows
+## # A tibble: 935 x 2
+##    Movie           n
+##    &lt;chr&gt;       &lt;int&gt;
+##  1 Champion        2
+##  2 Gold            2
+##  3 Mama Africa     2
+##  4 Reset           2
+##  5 102 Not Out     1
+##  6 12 Days         1
+##  7 12 Strong       1
+##  8 13 Minutes      1
+##  9 1945            1
+## 10 2:22            1
+## # … with 925 more rows
 ```
 
 ---
@@ -229,14 +234,14 @@ head(movies)
 ```
 ## # A tibble: 6 x 4
 ## # Groups:   Movie [6]
-##   Movie                 Distributor          firstDate  firstWeek
-##   &lt;chr&gt;                 &lt;chr&gt;                &lt;date&gt;         &lt;dbl&gt;
-## 1 ’71                   Roadside Attractions 2015-02-27         1
-## 2 [REC] 4: Apocalypse   Magnolia Pictures    2015-01-02         1
-## 3 1,000 Rupee Note      Kino Lorber          2016-09-23         1
-## 4 1,000 Times Goodnight Film Movement        2014-10-24         1
-## 5 10 Cloverfield Lane   Paramount Pictures   2016-03-11         1
-## 6 10 Days in a Madhouse Cafe Pictures        2015-11-20         2
+##   Movie       Distributor            firstDate  firstWeek
+##   &lt;chr&gt;       &lt;chr&gt;                  &lt;date&gt;         &lt;dbl&gt;
+## 1 102 Not Out Sony Pictures          2018-05-04         1
+## 2 12 Days     Distrib Films          2018-03-16         1
+## 3 12 Strong   Warner Bros.           2018-01-19         1
+## 4 13 Minutes  Sony Pictures Classics 2017-06-30         1
+## 5 1945        Menemsha Entertainment 2017-11-03         1
+## 6 2:22        Magnolia Pictures      2017-06-30         1
 ```
 
 ---
@@ -249,21 +254,21 @@ movies %&gt;% group_by(Movie) %&gt;% mutate(n = n()) %&gt;% arrange(desc(n))
 ```
 
 ```
-## # A tibble: 3,496 x 5
-## # Groups:   Movie [3,473]
-##    Movie                Distributor          firstDate  firstWeek     n
-##    &lt;chr&gt;                &lt;chr&gt;                &lt;date&gt;         &lt;dbl&gt; &lt;int&gt;
-##  1 Beauty and the Beast Lopert Pictures Cor… 2016-02-12         1     2
-##  2 Beauty and the Beast Walt Disney          2017-03-17         1     2
-##  3 Blood Feast          Crimson Forest Ente… 2018-04-06        42     2
-##  4 Blood Feast          Hannover House       2018-04-20        44     2
-##  5 Breathe              Bleecker Street      2017-10-13         1     2
-##  6 Breathe              Film Movement        2015-09-11         1     2
-##  7 Champion             ArtAffects           2017-05-26         2     2
-##  8 Champion             Well Go USA          2018-05-11         1     2
-##  9 Concussion           Radius               2013-10-04         1     2
-## 10 Concussion           Sony Pictures        2015-12-25         1     2
-## # ... with 3,486 more rows
+## # A tibble: 939 x 5
+## # Groups:   Movie [935]
+##    Movie       Distributor           firstDate  firstWeek     n
+##    &lt;chr&gt;       &lt;chr&gt;                 &lt;date&gt;         &lt;dbl&gt; &lt;int&gt;
+##  1 Champion    ArtAffects            2017-05-26         2     2
+##  2 Champion    Well Go USA           2018-05-11         1     2
+##  3 Gold        Sony Pictures         2017-12-01         1     2
+##  4 Gold        Weinstein Co.         2017-01-27         1     2
+##  5 Mama Africa ""                    2018-01-19       816     2
+##  6 Mama Africa ArtMattan Productions 2018-01-19         1     2
+##  7 Reset       FilmRise              2017-01-13         1     2
+##  8 Reset       Well Go USA           2017-06-30         1     2
+##  9 102 Not Out Sony Pictures         2018-05-04         1     1
+## 10 12 Days     Distrib Films         2018-03-16         1     1
+## # … with 929 more rows
 ```
 
 ---
@@ -278,20 +283,11 @@ box %&gt;% filter(Movie=="Girlhood") %&gt;% head(6)
 ```
 
 ```
-##   Rank Rank.Last.Week    Movie Distributor Gross Change Thtrs. Per Thtr.
-## 1   80             88 Girlhood      Strand  1763    278      1      1763
-## 2   88             99 Girlhood      Strand   467    -67      1       467
-## 3   99            100 Girlhood      Strand  1431    343      3       477
-## 4  100            102 Girlhood      Strand   323     55      1       323
-## 5  101             NA Girlhood               209     NA      1       209
-## 6  102             81 Girlhood      Strand   209    -90      5        42
-##   Total.Gross Week       Date
-## 1  0.00060019   15 2015-05-08
-## 2  0.00058148   14 2015-05-01
-## 3  0.00056566   13 2015-04-24
-## 4  0.00054712   12 2015-04-17
-## 5  0.00053938  598 2015-04-10
-## 6  0.00052907   11 2015-04-10
+##  [1] Rank              Rank.Last.Week    Movie            
+##  [4] Distributor       Gross             Change           
+##  [7] Thtrs.            Per Thtr.         Total.Gross      
+## [10] Week              Date              Movie-Distributor
+## &lt;0 rows&gt; (or 0-length row.names)
 ```
 
 ---
@@ -316,6 +312,11 @@ box %&gt;% filter(Movie=="Mama Africa")
 ## 2      2       845   8.123e-05    2 2018-01-26
 ## 3      1      3495   3.495e-05    1 2018-01-19
 ## 4      1      3187   3.187e-05  816 2018-01-19
+##                   Movie-Distributor
+## 1 Mama Africa.ArtMattan Productions
+## 2 Mama Africa.ArtMattan Productions
+## 3 Mama Africa.ArtMattan Productions
+## 4                      Mama Africa.
 ```
 
 ---
@@ -326,6 +327,7 @@ box %&gt;% filter(Movie=="Mama Africa")
 
 - Checking up on inconsistencies is a lot of manual labor
     </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
 <script>var slideshow = remark.create({
 "highlightStyle": "github",
@@ -335,16 +337,57 @@ box %&gt;% filter(Movie=="Mama Africa")
 if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
   window.dispatchEvent(new Event('resize'));
 });
-(function() {
-  var d = document, s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
   if (!r) return;
   s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
   d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
 })();</script>
 
 <script>
 (function() {
-  var i, text, code, codes = document.getElementsByTagName('code');
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
   for (i = 0; i < codes.length;) {
     code = codes[i];
     if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
@@ -358,14 +401,15 @@ if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
     }
     i++;
   }
-})();
+};
+slideshow._releaseMath(document);
 </script>
 <!-- dynamically load mathjax for compatibility with self-contained -->
 <script>
 (function () {
   var script = document.createElement('script');
   script.type = 'text/javascript';
-  script.src  = 'https://cdn.bootcss.com/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
   if (location.protocol !== 'file:' && /^https?:/.test(script.src))
     script.src  = script.src.replace(/^https?:/, '');
   document.getElementsByTagName('head')[0].appendChild(script);
