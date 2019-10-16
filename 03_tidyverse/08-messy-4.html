@@ -4,7 +4,7 @@
     <title>Cleaning data: messy 4</title>
     <meta charset="utf-8" />
     <meta name="author" content="Heike Hofmann" />
-    <meta name="date" content="2019-10-11" />
+    <meta name="date" content="2019-10-16" />
     <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
     <link href="libs/remark-css-0.0.1/default-fonts.css" rel="stylesheet" />
   </head>
@@ -14,12 +14,12 @@ class: center, middle, inverse, title-slide
 
 # Cleaning data: messy 4
 ### Heike Hofmann
-### 2019-10-11
+### 2019-10-16
 
 ---
 
 class: middle, inverse, center
-# Messy (4)
+# Joining data from different tables
 
 
 
@@ -360,6 +360,7 @@ anti_join(df2, df1, by="id") # no values for id in df1
 ## 2  7      1 110
 ```
 
+&lt;!--
 ---
 class: inverse
 # Your turn (10 mins) 
@@ -374,7 +375,10 @@ For this example, use the data from the `classdata` package
 
 - Check on the dimensions of the data sets before and after the join. Where are potential problems?
 
-- Use `anti_join` to detect problematic cases.
+- Use `anti_join` to detect problematic cases. 
+
+
+--&gt;
     </textarea>
 <style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>

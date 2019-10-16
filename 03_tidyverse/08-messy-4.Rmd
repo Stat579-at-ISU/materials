@@ -11,7 +11,7 @@ output:
       countIncrementalSlides: false
 ---
 class: middle, inverse, center
-# Messy (4)
+# Joining data from different tables
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
@@ -171,6 +171,7 @@ anti_join(df1, df2, by="id") # no values for id in df2
 anti_join(df2, df1, by="id") # no values for id in df1
 ```
 
+<!--
 ---
 class: inverse
 # Your turn (10 mins) 
@@ -188,3 +189,4 @@ For this example, use the data from the `classdata` package
 - Use `anti_join` to detect problematic cases. 
 
 
+-->

@@ -4,7 +4,7 @@
     <title>Reshaping data with tidyr - Messy (2)</title>
     <meta charset="utf-8" />
     <meta name="author" content="Heike Hofmann" />
-    <meta name="date" content="2019-10-09" />
+    <meta name="date" content="2019-10-15" />
     <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
     <link href="libs/remark-css-0.0.1/default-fonts.css" rel="stylesheet" />
   </head>
@@ -14,7 +14,7 @@ class: center, middle, inverse, title-slide
 
 # Reshaping data with tidyr - Messy (2)
 ### Heike Hofmann
-### 2019-10-09
+### 2019-10-15
 
 ---
 
@@ -67,7 +67,7 @@ The website
 
 ```
 url &lt;- "https://github.com/Stat579-at-ISU/materials/blob/master/03_tidyverse/data/Iowa_Liquor_Sales.csv.zip?raw=TRUE"
-download.file(url, "iowa.zip")
+download.file(url, "iowa.zip", mode="wb")
 iowa &lt;- readr::read_csv("iowa.zip")
 ```
 
@@ -81,7 +81,7 @@ Run the following code to load the Iowa Liquor Sales into your working session
 
 ```
 url &lt;- "https://github.com/Stat579-at-ISU/materials/blob/master/03_tidyverse/data/Iowa_Liquor_Sales.csv.zip?raw=TRUE"
-download.file(url, "iowa.zip")
+download.file(url, "iowa.zip", mode="wb")
 iowa &lt;- readr::read_csv("iowa.zip")
 ```
 Open the Fast Fingers Quiz in Canvas for a chance to earn 5 points of extra credit. Good luck!

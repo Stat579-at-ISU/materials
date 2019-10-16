@@ -1,5 +1,5 @@
 ---
-title: "Normal forms"
+title: "Normal forms of data"
 author: "Heike Hofmann"
 date: "`r Sys.Date()`"
 output:
@@ -11,10 +11,10 @@ output:
       countIncrementalSlides: false
 ---
 class: middle, inverse, center
-# Violations to normal form
+# Violations to the normal form
 
 
-Multiple observational units are stored in the same table.
+Multiple observational units are stored in the same table. (Messy 3)
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
@@ -110,7 +110,7 @@ Splitting into separate datasets:
 
 # Example: Box office gross
 
-The-Numbers website publishes [weekly charts](http://www.the-numbers.com/weekend-box-office-chart) of the gross income of all movies playing across the US. A set of cleaned data called `box` with movies for the last five years is available in the `classdata` package.
+The-Numbers website publishes [weekly charts](http://www.the-numbers.com/weekend-box-office-chart) of the gross income of all movies playing across the US. A set of (somewhat) cleaned data called `box` with movies for the last five years is available in the `classdata` package.
 
 ```{r, warning=FALSE, message=FALSE}
 # devtools::install_github("heike/classdata")
@@ -120,29 +120,6 @@ head(box, 4)
 
 What are the key variables? Why is the key split?
 
----
-
-# Keys and measurements
-
-- Key variables: `Movie` name,  `Date` and `Distributor`. 
-
-- Measurement variables: `Gross`, `Thtrs.`
-
-- All other variables are derived from these variables
-
-- good practice: re-calculate the derived variabes to check for consistency. 
-
----
-
-# Taking care of the split key
-
-Plan: separate movie information from box office information
-
-Idea for separation: we want to get a set of movies together with their Distributor and ideally their release date (which we do not have).
-
-Instead of release date we want to get the date of the first time that we see a movie in the boxoffice.
-
-Let's also keep track of how many weeks a movie has been released at that time (should be 1 - when will it be different for sure?)
 
 ---
 class: inverse
@@ -150,11 +127,10 @@ class: inverse
 
 For this your turn use the `box` data from the `classdata` package 
 
-- Big goal: we want to create a new dataset `movie` that consists of movie, distributor, date of first time the movie shows up in the box office, and the number of weeks the movie has been released at that time.
+- What are the key variables for the new dataset?
 
-- First: what are the key variables for the new dataset?
-
-- Second: for the key variable(s) use `summarize` to find the first time a movie shows up in the box office and find the related number of weeks. 
+- Key variables should uniquely describe a single entry in a data set.
+Use `group_by` and `summarize` to check whether that is the case for your chosen variables.
 
 ---
 
@@ -195,9 +171,21 @@ head(movies)
 movies %>% group_by(Movie) %>% mutate(n = n()) %>% arrange(desc(n))
 ```
 
+
 ---
 
-# Using IMDb
+# Using IMDb: Beauty and the Beast
+
+According to IMDb there are at least four movies released with the name `Beauty and the Beast`: 2017 (Walt Disney Pictures), 2014 (Spanish Production), 1991 (Walt Disner Pictures),  and 1946 (French Production, released by Lopert Films in the US).
+
+Can't distinguish between the 2017 and the 1991 movie. The Lopert produced movie was only shown for two weeks in at most 3 theaters.
+```{r}
+box %>% filter(Movie=="Beauty and the Beast") %>% tail(6)
+```
+
+---
+
+# Using IMDb (2)
 
 - Girlhood is the name of two movies - one that was released in 2003, one in 2014; most likely the Oct 4 boxoffice mention is only mistakenly referring to the 2003 movie
 
@@ -207,7 +195,7 @@ box %>% filter(Movie=="Girlhood") %>% head(6)
 
 ---
 
-# Using IMDb (2)
+# Using IMDb (3)
 
 - Mama Africa refers to two movies, one released in 2002, one in 2011; likely the duplicate  on Jan 19 is erroneous, but we still don't know which of the two movies is showing (in 1 theater)
 
@@ -216,9 +204,22 @@ box %>% filter(Movie=="Mama Africa")
 ```
 
 ---
+class: inverse
+# Your Turn
+
+Pick one of the movies for which we have inconsistencies, go to IMDb and try to find out what happened.
+
+Also check the records available in the `box` data.
+
+1 point of extra credit: submit your assessment in Canvas (IMDb checkup on movie data)
+
+---
 
 # why do we normalize?
 
 - Normalization helps identify inconsistencies in data
 
 - Checking up on inconsistencies is a lot of manual labor
+
+
+
