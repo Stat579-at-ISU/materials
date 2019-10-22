@@ -165,11 +165,15 @@ ffm <- french_fries %>%
 ffm
 ```
 
+---
+
+# Gather/Pivot to long
+
 ![](images/gather-spread.png)
 
 ---
 
-# Spread/Pivto to wide
+# Spread/Pivot to wide
 
 ```{r}
 ffm %>% spread(key = rep, value = score)
