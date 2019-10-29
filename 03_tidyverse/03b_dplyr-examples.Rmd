@@ -1,0 +1,33 @@
+---
+title: "Practicing dplyr - swirl"
+author: "Heike Hofmann"
+date: "`r Sys.Date()`"
+output:
+  xaringan::moon_reader:
+    lib_dir: libs
+    nature:
+      highlightStyle: github
+      highlightLines: true
+      countIncrementalSlides: false
+---
+# Package `swirl`
+
+allows interactive learning `R in R`
+
+```{r, eval = FALSE}
+install.packages("swirl")
+library(swirl)
+```
+
+To install a course to practice `dplyr` material, install the course `Getting and Cleaning Data` with the command:
+
+```{r, eval = FALSE}
+install_course("Getting_and_Cleaning_Data")
+```
+
+Then start `swirl` by typing
+```{r eval = FALSE}
+swirl()
+```
+
+and selecting the course from the list of options. 

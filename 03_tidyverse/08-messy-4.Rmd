@@ -171,10 +171,10 @@ anti_join(df1, df2, by="id") # no values for id in df2
 anti_join(df2, df1, by="id") # no values for id in df1
 ```
 
-<!--
+
 ---
 class: inverse
-# Your turn (10 mins) 
+# Your turn  - Homework #9
 
 For this example, use the data from the `classdata` package
 
@@ -188,5 +188,6 @@ For this example, use the data from the `classdata` package
 
 - Use `anti_join` to detect problematic cases. 
 
+- Use `box` to show cumulative box office revenue over time. Extra point: label very successful movies in a readable manner.
+- Identify box office hits and flops and visualize them.
 
--->
