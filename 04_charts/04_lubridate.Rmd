@@ -163,9 +163,9 @@ rt by reading the help files ...
 
 iowa %>%
   mutate(
-    Date = ymd(Date)
+    Date = mdy(Date)
   ) %>%
-  complete(Date = seq(from=as.Date("2012-01-03"), to =as.Date("2019-09-30"), by="day")) %>%
+  complete(Date = seq(from=ymd("2012-01-03"), to =ymd("2019-09-30"), by="day")) %>%
     group_by(Date) %>%
     summarize(n = n()-1) %>% summary()
 ```
