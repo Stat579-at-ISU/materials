@@ -2,7 +2,6 @@
 title: "R is a Calculator"
 subtitle: "Hello World, this is R"
 author: "Heike Hofmann"
-date: "`r Sys.Date()`"
 output:
   xaringan::moon_reader:
     lib_dir: libs
