@@ -33,7 +33,7 @@ library(tidyverse)
 ... this is what the raw data looks like ...
 
 ```{r, echo=FALSE}
-topics <- read.csv("data/topics-2019.csv")
+topics <- read.csv("data/topics-2020.csv")
 topics <- topics %>% select(-Entry.Id)
 head(topics)
 ```
@@ -162,6 +162,6 @@ tlong %>%
 
 Range of other suggestions: 
 
-Agricultural studies (overwhelming support from section B `r emo::ji("smile")`), everything else mentioned once ... great for final projects!
+Everything mentioned once or twice ... great for final projects `r emo::ji("smile")`!
 
-video games, social good, genomics, engineering or physics data, demographics, car crashes, behavioral data
+transportation (2), golf, Reinforcement Learning & Anomaly detection Learning, microbiota composition, anything COVID related including comparisons with other countries, socio economic status etc, marketing,  education, natural resources, natural language processing
