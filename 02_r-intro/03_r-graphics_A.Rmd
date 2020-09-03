@@ -1,7 +1,6 @@
 ---
 title: "Stat 579: More types of graphics with ggplot2"
 author: Heike Hofmann
-date: "`r Sys.Date()`"
 output:
   xaringan::moon_reader:
     lib_dir: libs
