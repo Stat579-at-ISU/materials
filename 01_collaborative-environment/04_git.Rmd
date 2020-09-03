@@ -224,6 +224,36 @@ Your turn!
 
 ---
 class: inverse
+## Play in the sandbox
+
+Leave your git handle in the chat ... 
+
+You will get an invite to a (private) repository
+
+Accept the invite
+
+For one point of extra credit, add a sentence to the story about the lonely t. 
+
+... and push your change back to the repo.
+
+---
+class: inverse
+## Let's try this in groups
+
+We will make zoom groups of 3-4 people
+
+1. One of you should create a repo
+
+2. Invites the others as collaborators
+
+3. Make changes 
+
+4. Submit a link to your repo in the chat
+
+5. Repos that show commits from everybody in the group get another extra point :)
+
+---
+class: inverse
 ## Forking
 
 0. Navigate to your partner's repository by typing the url directly into your address bar.
