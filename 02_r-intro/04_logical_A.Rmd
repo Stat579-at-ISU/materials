@@ -1,7 +1,6 @@
 ---
 title: "Stat 579: Logical variables and Filters"
 author: Heike Hofmann
-date: "`r Sys.Date()`"
 output:
   xaringan::moon_reader:
     lib_dir: libs
