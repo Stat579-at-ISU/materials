@@ -144,7 +144,7 @@ class: inverse
 
 For this your turn use the `fbi` object from the `classdata` package. 
 
-- Introduce a rate of the number of reported offenses by population into the `fbi` data. You could use the *Ames standard* to make values comparable to a city of the size of Ames (population ~70,000).
+- Introduce a rate of the number of reported offenses by population into the `fbi` data. You could use the *Ames standard* to make values comparable to a city of the size of Ames and Story county (population ~100,000).
 
 - Plot boxplots of crime rates by different types of crime. How can you make axis text legible? 
 
