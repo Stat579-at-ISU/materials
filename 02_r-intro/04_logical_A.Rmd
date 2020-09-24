@@ -161,6 +161,8 @@ ifelse(a==0, -1, a)
 
 Very useful in combination with logical subsetting
 
+The command `case_when` allows us to combine multiple `ifelse` statements into one
+
 ---
 
 ## Updating elements in a data set
