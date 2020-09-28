@@ -1,7 +1,6 @@
 ---
 title: "dplyr examples: happiness"
 author: "Heike Hofmann"
-date: "`r Sys.Date()`"
 output:
   xaringan::moon_reader:
     lib_dir: libs
@@ -18,7 +17,7 @@ The General Social Survey (GSS) has been run by NORC every other year since 1972
 An excerpt of the GSS data called `happy` is available from the `classdata` package:
 
 ```{r, eval=FALSE}
-devtools::install_github("heike/classdata")
+remotes::install_github("heike/classdata")
 ```
 
 ```{r}

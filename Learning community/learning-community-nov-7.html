@@ -52,7 +52,7 @@ class: inverse, middle, center
 
 
 ```r
-# devtools::install_github("metacran/crandb")
+# remotes::install_github("metacran/crandb")
 pkgs &lt;- crandb::list_packages(limit = 999999)
 length(pkgs)
 [1] 13430
@@ -60,9 +60,9 @@ length(pkgs)
 
 ---
 class: inverse
-# RStudio is ... 
+# RStudio is ...
 
-[From Julie Lowndes](http://jules32.github.io/resources/RStudio_intro/):  
+[From Julie Lowndes](http://jules32.github.io/resources/RStudio_intro/):
 
 
 &gt; If R were an airplane, RStudio would be the airport&lt;/b&gt;, providing many, many supporting services that make it easier for you, the pilot, to take off and go to awesome places. Sure, you can fly an airplane without an airport, but having those runways and supporting infrastructure is a game-changer.
@@ -79,7 +79,7 @@ class: inverse
 # The RStudio IDE
 
 
-1. **Source editor:** Docking station for multiple files, Useful shortcuts ("Knit"), Highlighting/Tab-completion, Code-checking (R, HTML, JS), Debugging features  
+1. **Source editor:** Docking station for multiple files, Useful shortcuts ("Knit"), Highlighting/Tab-completion, Code-checking (R, HTML, JS), Debugging features
 
 2. **Console window:** Highlighting/Tab-completion, Search recent commands
 
@@ -96,9 +96,9 @@ class: inverse
 
 ---
 
-# The Happy Data 
+# The Happy Data
 
-The General Social Survey (GSS) has been run by NORC every other year since 1972 to keep track of current opinions across the United States. 
+The General Social Survey (GSS) has been run by NORC every other year since 1972 to keep track of current opinions across the United States.
 
 The package `ggmosaic` contains a subset of this data, called `happy`.
 You can access the data using the command
@@ -131,7 +131,7 @@ head(happy)
 
 # R packages
 
-Packages provide additional functionality in R. 
+Packages provide additional functionality in R.
 
 Packages have to be activated each time you use R.
 
@@ -159,7 +159,7 @@ library(tidyverse)
 
 ---
 
-# drawing a barchart 
+# drawing a barchart
 
 Univariate distribution: overall happiness levels
 
@@ -177,7 +177,7 @@ class: inverse
 
 Did as many men as women answer the survey?
 
-Draw another barchart. 
+Draw another barchart.
 
 ---
 
@@ -203,7 +203,7 @@ ggplot(data = happy, aes(x = happy)) + geom_bar()
 
 
 ```r
-happy %&gt;% 
+happy %&gt;%
   summarize(
     mean = mean(happy, na.rm=TRUE)
   )
@@ -223,7 +223,7 @@ happy %&gt;%
 
 
 ```r
-happy %&gt;% 
+happy %&gt;%
   group_by(sex) %&gt;%
   summarize(
     mean = mean(happy, na.rm=TRUE)

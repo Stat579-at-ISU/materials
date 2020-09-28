@@ -4,7 +4,6 @@
     <title>dplyr examples: mutate + group_by</title>
     <meta charset="utf-8" />
     <meta name="author" content="Heike Hofmann" />
-    <meta name="date" content="2019-09-26" />
     <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
     <link href="libs/remark-css-0.0.1/default-fonts.css" rel="stylesheet" />
   </head>
@@ -14,7 +13,6 @@ class: center, middle, inverse, title-slide
 
 # dplyr examples: mutate + group_by
 ### Heike Hofmann
-### 2019-09-26
 
 ---
 
@@ -31,7 +29,7 @@ class: inverse, middle
 
 `fbi` data included in the `classdata` package
 
-upgrade the package: `devtools::install_github("heike/classdata")`
+upgrade the package: `remotes::install_github("heike/classdata")`
 
 
 ```r
@@ -43,12 +41,12 @@ tail(fbi)
 
 ```
 ##               State Abb Year Population        Type Count Violent.crime
-## 23251       Vermont  VT 2017     623657 Legacy.rape    NA          TRUE
-## 23252      Virginia  VA 2017    8470020 Legacy.rape    NA          TRUE
-## 23253    Washington  WA 2017    7405743 Legacy.rape    NA          TRUE
-## 23254 West Virginia  WV 2017    1815857 Legacy.rape    NA          TRUE
-## 23255     Wisconsin  WI 2017    5795483 Legacy.rape    NA          TRUE
-## 23256       Wyoming  WY 2017     579315 Legacy.rape    NA          TRUE
+## 23667       Vermont  VT 2018     626299 Legacy.rape    NA          TRUE
+## 23668      Virginia  VA 2018    8517685 Legacy.rape    NA          TRUE
+## 23669    Washington  WA 2018    7535591 Legacy.rape    NA          TRUE
+## 23670 West Virginia  WV 2018    1805832 Legacy.rape    NA          TRUE
+## 23671     Wisconsin  WI 2018    5813568 Legacy.rape    NA          TRUE
+## 23672       Wyoming  WY 2018     577737 Legacy.rape    NA          TRUE
 ```
 
 ---
@@ -90,7 +88,7 @@ fbi %&gt;% filter(Rank == 1) %&gt;% select(Type, State, Year, Rate)
 ## 5 Rape                                 Puerto Rico    2013   0.658
 ## 6 Legacy.rape                          Puerto Rico    2013   0.503
 ## 7 Motor.vehicle.theft                  Vermont        2015  19.9  
-## 8 Burglary                             New York       2017 123.
+## 8 Burglary                             New Hampshire  2018  95.3
 ```
 
 ---

@@ -41,7 +41,7 @@ install.packages(c("package1", "package2", "package3"))
 
 
 ```r
-devtools::install_github("github_handle/pkgname")
+remotes::install_github("github_handle/pkgname")
 ```
 
 ---
@@ -97,7 +97,7 @@ class: inverse, middle, center
 
 &lt;br&gt;
 
-- http://ggplot2.org/book/ or Hadley's book *ggplot2: Elegant Graphics for Data Analysis* for reference 
+- http://ggplot2.org/book/ or Hadley's book *ggplot2: Elegant Graphics for Data Analysis* for reference
 
 ---
 
@@ -107,7 +107,7 @@ A graphical representation (plot) consists of:
 
 1. **mappings** (`aes`):  data variables are mapped to graphical elements
 
-2. **layers**:  geometric elements (`geoms`, such as points, lines, 
+2. **layers**:  geometric elements (`geoms`, such as points, lines,
 rectangles, text, ...) and statistical transformations (`stats`, are identity, counts, bins, ...)
 
 3. **scales**: map values in the data space to values in an aesthetic space (e.g. color, size, shape, but also position)
@@ -129,18 +129,18 @@ data(fbiwide, package = "classdata")
 
 ggplot(data = fbiwide, aes(x = Burglary, y = Murder)) +
   geom_point()
-```  
+```
 
 ```
 ggplot(data = fbiwide, aes(x = log(Burglary), y = log(Murder))) +
   geom_point()
-```  
+```
 
 ```
-ggplot(data = fbiwide, aes(x = log(Burglary), 
+ggplot(data = fbiwide, aes(x = log(Burglary),
                            y = log(Motor.vehicle.theft))) +
   geom_point()
-```  
+```
 
 ---
 
@@ -165,16 +165,16 @@ Consequences:
 ## Using the pipe `%&gt;%`
 
 ```
-ggplot(data = filter(fbi, Type=="Murder.and.nonnegligent.Manslaughter", 
+ggplot(data = filter(fbi, Type=="Murder.and.nonnegligent.Manslaughter",
 aes(x = Year, y = Count)) + geom_point()
 ```
 
 becomes
 
 ```
-fbi %&gt;% 
+fbi %&gt;%
   filter(Type=="Murder.and.nonnegligent.Manslaughter") %&gt;%
-  ggplot(aes(x = Year, y = Count)) + 
+  ggplot(aes(x = Year, y = Count)) +
     geom_point()
 ```
 ---

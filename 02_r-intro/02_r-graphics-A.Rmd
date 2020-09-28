@@ -32,7 +32,7 @@ install.packages(c("package1", "package2", "package3"))
 - package on github (less official, usually package under development)
 
 ```{r eval = FALSE}
-devtools::install_github("github_handle/pkgname")
+remotes::install_github("github_handle/pkgname")
 ```
 
 ---

@@ -4,7 +4,6 @@
     <title>dplyr examples: happiness</title>
     <meta charset="utf-8" />
     <meta name="author" content="Heike Hofmann" />
-    <meta name="date" content="2019-09-24" />
     <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
     <link href="libs/remark-css-0.0.1/default-fonts.css" rel="stylesheet" />
   </head>
@@ -14,7 +13,6 @@ class: center, middle, inverse, title-slide
 
 # dplyr examples: happiness
 ### Heike Hofmann
-### 2019-09-24
 
 ---
 
@@ -27,7 +25,7 @@ An excerpt of the GSS data called `happy` is available from the `classdata` pack
 
 
 ```r
-devtools::install_github("heike/classdata")
+remotes::install_github("heike/classdata")
 ```
 
 
@@ -91,6 +89,7 @@ class: inverse
 
 
 - What other variable(s) might be associated with happiness? Plot it.
+
 - Submit your code in Canvas for one point of extra credit.
 
 ---
@@ -138,26 +137,19 @@ happy %&gt;% count(sex, degree)
 ```
 
 ```
-## Warning: Factor `degree` contains implicit NA, consider using
-## `forcats::fct_explicit_na`
-```
-
-```
-## # A tibble: 12 x 3
-##    sex    degree             n
-##    &lt;fct&gt;  &lt;fct&gt;          &lt;int&gt;
-##  1 female lt high school  7500
-##  2 female high school    18419
-##  3 female junior college  2047
-##  4 female bachelor        4731
-##  5 female graduate        2112
-##  6 female &lt;NA&gt;              95
-##  7 male   lt high school  5825
-##  8 male   high school    13598
-##  9 male   junior college  1425
-## 10 male   bachelor        4279
-## 11 male   graduate        2357
-## 12 male   &lt;NA&gt;              78
+##       sex         degree     n
+## 1  female lt high school  7500
+## 2  female    high school 18419
+## 3  female junior college  2047
+## 4  female       bachelor  4731
+## 5  female       graduate  2112
+## 6  female           &lt;NA&gt;    95
+## 7    male lt high school  5825
+## 8    male    high school 13598
+## 9    male junior college  1425
+## 10   male       bachelor  4279
+## 11   male       graduate  2357
+## 12   male           &lt;NA&gt;    78
 ```
 
 - `count()` doesn't introduce any grouping
@@ -168,6 +160,7 @@ happy %&gt;% count(sex, degree)
 # Grouping and Ungrouping
 
 - `ungroup` removes a grouping structure from a data set
+
 - necessary to make changes to a grouping variable (such as re-ordering or re-labelling)
     </textarea>
 <style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>

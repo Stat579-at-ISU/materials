@@ -60,7 +60,7 @@ class: inverse, center
 
 - explicit operators: `2*x` not `2x`,  `2^p` instead of `2p`
 
-- Applying a function is similar 
+- Applying a function is similar
 
 - Making a variable, use `&lt;-` or `=`
 
@@ -70,18 +70,18 @@ class: inverse, center
 
 ## Examples
 
-| Math   | Type          | Code           | 
+| Math   | Type          | Code           |
 |:--- |:-------------:|-------------:|
 |  `$$x = \frac{2}{3}$$` | Assignments      | `x &lt;- 2/3` |
 | `$$\sqrt{x}$$` | Functions  | `sqrt(x)` |
 | `$$y = \left( \begin{array}{c} 1\\4\\5\\2\end{array}\right)$$` | Vectors  | `y &lt;- c(1, 4, 5, 2) ` |
-| `$$y_2$$` | Indices | `y[2]`| 
+| `$$y_2$$` | Indices | `y[2]`|
 
 ---
 
 ## More Examples
 
-| Math   | Type          | Code           | 
+| Math   | Type          | Code           |
 |:--- |:-------------:|-------------:|
 | `$$\sum_{i=1}^{4} y_i$$` | Mathematical Operators | `sum(y)` |
 | `$$2y$$` |  | `2*y` |
@@ -89,7 +89,7 @@ class: inverse, center
 ---
 class: inverse
 
-## Your Turn (5 min) 
+## Your Turn (5 min)
 
 
 - Introduce vector `\(x\)` defined as `$$x = \left( \begin{array}{c} 4\\1\\3\\9\end{array}\right)$$`
@@ -97,13 +97,13 @@ class: inverse
 - Introduce vector `\(y\)` defined as  `$$y = \left( \begin{array}{c} 1\\2\\3\\5\end{array}\right)$$`
 
 
-- Calculate the Euclidean distance between the two vectors `\(x\)` and `\(y\)`, defined as 
+- Calculate the Euclidean distance between the two vectors `\(x\)` and `\(y\)`, defined as
 
 `$$d = \sqrt{\sum_{i=1}^4 (x_i - y_i)^2}$$`
 
 ---
 
-## Vocabulary 
+## Vocabulary
 
 - What verbs (=functions) do you need to know?
 
@@ -136,7 +136,7 @@ If you want to know what a specific `command` is doing:
 ```r
 ?command
 
-help("command") 
+help("command")
 
 help.search("command")
 
@@ -161,12 +161,12 @@ Quits out of the console
 
 - Some R packages have in-built datasets
 
-- For this class, there is an R package available on github 
+- For this class, there is an R package available on github
 
 - Installing/Updating `classdata` package (once every so often):
 
 ```r
-devtools::install_github("heike/classdata")
+remotes::install_github("heike/classdata")
 ```
 
 - Make the data available (every time you start R):
@@ -178,7 +178,7 @@ library(classdata)
 
 ---
 class: inverse
-## Your Turn (5 min) 
+## Your Turn (5 min)
 
 
 - Install the package `classdata` on your machine &lt;br&gt;
@@ -277,7 +277,7 @@ Summaries of two variables:&lt;br&gt;
 
 ---
 class: inverse
-## Your turn 
+## Your turn
 
 
 - Look at the first 10 data records of the `fbi` data
@@ -288,8 +288,8 @@ class: inverse
 
 
 ---
-class: inverse 
-## Your turn - practice to ask questions 
+class: inverse
+## Your turn - practice to ask questions
 
 
 Write down questions that you could answer with this data 4 minutes by yourself, then pair up for another 3 minutes, and we'll write ideas on the board

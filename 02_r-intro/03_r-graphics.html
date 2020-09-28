@@ -41,11 +41,11 @@ Load libraries:
 
 
 ```r
-library(ggplot2) 
+library(ggplot2)
 # not found? run install.packages("ggplot2")
 
-library(classdata) 
-# not found? run devtools::install_github("heike/classdata")
+library(classdata)
+# not found? run remotes::install_github("heike/classdata")
 ```
 
 ---
@@ -69,7 +69,7 @@ ggplot(aes(x = Year, y = Murder), data=fbiwide) +
 
 - `facet_grid` has formula specification: `rows ~ cols`
 
-- `facet_wrap` has specification `~ variables` 
+- `facet_wrap` has specification `~ variables`
 
 - multiple variables (in either specification) are included in form of a sum, i.e. `rowvar1 + rowvar2 ~ colvar1+ colvar2`
 
@@ -77,7 +77,7 @@ ggplot(aes(x = Year, y = Murder), data=fbiwide) +
 
 ---
 class: inverse
-## Your turn 
+## Your turn
 
 Use the `fbiwide` data from the package `classdata` for this your turn.
 
@@ -122,7 +122,7 @@ Use the `fbiwide` data from the package `classdata` for this your turn.
 
 ```r
 ggplot(data = fbi, aes(x = Type, y = log10(Count))) +
-  geom_boxplot() + 
+  geom_boxplot() +
   coord_flip()
 ```
 
@@ -136,12 +136,12 @@ ggplot(data = fbi, aes(x = Type, y = log10(Count))) +
 
 ---
 class: inverse
-## Your turn 
+## Your turn
 
 
 - Using ggplot2, draw side-by-side boxplots of the number of robberies by state. Use a log transformation on y and compare results.
 
-- **Stretch goal:** Compare rates of robberies by state, i.e. adjust robberies by the state population. Then plot side-by-side boxplots. 
+- **Stretch goal:** Compare rates of robberies by state, i.e. adjust robberies by the state population. Then plot side-by-side boxplots.
 
 ---
 
@@ -161,11 +161,11 @@ class: inverse
 
 ## Univariate plots
 
-Histograms: 
+Histograms:
 
 
 ```r
-ggplot(fbiwide, aes(x = Motor.vehicle.theft)) + 
+ggplot(fbiwide, aes(x = Motor.vehicle.theft)) +
   geom_histogram(binwidth=5000) +
   ggtitle("binwidth = 5000")
 ```
@@ -176,11 +176,11 @@ ggplot(fbiwide, aes(x = Motor.vehicle.theft)) +
 
 ## Univariate plots
 
-Histograms: 
+Histograms:
 
 
 ```r
-ggplot(fbiwide, aes(x = Motor.vehicle.theft)) + 
+ggplot(fbiwide, aes(x = Motor.vehicle.theft)) +
   geom_histogram(binwidth=1000) +
   ggtitle("binwidth = 1000")
 ```
@@ -194,7 +194,7 @@ Always change the bin width! There is no perfect bin width, but a lot of differe
 
 
 ```r
-ggplot(fbi, aes(x = Type)) + 
+ggplot(fbi, aes(x = Type)) +
   geom_bar(aes(weight= Count)) +
   coord_flip()
 ```
@@ -211,7 +211,7 @@ A weighted barchart has an additional numeric variable `\(W\)` of weights `\(w_1
 
 Mathematically, both barcharts are a visualization of a set of tuples of the form `\((C_k, y_k)\)`, where for `\(1 \ge k \ge K\)`:
 
-regular barchart: 
+regular barchart:
 `$$y_k = \sum_{i=1}^n I{(x_i = C_k)}$$`
 
 Weighted barchart:
@@ -237,12 +237,12 @@ In a barchart, choose the order of the categories consciously (later)
 
 ---
 class: inverse
-## Your turn 
+## Your turn
 
 
-- Use the `fbi` data set to draw a barchart of the variable `Violent Crime`. Make the height of the bars dependent on the number of reports (use `weight`). Then facet by type (does the result match your expectation? good! get rid of facetting). Color bars by `Type`. 
+- Use the `fbi` data set to draw a barchart of the variable `Violent Crime`. Make the height of the bars dependent on the number of reports (use `weight`). Then facet by type (does the result match your expectation? good! get rid of facetting). Color bars by `Type`.
 
-- Use the `fbi` data set to draw a histogram of the number of reports. Facet by type, make sure to use individual scales for the panels. 
+- Use the `fbi` data set to draw a histogram of the number of reports. Facet by type, make sure to use individual scales for the panels.
 
 ---
 
@@ -252,7 +252,7 @@ class: inverse
 
 - RStudio cheat sheet for [ggplot2](https://www.rstudio.com/wp-content/uploads/2015/03/ggplot2-cheatsheet.pdf)
 
-- ggplot2 mailing list: 
+- ggplot2 mailing list:
 https://groups.google.com/forum/?fromgroups#!forum/ggplot2
     </textarea>
 <style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>

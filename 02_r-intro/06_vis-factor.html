@@ -34,7 +34,7 @@ Only factor variables can be mapped to `fill`
 
 ---
 
-# Example: 
+# Example:
 
 
 
@@ -48,13 +48,13 @@ ggplot(fbi, aes(x = Type, fill=Year)) + geom_bar() # no color
 
 ---
 
-# Example (cont'd) 
+# Example (cont'd)
 
 Not sensible, but the colors show up:
 
 
 ```r
-ggplot(fbi, aes(x = Type, fill=factor(Year))) + geom_bar() 
+ggplot(fbi, aes(x = Type, fill=factor(Year))) + geom_bar()
 ```
 
 ![](06_vis-factor_files/figure-html/unnamed-chunk-2-1.png)&lt;!-- --&gt;
@@ -97,7 +97,7 @@ ggplot(titanic, aes(x = Survived)) +
 ![](06_vis-factor_files/figure-html/unnamed-chunk-4-1.png)&lt;!-- --&gt;
 
 ```r
-ggplot(titanic, aes(x = Sex)) + 
+ggplot(titanic, aes(x = Sex)) +
   geom_bar()
 ```
 
@@ -107,14 +107,14 @@ ggplot(titanic, aes(x = Sex)) +
 .pull-right[
 
 ```r
-ggplot(titanic, aes(x = Class)) + 
+ggplot(titanic, aes(x = Class)) +
   geom_bar()
 ```
 
 ![](06_vis-factor_files/figure-html/unnamed-chunk-5-1.png)&lt;!-- --&gt;
 
 ```r
-ggplot(titanic, aes(x = Age)) + 
+ggplot(titanic, aes(x = Age)) +
   geom_bar()
 ```
 
@@ -128,16 +128,16 @@ ggplot(titanic, aes(x = Age)) +
 .pull-left[
 
 ```r
-ggplot(titanic, aes(x = Survived, 
-                    fill=Survived)) + 
+ggplot(titanic, aes(x = Survived,
+                    fill=Survived)) +
   geom_bar(position="fill")
 ```
 
 ![](06_vis-factor_files/figure-html/unnamed-chunk-6-1.png)&lt;!-- --&gt;
 
 ```r
-ggplot(titanic, aes(x = Sex, 
-                    fill=Survived)) + 
+ggplot(titanic, aes(x = Sex,
+                    fill=Survived)) +
   geom_bar(position="fill")
 ```
 
@@ -147,16 +147,16 @@ ggplot(titanic, aes(x = Sex,
 .pull-right[
 
 ```r
-ggplot(titanic, aes(x = Class, 
-                    fill=Survived)) + 
+ggplot(titanic, aes(x = Class,
+                    fill=Survived)) +
   geom_bar(position="fill")
 ```
 
 ![](06_vis-factor_files/figure-html/unnamed-chunk-7-1.png)&lt;!-- --&gt;
 
 ```r
-ggplot(titanic, aes(x = Age, 
-                    fill=Survived)) + 
+ggplot(titanic, aes(x = Age,
+                    fill=Survived)) +
   geom_bar(position = "fill")
 ```
 
@@ -178,7 +178,7 @@ ggplot(titanic, aes(x = Age,
 
 ```r
 library(ggmosaic)
-ggplot(data = titanic)  + 
+ggplot(data = titanic)  +
   geom_mosaic(aes(x = product(Sex), fill=Survived, weight=1)) +
   facet_grid(Age~Class)
 ```
@@ -187,10 +187,10 @@ ggplot(data = titanic)  +
 
 ---
 class: inverse
-# Your turn 
+# Your turn
 
 
-For this your turn use the `titanic` object from the `classdata` package. (you might have to update the package using the command `devtools::install_github("heike/classdata")`) 
+For this your turn use the `titanic` object from the `classdata` package. (you might have to update the package using the command `remotes::install_github("heike/classdata")`)
 
 - Draw a barchart of Gender. Interpret.
 

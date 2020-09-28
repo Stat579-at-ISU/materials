@@ -1,7 +1,6 @@
 ---
 title: "dplyr examples: mutate + group_by"
 author: "Heike Hofmann"
-date: "`r Sys.Date()`"
 output:
   xaringan::moon_reader:
     lib_dir: libs
@@ -23,7 +22,7 @@ class: inverse, middle
 
 `fbi` data included in the `classdata` package
 
-upgrade the package: `devtools::install_github("heike/classdata")`
+upgrade the package: `remotes::install_github("heike/classdata")`
 
 ```{r, message=FALSE}
 library(tidyverse)

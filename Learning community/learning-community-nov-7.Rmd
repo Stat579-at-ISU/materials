@@ -45,7 +45,7 @@ class: inverse, middle, center
 * __Frustrating__: Flexibility comes at a cost (easy to shoot yourself in the foot!).
 
 ```{r eval=FALSE}
-# devtools::install_github("metacran/crandb")
+# remotes::install_github("metacran/crandb")
 pkgs <- crandb::list_packages(limit = 999999)
 length(pkgs)
 [1] 13430

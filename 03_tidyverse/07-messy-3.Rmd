@@ -113,7 +113,7 @@ Splitting into separate datasets:
 The-Numbers website publishes [weekly charts](http://www.the-numbers.com/weekend-box-office-chart) of the gross income of all movies playing across the US. A set of (somewhat) cleaned data called `box` with movies for the last five years is available in the `classdata` package.
 
 ```{r, warning=FALSE, message=FALSE}
-# devtools::install_github("heike/classdata")
+# remotes::install_github("heike/classdata")
 library(classdata)
 head(box, 4)
 ```

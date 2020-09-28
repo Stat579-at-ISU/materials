@@ -36,7 +36,7 @@ library(ggplot2)
 # not found? run install.packages("ggplot2")
 
 library(classdata) 
-# not found? run devtools::install_github("heike/classdata")
+# not found? run remotes::install_github("heike/classdata")
 ```
 
 ---

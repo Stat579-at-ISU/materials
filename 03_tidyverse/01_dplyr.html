@@ -4,7 +4,6 @@
     <title>Intro to the tidyverse</title>
     <meta charset="utf-8" />
     <meta name="author" content="Heike Hofmann" />
-    <meta name="date" content="2019-09-24" />
     <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
     <link href="libs/remark-css-0.0.1/default-fonts.css" rel="stylesheet" />
   </head>
@@ -14,7 +13,6 @@ class: center, middle, inverse, title-slide
 
 # Intro to the tidyverse
 ### Heike Hofmann
-### 2019-09-24
 
 ---
 
@@ -204,12 +202,12 @@ fbi %&gt;% arrange(desc(Year), Type, desc(Count)) %&gt;% head()
 
 ```
 ##        State Abb Year Population               Type  Count Violent.crime
-## 1 California  CA 2017   39536653 Aggravated.assault 104454          TRUE
-## 2      Texas  TX 2017   28304596 Aggravated.assault  76089          TRUE
-## 3    Florida  FL 2017   20984400 Aggravated.assault  58031          TRUE
-## 4   New York  NY 2017   19849399 Aggravated.assault  43819          TRUE
-## 5  Tennessee  TN 2017    6715984 Aggravated.assault  32432          TRUE
-## 6   Illinois  IL 2017   12802023 Aggravated.assault  32060          TRUE
+## 1 California  CA 2018   39557045 Aggravated.assault 105412          TRUE
+## 2      Texas  TX 2018   28701845 Aggravated.assault  73656          TRUE
+## 3    Florida  FL 2018   21299325 Aggravated.assault  55551          TRUE
+## 4   New York  NY 2018   19542209 Aggravated.assault  43171          TRUE
+## 5  Tennessee  TN 2018    6770010 Aggravated.assault  31717          TRUE
+## 6   Michigan  MI 2018    9995915 Aggravated.assault  31021          TRUE
 ```
 
 ---
@@ -250,12 +248,12 @@ fbi %&gt;% arrange(desc(Year), Type, desc(Count)) %&gt;%
 
 ```
 ##                 Type  Count      State Year
-## 1 Aggravated.assault 104454 California 2017
-## 2 Aggravated.assault  76089      Texas 2017
-## 3 Aggravated.assault  58031    Florida 2017
-## 4 Aggravated.assault  43819   New York 2017
-## 5 Aggravated.assault  32432  Tennessee 2017
-## 6 Aggravated.assault  32060   Illinois 2017
+## 1 Aggravated.assault 105412 California 2018
+## 2 Aggravated.assault  73656      Texas 2018
+## 3 Aggravated.assault  55551    Florida 2018
+## 4 Aggravated.assault  43171   New York 2018
+## 5 Aggravated.assault  31717  Tennessee 2018
+## 6 Aggravated.assault  31021   Michigan 2018
 ```
 
 ---
@@ -300,8 +298,8 @@ fbi %&gt;%
 ```
 
 ```
-##   mean_rate  sd_rate
-## 1  397.9617 612.8635
+##   mean_rate sd_rate
+## 1  395.5483 609.999
 ```
 
 ---
@@ -340,17 +338,21 @@ fbi %&gt;%
 ```
 
 ```
+## `summarise()` ungrouping output (override with `.groups` argument)
+```
+
+```
 ## # A tibble: 8 x 3
 ##   Type                                 mean_rate sd_rate
 ##   &lt;fct&gt;                                    &lt;dbl&gt;   &lt;dbl&gt;
-## 1 Aggravated.assault                      167.    113.  
-## 2 Burglary                                630.    311.  
-## 3 Larceny.theft                          1657.    626.  
+## 1 Aggravated.assault                      167.    112.  
+## 2 Burglary                                623.    312.  
+## 3 Larceny.theft                          1648.    626.  
 ## 4 Legacy.rape                              20.2    10.8 
-## 5 Motor.vehicle.theft                     244.    158.  
-## 6 Murder.and.nonnegligent.Manslaughter      4.60    4.23
-## 7 Rape                                     29.6    12.3 
-## 8 Robbery                                  88.5   103.
+## 5 Motor.vehicle.theft                     243.    157.  
+## 6 Murder.and.nonnegligent.Manslaughter      4.58    4.22
+## 7 Rape                                     30.1    12.9 
+## 8 Robbery                                  87.8   102.
 ```
 
 ---
