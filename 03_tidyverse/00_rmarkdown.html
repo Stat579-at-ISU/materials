@@ -27,7 +27,62 @@ Strategies:
 
 - don't install packages in RMarkdown files
 
-- file paths ...
+- file paths ... 
+
+---
+
+# File Paths
+
+- Keeping track of file paths is one of the reasons we use projects in RStudio
+
+- every R session has a **working directory** 
+
+- check and set working directories with `getwd()` and `setwd()`
+
+- Opening an R project automatically sets the working directory to the folder of the project
+
+--
+
+- *When knitting, RMarkdown files set the working directory to the folder they are located in.*
+
+---
+
+# Local and global file paths
+
+- global or absolute file paths consist of the path from the root of the machine "/" to a file or folder:
+
+    - `"/Users/heike/Documents/Teaching/stat 585/Spring 2019/materials-2019/09_packages/01_r-packages.html"`
+
+    - `"C://Users/hofmann/..."`
+
+- local or relative file paths start from 'here' `.` and describe how to get to 'there'
+
+    - `"./data/structures.csv"`
+
+    - `"data/structures.csv"`
+    
+- Windows machines use `\\` for `/`, but understand correctly when you use `/`    
+
+- `..` means: go up one level in the hierarchy from 'here', i.e. `../data` describes a data folder that's contained in the same folder as the working directory
+
+--
+
+**Don't use global file paths in any of your scripts - your collaborators will not have the same folder structure, and your future self might move a folder**
+
+---
+class: inverse
+# Your Turn
+
+
+1.  Use `file.choose()` to pick a data file of your choice on your machine. `file.choose` returns an **absolute file path**.
+
+2. Use this absolute path to read the data file. 
+
+3. Check your current working directory with `setwd()`. This also returns an absolute path.
+
+4. Compare the paths for the working directory and the data file to work out the relative file path. 
+
+5. Use the relative file path to read the data file and make sure that you get the same result.
     </textarea>
 <style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
