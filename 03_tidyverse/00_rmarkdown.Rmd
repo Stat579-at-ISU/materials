@@ -1,0 +1,23 @@
+---
+title: "Debugging RMarkdown"
+author: "Heike Hofmann"
+output:
+  xaringan::moon_reader:
+    lib_dir: libs
+    nature:
+      highlightStyle: github
+      highlightLines: true
+      countIncrementalSlides: false
+---
+
+# Finding bugs in RMarkdown
+
+- is frustrating and hard!
+
+Strategies:
+
+- restart R session and run all your code: this will help identify packages that are loaded in your working environment but not called in the RMarkdown file. 
+
+- don't install packages in RMarkdown files
+
+- file paths ... 
