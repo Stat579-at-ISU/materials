@@ -4,7 +4,6 @@
     <title>Reshaping data</title>
     <meta charset="utf-8" />
     <meta name="author" content="Heike Hofmann" />
-    <meta name="date" content="2019-10-21" />
     <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
     <link href="libs/remark-css-0.0.1/default-fonts.css" rel="stylesheet" />
   </head>
@@ -14,7 +13,6 @@ class: center, middle, inverse, title-slide
 
 # Reshaping data
 ### Heike Hofmann
-### 2019-10-21
 
 ---
 
@@ -223,27 +221,6 @@ ffm
 
 
 ```r
-ffm %&gt;% spread(key = rep, value = score)
-```
-
-```
-## # A tibble: 1,740 x 6
-##    time  treatment subject scale     `1`   `2`
-##    &lt;fct&gt; &lt;fct&gt;     &lt;fct&gt;   &lt;chr&gt;   &lt;dbl&gt; &lt;dbl&gt;
-##  1 1     1         3       buttery   0     0  
-##  2 1     1         3       grassy    0     0  
-##  3 1     1         3       painty    5.5   0  
-##  4 1     1         3       potato    2.9  14  
-##  5 1     1         3       rancid    0     1.1
-##  6 1     1         10      buttery   6.4   5.9
-##  7 1     1         10      grassy    0     2.9
-##  8 1     1         10      painty    0     0  
-##  9 1     1         10      potato   11     9.9
-## 10 1     1         10      rancid    0     2.2
-## # … with 1,730 more rows
-```
-
-```r
 ffm %&gt;% pivot_wider(names_from = rep, values_from = score)
 ```
 
@@ -261,6 +238,27 @@ ffm %&gt;% pivot_wider(names_from = rep, values_from = score)
 ##  8 1     1         10      grassy    0     2.9
 ##  9 1     1         10      rancid    0     2.2
 ## 10 1     1         10      painty    0     0  
+## # … with 1,730 more rows
+```
+
+```r
+ffm %&gt;% spread(key = rep, value = score)
+```
+
+```
+## # A tibble: 1,740 x 6
+##    time  treatment subject scale     `1`   `2`
+##    &lt;fct&gt; &lt;fct&gt;     &lt;fct&gt;   &lt;chr&gt;   &lt;dbl&gt; &lt;dbl&gt;
+##  1 1     1         3       buttery   0     0  
+##  2 1     1         3       grassy    0     0  
+##  3 1     1         3       painty    5.5   0  
+##  4 1     1         3       potato    2.9  14  
+##  5 1     1         3       rancid    0     1.1
+##  6 1     1         10      buttery   6.4   5.9
+##  7 1     1         10      grassy    0     2.9
+##  8 1     1         10      painty    0     0  
+##  9 1     1         10      potato   11     9.9
+## 10 1     1         10      rancid    0     2.2
 ## # … with 1,730 more rows
 ```
 

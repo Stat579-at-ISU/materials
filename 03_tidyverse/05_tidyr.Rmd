@@ -1,7 +1,6 @@
 ---
 title: "Reshaping data"
 author: "Heike Hofmann"
-date: "`r Sys.Date()`"
 output:
   xaringan::moon_reader:
     lib_dir: libs
@@ -176,8 +175,8 @@ ffm
 # Spread/Pivot to wide
 
 ```{r}
-ffm %>% spread(key = rep, value = score)
 ffm %>% pivot_wider(names_from = rep, values_from = score)
+ffm %>% spread(key = rep, value = score)
 ```
 
 ---
