@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+  <head>
+    <title>Reshaping data: an example</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Heike Hofmann" />
+    <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
+    <link href="libs/remark-css-0.0.1/default-fonts.css" rel="stylesheet" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+# Reshaping data: an example
+### Heike Hofmann
+
+---
+
+class: middle, inverse, center
+# Attention: possibly sensitive
+
+---
+class: middle, inverse, center
+# Daily covid testing at Iowa State
+
+
+
+---
+
+# The ISU website
+
+ISU's public health website at https://asqk.ehs.iastate.edu/coviddashboard/TestingUpdateDaily/IsuTestingUpdateDashboardDaily
+is updated three times a week. 
+
+
+```r
+library(rvest)
+url &lt;- "https://asqk.ehs.iastate.edu/coviddashboard/TestingUpdateDaily/IsuTestingUpdateDashboardDaily"
+root &lt;- read_html(url)
+tables &lt;- root %&gt;% html_table()
+tables[[1]] %&gt;% head()
+```
+
+```
+##   Testing Date    Employee Positive    Employee Negative     Student Positive
+## 1        10/20                    0                   14                    2
+## 2        10/19                    3                  102                    6
+## 3        10/18 No testing conducted No testing conducted No testing conducted
+## 4        10/17                    0                    5                    1
+## 5        10/16                    2                    6                    2
+## 6        10/15                    1                   10                    3
+##       Student Negative Total Tested Positive     Percent Positive
+## 1                   76                     2                   2%
+## 2                  376                     9                   1%
+## 3 No testing conducted  No testing conducted No testing conducted
+## 4                   13                     1                   5%
+## 5                   31                     4                   9%
+## 6                   59                     4                   5%
+##   Total Tested Negative     Percent Negative         Total Tested
+## 1                    90                  98%                   92
+## 2                   478                  99%                  487
+## 3  No testing conducted No testing conducted No testing conducted
+## 4                    18                  95%                   19
+## 5                    37                  91%                   41
+## 6                    69                  95%                   73
+```
+
+---
+
+# First overview
+
+
+```r
+testing &lt;- tables[[1]]
+testing %&gt;% str()
+```
+
+```
+## 'data.frame':	65 obs. of  10 variables:
+##  $ Testing Date         : chr  "10/20" "10/19" "10/18" "10/17" ...
+##  $ Employee Positive    : chr  "0" "3" "No testing conducted" "0" ...
+##  $ Employee Negative    : chr  "14" "102" "No testing conducted" "5" ...
+##  $ Student Positive     : chr  "2" "6" "No testing conducted" "1" ...
+##  $ Student Negative     : chr  "76" "376" "No testing conducted" "13" ...
+##  $ Total Tested Positive: chr  "2" "9" "No testing conducted" "1" ...
+##  $ Percent Positive     : chr  "2%" "1%" "No testing conducted" "5%" ...
+##  $ Total Tested Negative: chr  "90" "478" "No testing conducted" "18" ...
+##  $ Percent Negative     : chr  "98%" "99%" "No testing conducted" "95%" ...
+##  $ Total Tested         : chr  "92" "487" "No testing conducted" "19" ...
+```
+
+---
+
+# Basic cleaning
+
+
+```r
+testing &lt;- testing %&gt;% mutate(
+  `Employee Positive` = 
+    parse_number(`Employee Positive`, 
+                 na=c("NA", "No testing conducted")),
+  `Employee Negative` = 
+    parse_number(`Employee Negative`, na=c("NA", "No testing conducted")),
+  `Student Positive` = 
+    parse_number(`Student Positive`, na=c("NA", "No testing conducted")),
+  `Student Negative` = 
+    parse_number(`Student Negative`, na=c("NA", "No testing conducted")),
+  `Total Tested Positive` = 
+    parse_number(`Total Tested Positive`, na=c("NA", "No testing conducted")),
+  `Percent Positive` = 
+    parse_number(`Percent Positive`, na=c("NA", "No testing conducted")),
+  `Total Tested Negative` = 
+    parse_number(`Total Tested Negative`, na=c("NA", "No testing conducted")),
+  `Percent Negative` = 
+    parse_number(`Percent Negative`, na=c("NA", "No testing conducted")),
+  `Total Tested` = 
+    parse_number(`Total Tested`, na=c("NA", "No testing conducted"))
+)
+```
+
+---
+
+# Second overview
+
+
+```r
+testing %&gt;% str()
+```
+
+```
+## 'data.frame':	65 obs. of  10 variables:
+##  $ Testing Date         : chr  "10/20" "10/19" "10/18" "10/17" ...
+##  $ Employee Positive    : num  0 3 NA 0 2 1 0 0 1 NA ...
+##  $ Employee Negative    : num  14 102 NA 5 6 10 9 7 77 NA ...
+##  $ Student Positive     : num  2 6 NA 1 2 3 0 2 4 NA ...
+##  $ Student Negative     : num  76 376 NA 13 31 59 242 73 347 NA ...
+##  $ Total Tested Positive: num  2 9 NA 1 4 4 0 2 5 NA ...
+##  $ Percent Positive     : num  2 1 NA 5 9 5 0 2 1 NA ...
+##  $ Total Tested Negative: num  90 478 NA 18 37 69 251 80 424 NA ...
+##  $ Percent Negative     : num  98 99 NA 95 91 95 100 98 99 NA ...
+##  $ Total Tested         : num  92 487 NA 19 41 73 251 82 429 NA ...
+```
+
+The first five variables are raw data, the others are derived from the first five
+
+We keep the first five and re-derive the others when we have to:
+
+
+```r
+testing &lt;- testing %&gt;% select(1:5)
+```
+
+---
+
+# Bring into long form
+
+
+```r
+library(tidyr)
+tlong &lt;- testing %&gt;% 
+  pivot_longer(cols = 2:5, 
+               names_to = "Who Result", 
+               values_to = "Number")
+head(tlong)
+```
+
+```
+## # A tibble: 6 x 3
+##   `Testing Date` `Who Result`      Number
+##   &lt;chr&gt;          &lt;chr&gt;              &lt;dbl&gt;
+## 1 10/20          Employee Positive      0
+## 2 10/20          Employee Negative     14
+## 3 10/20          Student Positive       2
+## 4 10/20          Student Negative      76
+## 5 10/19          Employee Positive      3
+## 6 10/19          Employee Negative    102
+```
+
+---
+
+# Separate into two columns
+
+
+```r
+tlong &lt;- tlong %&gt;% 
+  separate(`Who Result`, 
+           sep= " ", 
+           into=c("Who", "Result"))
+head(tlong)
+```
+
+```
+## # A tibble: 6 x 4
+##   `Testing Date` Who      Result   Number
+##   &lt;chr&gt;          &lt;chr&gt;    &lt;chr&gt;     &lt;dbl&gt;
+## 1 10/20          Employee Positive      0
+## 2 10/20          Employee Negative     14
+## 3 10/20          Student  Positive      2
+## 4 10/20          Student  Negative     76
+## 5 10/19          Employee Positive      3
+## 6 10/19          Employee Negative    102
+```
+
+---
+
+# Make testing date a real date
+
+
+```r
+library(lubridate)
+tlong &lt;- tlong %&gt;% mutate(
+  `Testing Date` = paste0(`Testing Date`, "/2020"),
+  `Testing Date` = mdy(`Testing Date`)
+)
+head(tlong)
+```
+
+```
+## # A tibble: 6 x 4
+##   `Testing Date` Who      Result   Number
+##   &lt;date&gt;         &lt;chr&gt;    &lt;chr&gt;     &lt;dbl&gt;
+## 1 2020-10-20     Employee Positive      0
+## 2 2020-10-20     Employee Negative     14
+## 3 2020-10-20     Student  Positive      2
+## 4 2020-10-20     Student  Negative     76
+## 5 2020-10-19     Employee Positive      3
+## 6 2020-10-19     Employee Negative    102
+```
+---
+
+# Now we can analyze
+
+
+```r
+tlong %&gt;% 
+  ggplot(aes(x = `Testing Date`, weight=Number)) + 
+  geom_bar() + 
+  ylab("Number of total Tests")
+```
+
+![](05_tidyr-example_files/figure-html/unnamed-chunk-9-1.png)&lt;!-- --&gt;
+
+---
+
+
+```r
+tlong %&gt;% 
+  filter(Result == "Positive") %&gt;%
+  ggplot(aes(x = `Testing Date`, weight=Number)) + 
+  geom_bar() + 
+  ylab("Number of positive Tests")
+```
+
+![](05_tidyr-example_files/figure-html/unnamed-chunk-10-1.png)&lt;!-- --&gt;
+
+---
+
+
+```r
+tlong %&gt;% 
+  filter(Result == "Positive") %&gt;%
+  ggplot(aes(x = `Testing Date`, weight=Number)) + 
+  geom_bar() + 
+  ylab("Number of positive Tests") +
+  facet_wrap(~Who)
+```
+
+![](05_tidyr-example_files/figure-html/unnamed-chunk-11-1.png)&lt;!-- --&gt;
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "github",
+"highlightLines": true,
+"countIncrementalSlides": false
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();</script>
+
+<script>
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>

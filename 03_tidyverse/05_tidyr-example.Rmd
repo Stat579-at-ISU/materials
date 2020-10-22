@@ -1,0 +1,159 @@
+---
+title: "Reshaping data: an example"
+author: "Heike Hofmann"
+output:
+  xaringan::moon_reader:
+    lib_dir: libs
+    nature:
+      highlightStyle: github
+      highlightLines: true
+      countIncrementalSlides: false
+---
+class: middle, inverse, center
+# Attention: possibly sensitive
+
+---
+class: middle, inverse, center
+# Daily covid testing at Iowa State
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, fig.width=5, fig.height = 5)
+library(tidyverse)
+```
+
+---
+
+# The ISU website
+
+ISU's public health website at https://asqk.ehs.iastate.edu/coviddashboard/TestingUpdateDaily/IsuTestingUpdateDashboardDaily
+is updated three times a week. 
+
+```{r, message=FALSE}
+library(rvest)
+url <- "https://asqk.ehs.iastate.edu/coviddashboard/TestingUpdateDaily/IsuTestingUpdateDashboardDaily"
+root <- read_html(url)
+tables <- root %>% html_table()
+tables[[1]] %>% head()
+```
+
+---
+
+# First overview
+
+```{r}
+testing <- tables[[1]]
+testing %>% str()
+```
+
+---
+
+# Basic cleaning
+
+```{r}
+testing <- testing %>% mutate(
+  `Employee Positive` = 
+    parse_number(`Employee Positive`, 
+                 na=c("NA", "No testing conducted")),
+  `Employee Negative` = 
+    parse_number(`Employee Negative`, na=c("NA", "No testing conducted")),
+  `Student Positive` = 
+    parse_number(`Student Positive`, na=c("NA", "No testing conducted")),
+  `Student Negative` = 
+    parse_number(`Student Negative`, na=c("NA", "No testing conducted")),
+  `Total Tested Positive` = 
+    parse_number(`Total Tested Positive`, na=c("NA", "No testing conducted")),
+  `Percent Positive` = 
+    parse_number(`Percent Positive`, na=c("NA", "No testing conducted")),
+  `Total Tested Negative` = 
+    parse_number(`Total Tested Negative`, na=c("NA", "No testing conducted")),
+  `Percent Negative` = 
+    parse_number(`Percent Negative`, na=c("NA", "No testing conducted")),
+  `Total Tested` = 
+    parse_number(`Total Tested`, na=c("NA", "No testing conducted"))
+)
+```
+
+---
+
+# Second overview
+
+```{r}
+testing %>% str()
+```
+
+The first five variables are raw data, the others are derived from the first five
+
+We keep the first five and re-derive the others when we have to:
+
+```{r}
+testing <- testing %>% select(1:5)
+```
+
+---
+
+# Bring into long form
+
+```{r}
+library(tidyr)
+tlong <- testing %>% 
+  pivot_longer(cols = 2:5, 
+               names_to = "Who Result", 
+               values_to = "Number")
+head(tlong)
+```
+
+---
+
+# Separate into two columns
+
+```{r}
+tlong <- tlong %>% 
+  separate(`Who Result`, 
+           sep= " ", 
+           into=c("Who", "Result"))
+head(tlong)
+```
+
+---
+
+# Make testing date a real date
+
+```{r, message= FALSE}
+library(lubridate)
+tlong <- tlong %>% mutate(
+  `Testing Date` = paste0(`Testing Date`, "/2020"),
+  `Testing Date` = mdy(`Testing Date`)
+)
+head(tlong)
+```
+---
+
+# Now we can analyze
+
+```{r}
+tlong %>% 
+  ggplot(aes(x = `Testing Date`, weight=Number)) + 
+  geom_bar() + 
+  ylab("Number of total Tests")
+```
+
+---
+
+```{r}
+tlong %>% 
+  filter(Result == "Positive") %>%
+  ggplot(aes(x = `Testing Date`, weight=Number)) + 
+  geom_bar() + 
+  ylab("Number of positive Tests")
+```
+
+---
+
+```{r, fig.width = 6}
+tlong %>% 
+  filter(Result == "Positive") %>%
+  ggplot(aes(x = `Testing Date`, weight=Number)) + 
+  geom_bar() + 
+  ylab("Number of positive Tests") +
+  facet_wrap(~Who)
+```
