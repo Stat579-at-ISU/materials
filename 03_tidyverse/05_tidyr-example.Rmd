@@ -157,3 +157,11 @@ tlong %>%
   ylab("Number of positive Tests") +
   facet_wrap(~Who)
 ```
+
+---
+class: inverse
+# Your Turn
+
+- Calculate positivity rate (positive tests divided by total number of tests) per day and plot. Are the rates between students and employees different?
+
+- What other statistic would you be interested in?

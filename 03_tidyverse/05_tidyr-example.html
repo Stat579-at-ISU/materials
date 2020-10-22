@@ -51,17 +51,17 @@ tables[[1]] %&gt;% head()
 ## 6        10/15                    1                   10                    3
 ##       Student Negative Total Tested Positive     Percent Positive
 ## 1                   76                     2                   2%
-## 2                  376                     9                   1%
+## 2                  376                     9                   2%
 ## 3 No testing conducted  No testing conducted No testing conducted
 ## 4                   13                     1                   5%
-## 5                   31                     4                   9%
+## 5                   31                     4                  10%
 ## 6                   59                     4                   5%
 ##   Total Tested Negative     Percent Negative         Total Tested
 ## 1                    90                  98%                   92
-## 2                   478                  99%                  487
+## 2                   478                  98%                  487
 ## 3  No testing conducted No testing conducted No testing conducted
 ## 4                    18                  95%                   19
-## 5                    37                  91%                   41
+## 5                    37                  90%                   41
 ## 6                    69                  95%                   73
 ```
 
@@ -83,9 +83,9 @@ testing %&gt;% str()
 ##  $ Student Positive     : chr  "2" "6" "No testing conducted" "1" ...
 ##  $ Student Negative     : chr  "76" "376" "No testing conducted" "13" ...
 ##  $ Total Tested Positive: chr  "2" "9" "No testing conducted" "1" ...
-##  $ Percent Positive     : chr  "2%" "1%" "No testing conducted" "5%" ...
+##  $ Percent Positive     : chr  "2%" "2%" "No testing conducted" "5%" ...
 ##  $ Total Tested Negative: chr  "90" "478" "No testing conducted" "18" ...
-##  $ Percent Negative     : chr  "98%" "99%" "No testing conducted" "95%" ...
+##  $ Percent Negative     : chr  "98%" "98%" "No testing conducted" "95%" ...
 ##  $ Total Tested         : chr  "92" "487" "No testing conducted" "19" ...
 ```
 
@@ -135,9 +135,9 @@ testing %&gt;% str()
 ##  $ Student Positive     : num  2 6 NA 1 2 3 0 2 4 NA ...
 ##  $ Student Negative     : num  76 376 NA 13 31 59 242 73 347 NA ...
 ##  $ Total Tested Positive: num  2 9 NA 1 4 4 0 2 5 NA ...
-##  $ Percent Positive     : num  2 1 NA 5 9 5 0 2 1 NA ...
+##  $ Percent Positive     : num  2 2 NA 5 10 5 0 2 1 NA ...
 ##  $ Total Tested Negative: num  90 478 NA 18 37 69 251 80 424 NA ...
-##  $ Percent Negative     : num  98 99 NA 95 91 95 100 98 99 NA ...
+##  $ Percent Negative     : num  98 98 NA 95 90 95 100 98 99 NA ...
 ##  $ Total Tested         : num  92 487 NA 19 41 73 251 82 429 NA ...
 ```
 
@@ -266,6 +266,14 @@ tlong %&gt;%
 ```
 
 ![](05_tidyr-example_files/figure-html/unnamed-chunk-11-1.png)&lt;!-- --&gt;
+
+---
+class: inverse
+# Your Turn
+
+- Calculate positivity rate (positive tests divided by total number of tests) per day and plot. Are the rates between students and employees different?
+
+- What other statistic would you be interested in?
     </textarea>
 <style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
