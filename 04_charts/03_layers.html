@@ -4,7 +4,6 @@
     <title>Layers of plots</title>
     <meta charset="utf-8" />
     <meta name="author" content="Heike Hofmann" />
-    <meta name="date" content="2019-11-07" />
     <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
     <link href="libs/remark-css-0.0.1/default-fonts.css" rel="stylesheet" />
   </head>
@@ -14,7 +13,6 @@ class: center, middle, inverse, title-slide
 
 # Layers of plots
 ### Heike Hofmann
-### 2019-11-07
 
 ---
 
@@ -31,7 +29,6 @@ class: middle, inverse, center
 
 - layer specifications
 
-- 
 
 ---
 
@@ -52,46 +49,6 @@ A graphical representation (plot) consists of:
 6. **theme**: fine-tune display items, such as font and its size, color of background, margins, ...
 
 
----
-
-# Previous example
-
-
-```r
-data(nasa, package="GGally")
-nasa %&gt;% filter(id=="1-1") %&gt;%
-  ggplot(aes(x = time, y= temperature)) + geom_point()
-```
-
-![](03_layers_files/figure-html/unnamed-chunk-1-1.png)&lt;!-- --&gt;
-
----
-
-# Adding a line
-
-
-```r
-nasa %&gt;% filter(id=="1-1") %&gt;%
-  ggplot(aes(x = time, y= temperature)) + geom_point() +
-  geom_line()
-```
-
-![](03_layers_files/figure-html/unnamed-chunk-2-1.png)&lt;!-- --&gt;
-
----
-
-# Adding additional text
-
-
-```r
-nasa %&gt;% filter(id=="1-1") %&gt;%
-  ggplot(aes(x = time, y= temperature)) + geom_point() +
-  geom_line() +
-  geom_text(aes(label=id), colour="darkorange", 
-            data=nasa %&gt;% filter(id=="1-1", time==50))
-```
-
-![](03_layers_files/figure-html/unnamed-chunk-3-1.png)&lt;!-- --&gt;
 
 ---
 
@@ -109,32 +66,88 @@ each layer has several parts, the two most important are:
 
 ---
 
+# Wallabies
+
+
+```r
+wallabies &lt;- read.table("http://www.statsci.org/data/oz/wallaby.txt", sep="\t", header=TRUE)
+head(wallabies)
+```
+
+```
+##   Anim Sex Loca Leng Head Ear Arm Leg Pes Tail Weight Age
+## 1   45   1    G   NA  123  NA  59  69  59   93     NA  14
+## 2   45   1    G   NA  178  54  90 120  92  185     NA  28
+## 3   45   1    G   NA  250  92 130 210 142  307     NA  49
+## 4   45   1    G   NA  324 108 174 284 205  454    290  69
+## 5   45   1    G   NA  369 129 198 340 257  568    410  83
+## 6   45   1    G   NA  408 155 237 411 308  648    570  97
+```
+
+```r
+wallabies &lt;- wallabies %&gt;% mutate(
+  Anim = as.factor(Anim),
+  Sex = as.factor(Sex)
+)
+```
+
+---
+
+# Plot
+
+
+```r
+wallabies %&gt;% 
+  ggplot(aes(x = Age, y = Weight, colour=Sex)) +
+  geom_point()
+```
+
+```
+## Warning: Removed 260 rows containing missing values (geom_point).
+```
+
+![](03_layers_files/figure-html/unnamed-chunk-2-1.png)&lt;!-- --&gt;
+
+---
+
+# Adding additional text
+
+
+```r
+wallabies %&gt;% 
+  ggplot(aes(x = Age, y = Weight, colour=Sex)) +
+  geom_point() +
+  geom_text(aes(label = Anim), 
+            hjust = 0, nudge_x = 5,
+            data = wallabies %&gt;% filter(Age &gt; 450, Weight &lt; 30000))
+```
+
+```
+## Warning: Removed 260 rows containing missing values (geom_point).
+```
+
+![](03_layers_files/figure-html/unnamed-chunk-3-1.png)&lt;!-- --&gt;
+
+---
+
 # Default versus Layer Specification
 
 
 ```r
-nasa %&gt;% filter(id=="1-1") %&gt;%
-  ggplot(aes(x = time, y= temperature)) + geom_point() +
-  geom_line() +
-  geom_text(aes(label=id, colour=id),  
-            data=nasa %&gt;% filter(id=="1-1", time==50))
+wallabies %&gt;% 
+  ggplot(aes(x = Age, y = Weight)) +
+  geom_point(aes(colour=Sex)) +
+  geom_text(aes(label = Anim), 
+            hjust = 0, nudge_x = 5,
+            data = wallabies %&gt;% filter(Age &gt; 450, Weight &lt; 30000))
+```
+
+```
+## Warning: Removed 260 rows containing missing values (geom_point).
 ```
 
 ![](03_layers_files/figure-html/unnamed-chunk-4-1.png)&lt;!-- --&gt;
 
----
-
-
-
-```r
-nasa %&gt;% filter(id=="1-1") %&gt;%
-  ggplot(aes(x = time, y= temperature, colour=id)) + geom_point() +
-  geom_line() +
-  geom_text(aes(label=id), 
-            data=nasa %&gt;% filter(id=="1-1", time==50))
-```
-
-![](03_layers_files/figure-html/unnamed-chunk-5-1.png)&lt;!-- --&gt;
 
 
 ---
@@ -143,7 +156,7 @@ class: inverse
 
 - Load the `mojo` data from the package `classdata`,
 
-- Plot a time line for each movie: plot total gross by week that the movie is out (restrict the x-axis to a maximum of 30 weeks). 
+- Plot total gross by week that the movie is out (restrict the x-axis to a maximum of 30 weeks). 
 
 - Label the three movies with the highest total gross.
 

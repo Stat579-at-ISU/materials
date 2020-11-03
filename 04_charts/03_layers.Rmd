@@ -1,7 +1,6 @@
 ---
 title: "Layers of plots"
 author: "Heike Hofmann"
-date: "`r Sys.Date()`"
 output:
   xaringan::moon_reader:
     lib_dir: libs
@@ -27,7 +26,6 @@ library(lubridate)
 
 - layer specifications
 
-- 
 
 ---
 
@@ -48,37 +46,6 @@ A graphical representation (plot) consists of:
 6. **theme**: fine-tune display items, such as font and its size, color of background, margins, ...
 
 
----
-
-# Previous example
-
-```{r, fig.width=9.5, fig.height = 3}
-data(nasa, package="GGally")
-nasa %>% filter(id=="1-1") %>%
-  ggplot(aes(x = time, y= temperature)) + geom_point()
-```
-
----
-
-# Adding a line
-
-```{r, fig.width=9.5, fig.height = 3}
-nasa %>% filter(id=="1-1") %>%
-  ggplot(aes(x = time, y= temperature)) + geom_point() +
-  geom_line()
-```
-
----
-
-# Adding additional text
-
-```{r, fig.width=9.5, fig.height = 3}
-nasa %>% filter(id=="1-1") %>%
-  ggplot(aes(x = time, y= temperature)) + geom_point() +
-  geom_line() +
-  geom_text(aes(label=id), colour="darkorange", 
-            data=nasa %>% filter(id=="1-1", time==50))
-```
 
 ---
 
@@ -96,26 +63,53 @@ each layer has several parts, the two most important are:
 
 ---
 
-# Default versus Layer Specification
+# Wallabies
 
-```{r, fig.width=9.5, fig.height = 3, message = FALSE}
-nasa %>% filter(id=="1-1") %>%
-  ggplot(aes(x = time, y= temperature)) + geom_point() +
-  geom_line() +
-  geom_text(aes(label=id, colour=id),  
-            data=nasa %>% filter(id=="1-1", time==50))
+```{r, fig.width=9.5, fig.height = 3}
+wallabies <- read.table("http://www.statsci.org/data/oz/wallaby.txt", sep="\t", header=TRUE)
+head(wallabies)
+wallabies <- wallabies %>% mutate(
+  Anim = as.factor(Anim),
+  Sex = as.factor(Sex)
+)
 ```
 
 ---
 
+# Plot
+
+```{r, fig.width=9.5, fig.height = 3}
+wallabies %>% 
+  ggplot(aes(x = Age, y = Weight, colour=Sex)) +
+  geom_point()
+```
+
+---
+
+# Adding additional text
+
+```{r, fig.width=9.5, fig.height = 3}
+wallabies %>% 
+  ggplot(aes(x = Age, y = Weight, colour=Sex)) +
+  geom_point() +
+  geom_text(aes(label = Anim), 
+            hjust = 0, nudge_x = 5,
+            data = wallabies %>% filter(Age > 450, Weight < 30000))
+```
+
+---
+
+# Default versus Layer Specification
 
 ```{r, fig.width=9.5, fig.height = 3, message = FALSE}
-nasa %>% filter(id=="1-1") %>%
-  ggplot(aes(x = time, y= temperature, colour=id)) + geom_point() +
-  geom_line() +
-  geom_text(aes(label=id), 
-            data=nasa %>% filter(id=="1-1", time==50))
+wallabies %>% 
+  ggplot(aes(x = Age, y = Weight)) +
+  geom_point(aes(colour=Sex)) +
+  geom_text(aes(label = Anim), 
+            hjust = 0, nudge_x = 5,
+            data = wallabies %>% filter(Age > 450, Weight < 30000))
 ```
+
 
 
 ---
@@ -124,7 +118,7 @@ class: inverse
 
 - Load the `mojo` data from the package `classdata`,
 
-- Plot a time line for each movie: plot total gross by week that the movie is out (restrict the x-axis to a maximum of 30 weeks). 
+- Plot total gross by week that the movie is out (restrict the x-axis to a maximum of 30 weeks). 
 
 - Label the three movies with the highest total gross.
 
