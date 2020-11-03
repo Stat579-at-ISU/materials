@@ -1,7 +1,6 @@
 ---
-title: "Cleaning data: messy 4 "
+title: "Pulling data from different sources"
 author: "Heike Hofmann"
-date: "`r Sys.Date()`"
 output:
   xaringan::moon_reader:
     lib_dir: libs
@@ -50,10 +49,10 @@ The `Master` table includes names and other attributes for each player. <br>
 
 # Example: Hall of Fame
 
-Who was inducted in the Hall of Fame in 2017?
+Who was inducted in the Hall of Fame in 2018?
 
 ```{r warning = FALSE, fig.height = 3.5}
-HallOfFame %>% filter(yearID==2017) 
+HallOfFame %>% filter(yearID==2018) 
 ```
 
 ---
@@ -63,7 +62,7 @@ class: inverse
 
 For this your turn use the `HallOfFame` and `Master` data from the `Lahman` package 
 
-- Identify all players who were inducted in the Hall of Fame in 2017, by filtering the `Master` data for their player IDs. 
+- Identify all players who were inducted in the Hall of Fame in 2018, by filtering the `Master` data for their player IDs. 
 
 
 ---
@@ -139,7 +138,7 @@ class:inverse
 
 - Join (relevant pieces of) the `Master` data set and the `HallOfFame` data.
 
-- Find all Hall of Famers who were alive as of 2017.
+- Find all Hall of Famers who were alive as of 2018.
 
 - How many attempts at being inducted to the HoF does Sammy Sosa have already?
 

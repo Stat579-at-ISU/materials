@@ -1,7 +1,6 @@
 ---
-title: "Reshaping data with tidyr - Messy (2)"
+title: "Reshaping data with tidyr - working with separate and unite"
 author: "Heike Hofmann"
-date: "`r Sys.Date()`"
 output:
   xaringan::moon_reader:
     lib_dir: libs
@@ -11,7 +10,7 @@ output:
       countIncrementalSlides: false
 ---
 class: middle, inverse, center
-# Messy (2)
+# Separate and Unite
 
 
 ---

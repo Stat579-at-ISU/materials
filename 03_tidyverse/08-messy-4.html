@@ -1,10 +1,9 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
   <head>
-    <title>Cleaning data: messy 4</title>
+    <title>Pulling data from different sources</title>
     <meta charset="utf-8" />
     <meta name="author" content="Heike Hofmann" />
-    <meta name="date" content="2019-10-24" />
     <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
     <link href="libs/remark-css-0.0.1/default-fonts.css" rel="stylesheet" />
   </head>
@@ -12,9 +11,8 @@
     <textarea id="source">
 class: center, middle, inverse, title-slide
 
-# Cleaning data: messy 4
+# Pulling data from different sources
 ### Heike Hofmann
-### 2019-10-24
 
 ---
 
@@ -84,88 +82,50 @@ The `Master` table includes names and other attributes for each player. &lt;br&g
 
 # Example: Hall of Fame
 
-Who was inducted in the Hall of Fame in 2017?
+Who was inducted in the Hall of Fame in 2018?
 
 
 ```r
-HallOfFame %&gt;% filter(yearID==2017) 
+HallOfFame %&gt;% filter(yearID==2018) 
 ```
 
 ```
-##     playerID yearID  votedBy ballots needed votes inducted
-## 1  bagweje01   2017    BBWAA     442    332   381        Y
-## 2  raineti01   2017    BBWAA     442    332   380        Y
-## 3  rodriiv01   2017    BBWAA     442    332   336        Y
-## 4  hoffmtr01   2017    BBWAA     442    332   327        N
-## 5  guerrvl01   2017    BBWAA     442    332   317        N
-## 6  martied01   2017    BBWAA     442    332   259        N
-## 7  clemero02   2017    BBWAA     442    332   239        N
-## 8  bondsba01   2017    BBWAA     442    332   238        N
-## 9  mussimi01   2017    BBWAA     442    332   229        N
-## 10 schilcu01   2017    BBWAA     442    332   199        N
-## 11 smithle02   2017    BBWAA     442    332   151        N
-## 12 ramirma02   2017    BBWAA     442    332   105        N
-## 13 walkela01   2017    BBWAA     442    332    97        N
-## 14 mcgrifr01   2017    BBWAA     442    332    96        N
-## 15  kentje01   2017    BBWAA     442    332    74        N
-## 16 sheffga01   2017    BBWAA     442    332    59        N
-## 17 wagnebi02   2017    BBWAA     442    332    45        N
-## 18  sosasa01   2017    BBWAA     442    332    38        N
-## 19 posadjo01   2017    BBWAA     442    332    17        N
-## 20 ordonma01   2017    BBWAA     442    332     3        N
-## 21 renteed01   2017    BBWAA     442    332     2        N
-## 22 varitja01   2017    BBWAA     442    332     2        N
-## 23 wakefti01   2017    BBWAA     442    332     1        N
-## 24 blakeca01   2017    BBWAA     442    332     0        N
-## 25 burrepa01   2017    BBWAA     442    332     0        N
-## 26 cabreor01   2017    BBWAA     442    332     0        N
-## 27 camermi01   2017    BBWAA     442    332     0        N
-## 28  drewjd01   2017    BBWAA     442    332     0        N
-## 29 guillca01   2017    BBWAA     442    332     0        N
-## 30   leede02   2017    BBWAA     442    332     0        N
-## 31  morame01   2017    BBWAA     442    332     0        N
-## 32 rhodear01   2017    BBWAA     442    332     0        N
-## 33 sanchfr01   2017    BBWAA     442    332     0        N
-## 34 stairma01   2017    BBWAA     442    332     0        N
-## 35 seligbu99   2017 Veterans      NA     NA    NA        Y
-## 36 schurjo99   2017 Veterans      NA     NA    NA        Y
-##             category needed_note
-## 1             Player        &lt;NA&gt;
-## 2             Player        &lt;NA&gt;
-## 3             Player        &lt;NA&gt;
-## 4             Player        &lt;NA&gt;
-## 5             Player        &lt;NA&gt;
-## 6             Player        &lt;NA&gt;
-## 7             Player        &lt;NA&gt;
-## 8             Player        &lt;NA&gt;
-## 9             Player        &lt;NA&gt;
-## 10            Player        &lt;NA&gt;
-## 11            Player        &lt;NA&gt;
-## 12            Player        &lt;NA&gt;
-## 13            Player        &lt;NA&gt;
-## 14            Player        &lt;NA&gt;
-## 15            Player        &lt;NA&gt;
-## 16            Player        &lt;NA&gt;
-## 17            Player        &lt;NA&gt;
-## 18            Player        &lt;NA&gt;
-## 19            Player        &lt;NA&gt;
-## 20            Player        &lt;NA&gt;
-## 21            Player        &lt;NA&gt;
-## 22            Player        &lt;NA&gt;
-## 23            Player        &lt;NA&gt;
-## 24            Player        &lt;NA&gt;
-## 25            Player        &lt;NA&gt;
-## 26            Player        &lt;NA&gt;
-## 27            Player        &lt;NA&gt;
-## 28            Player        &lt;NA&gt;
-## 29            Player        &lt;NA&gt;
-## 30            Player        &lt;NA&gt;
-## 31            Player        &lt;NA&gt;
-## 32            Player        &lt;NA&gt;
-## 33            Player        &lt;NA&gt;
-## 34            Player        &lt;NA&gt;
-## 35 Pioneer/Executive        &lt;NA&gt;
-## 36 Pioneer/Executive        &lt;NA&gt;
+##     playerID yearID  votedBy ballots needed votes inducted category needed_note
+## 1  jonesch06   2018    BBWAA     422    317   410        Y   Player        &lt;NA&gt;
+## 2  guerrvl01   2018    BBWAA     422    317   392        Y   Player        &lt;NA&gt;
+## 3  thomeji01   2018    BBWAA     422    317   379        Y   Player        &lt;NA&gt;
+## 4  hoffmtr01   2018    BBWAA     422    317   337        Y   Player        &lt;NA&gt;
+## 5  martied01   2018    BBWAA     422    317   297        N   Player        &lt;NA&gt;
+## 6  mussimi01   2018    BBWAA     422    317   268        N   Player        &lt;NA&gt;
+## 7  clemero02   2018    BBWAA     422    317   242        N   Player        &lt;NA&gt;
+## 8  bondsba01   2018    BBWAA     422    317   238        N   Player        &lt;NA&gt;
+## 9  schilcu01   2018    BBWAA     422    317   216        N   Player        &lt;NA&gt;
+## 10 vizquom01   2018    BBWAA     422    317   156        N   Player        &lt;NA&gt;
+## 11 walkela01   2018    BBWAA     422    317   144        N   Player        &lt;NA&gt;
+## 12 mcgrifr01   2018    BBWAA     422    317    98        N   Player        &lt;NA&gt;
+## 13 ramirma02   2018    BBWAA     422    317    93        N   Player        &lt;NA&gt;
+## 14  kentje01   2018    BBWAA     422    317    61        N   Player        &lt;NA&gt;
+## 15 sheffga01   2018    BBWAA     422    317    47        N   Player        &lt;NA&gt;
+## 16 wagnebi02   2018    BBWAA     422    317    47        N   Player        &lt;NA&gt;
+## 17 rolensc01   2018    BBWAA     422    317    43        N   Player        &lt;NA&gt;
+## 18  sosasa01   2018    BBWAA     422    317    33        N   Player        &lt;NA&gt;
+## 19 jonesan01   2018    BBWAA     422    317    31        N   Player        &lt;NA&gt;
+## 20 moyerja01   2018    BBWAA     422    317    10        N   Player        &lt;NA&gt;
+## 21 santajo01   2018    BBWAA     422    317    10        N   Player        &lt;NA&gt;
+## 22 damonjo01   2018    BBWAA     422    317     8        N   Player        &lt;NA&gt;
+## 23 matsuhi01   2018    BBWAA     422    317     4        N   Player        &lt;NA&gt;
+## 24 carpech01   2018    BBWAA     422    317     2        N   Player        &lt;NA&gt;
+## 25  woodke02   2018    BBWAA     422    317     2        N   Player        &lt;NA&gt;
+## 26 hernali01   2018    BBWAA     422    317     1        N   Player        &lt;NA&gt;
+## 27   leeca01   2018    BBWAA     422    317     1        N   Player        &lt;NA&gt;
+## 28 hudsoor01   2018    BBWAA     422    317     0        N   Player        &lt;NA&gt;
+## 29  huffau01   2018    BBWAA     422    317     0        N   Player        &lt;NA&gt;
+## 30 isrinja01   2018    BBWAA     422    317     0        N   Player        &lt;NA&gt;
+## 31 lidgebr01   2018    BBWAA     422    317     0        N   Player        &lt;NA&gt;
+## 32 millwke01   2018    BBWAA     422    317     0        N   Player        &lt;NA&gt;
+## 33 zambrca01   2018    BBWAA     422    317     0        N   Player        &lt;NA&gt;
+## 34 morrija02   2018 Veterans      NA     NA    NA        Y   Player        &lt;NA&gt;
+## 35 trammal01   2018 Veterans      NA     NA    NA        Y   Player        &lt;NA&gt;
 ```
 
 ---
@@ -175,7 +135,7 @@ class: inverse
 
 For this your turn use the `HallOfFame` and `Master` data from the `Lahman` package 
 
-- Identify all players who were inducted in the Hall of Fame in 2017, by filtering the `Master` data for their player IDs. 
+- Identify all players who were inducted in the Hall of Fame in 2018, by filtering the `Master` data for their player IDs. 
 
 
 ---
@@ -310,7 +270,7 @@ class:inverse
 
 - Join (relevant pieces of) the `Master` data set and the `HallOfFame` data.
 
-- Find all Hall of Famers who were alive as of 2017.
+- Find all Hall of Famers who were alive as of 2018.
 
 - How many attempts at being inducted to the HoF does Sammy Sosa have already?
 
