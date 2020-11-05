@@ -43,26 +43,26 @@ tables[[1]] %&gt;% head()
 
 ```
 ##   Testing Date    Employee Positive    Employee Negative     Student Positive
-## 1        10/20                    0                   14                    2
-## 2        10/19                    3                  102                    6
-## 3        10/18 No testing conducted No testing conducted No testing conducted
-## 4        10/17                    0                    5                    1
-## 5        10/16                    2                    6                    2
-## 6        10/15                    1                   10                    3
+## 1        11/03                    2                   21                   53
+## 2        11/02                    3                   97                   54
+## 3        11/01 No testing conducted No testing conducted No testing conducted
+## 4        10/31                    0                    9                   10
+## 5        10/30                    1                   17                   15
+## 6        10/29                    1                   23                   20
 ##       Student Negative Total Tested Positive     Percent Positive
-## 1                   76                     2                   2%
-## 2                  376                     9                   2%
+## 1                  199                    55                  20%
+## 2                  423                    57                  10%
 ## 3 No testing conducted  No testing conducted No testing conducted
-## 4                   13                     1                   5%
-## 5                   31                     4                  10%
-## 6                   59                     4                   5%
+## 4                   34                    10                  19%
+## 5                   76                    16                  15%
+## 6                   97                    21                  15%
 ##   Total Tested Negative     Percent Negative         Total Tested
-## 1                    90                  98%                   92
-## 2                   478                  98%                  487
+## 1                   220                  80%                  275
+## 2                   520                  90%                  577
 ## 3  No testing conducted No testing conducted No testing conducted
-## 4                    18                  95%                   19
-## 5                    37                  90%                   41
-## 6                    69                  95%                   73
+## 4                    43                  81%                   53
+## 5                    93                  85%                  109
+## 6                   120                  85%                  141
 ```
 
 ---
@@ -76,17 +76,17 @@ testing %&gt;% str()
 ```
 
 ```
-## 'data.frame':	65 obs. of  10 variables:
-##  $ Testing Date         : chr  "10/20" "10/19" "10/18" "10/17" ...
-##  $ Employee Positive    : chr  "0" "3" "No testing conducted" "0" ...
-##  $ Employee Negative    : chr  "14" "102" "No testing conducted" "5" ...
-##  $ Student Positive     : chr  "2" "6" "No testing conducted" "1" ...
-##  $ Student Negative     : chr  "76" "376" "No testing conducted" "13" ...
-##  $ Total Tested Positive: chr  "2" "9" "No testing conducted" "1" ...
-##  $ Percent Positive     : chr  "2%" "2%" "No testing conducted" "5%" ...
-##  $ Total Tested Negative: chr  "90" "478" "No testing conducted" "18" ...
-##  $ Percent Negative     : chr  "98%" "98%" "No testing conducted" "95%" ...
-##  $ Total Tested         : chr  "92" "487" "No testing conducted" "19" ...
+## 'data.frame':	79 obs. of  10 variables:
+##  $ Testing Date         : chr  "11/03" "11/02" "11/01" "10/31" ...
+##  $ Employee Positive    : chr  "2" "3" "No testing conducted" "0" ...
+##  $ Employee Negative    : chr  "21" "97" "No testing conducted" "9" ...
+##  $ Student Positive     : chr  "53" "54" "No testing conducted" "10" ...
+##  $ Student Negative     : chr  "199" "423" "No testing conducted" "34" ...
+##  $ Total Tested Positive: chr  "55" "57" "No testing conducted" "10" ...
+##  $ Percent Positive     : chr  "20%" "10%" "No testing conducted" "19%" ...
+##  $ Total Tested Negative: chr  "220" "520" "No testing conducted" "43" ...
+##  $ Percent Negative     : chr  "80%" "90%" "No testing conducted" "81%" ...
+##  $ Total Tested         : chr  "275" "577" "No testing conducted" "53" ...
 ```
 
 ---
@@ -128,17 +128,17 @@ testing %&gt;% str()
 ```
 
 ```
-## 'data.frame':	65 obs. of  10 variables:
-##  $ Testing Date         : chr  "10/20" "10/19" "10/18" "10/17" ...
-##  $ Employee Positive    : num  0 3 NA 0 2 1 0 0 1 NA ...
-##  $ Employee Negative    : num  14 102 NA 5 6 10 9 7 77 NA ...
-##  $ Student Positive     : num  2 6 NA 1 2 3 0 2 4 NA ...
-##  $ Student Negative     : num  76 376 NA 13 31 59 242 73 347 NA ...
-##  $ Total Tested Positive: num  2 9 NA 1 4 4 0 2 5 NA ...
-##  $ Percent Positive     : num  2 2 NA 5 10 5 0 2 1 NA ...
-##  $ Total Tested Negative: num  90 478 NA 18 37 69 251 80 424 NA ...
-##  $ Percent Negative     : num  98 98 NA 95 90 95 100 98 99 NA ...
-##  $ Total Tested         : num  92 487 NA 19 41 73 251 82 429 NA ...
+## 'data.frame':	79 obs. of  10 variables:
+##  $ Testing Date         : chr  "11/03" "11/02" "11/01" "10/31" ...
+##  $ Employee Positive    : num  2 3 NA 0 1 1 1 4 2 NA ...
+##  $ Employee Negative    : num  21 97 NA 9 17 23 26 20 117 NA ...
+##  $ Student Positive     : num  53 54 NA 10 15 20 10 8 15 NA ...
+##  $ Student Negative     : num  199 423 NA 34 76 97 335 97 386 NA ...
+##  $ Total Tested Positive: num  55 57 NA 10 16 21 11 12 17 NA ...
+##  $ Percent Positive     : num  20 10 NA 19 15 15 3 9 3 NA ...
+##  $ Total Tested Negative: num  220 520 NA 43 93 120 361 117 503 NA ...
+##  $ Percent Negative     : num  80 90 NA 81 85 85 97 91 97 NA ...
+##  $ Total Tested         : num  275 577 NA 53 109 141 372 129 520 NA ...
 ```
 
 The first five variables are raw data, the others are derived from the first five
@@ -168,12 +168,12 @@ head(tlong)
 ## # A tibble: 6 x 3
 ##   `Testing Date` `Who Result`      Number
 ##   &lt;chr&gt;          &lt;chr&gt;              &lt;dbl&gt;
-## 1 10/20          Employee Positive      0
-## 2 10/20          Employee Negative     14
-## 3 10/20          Student Positive       2
-## 4 10/20          Student Negative      76
-## 5 10/19          Employee Positive      3
-## 6 10/19          Employee Negative    102
+## 1 11/03          Employee Positive      2
+## 2 11/03          Employee Negative     21
+## 3 11/03          Student Positive      53
+## 4 11/03          Student Negative     199
+## 5 11/02          Employee Positive      3
+## 6 11/02          Employee Negative     97
 ```
 
 ---
@@ -193,12 +193,12 @@ head(tlong)
 ## # A tibble: 6 x 4
 ##   `Testing Date` Who      Result   Number
 ##   &lt;chr&gt;          &lt;chr&gt;    &lt;chr&gt;     &lt;dbl&gt;
-## 1 10/20          Employee Positive      0
-## 2 10/20          Employee Negative     14
-## 3 10/20          Student  Positive      2
-## 4 10/20          Student  Negative     76
-## 5 10/19          Employee Positive      3
-## 6 10/19          Employee Negative    102
+## 1 11/03          Employee Positive      2
+## 2 11/03          Employee Negative     21
+## 3 11/03          Student  Positive     53
+## 4 11/03          Student  Negative    199
+## 5 11/02          Employee Positive      3
+## 6 11/02          Employee Negative     97
 ```
 
 ---
@@ -219,12 +219,12 @@ head(tlong)
 ## # A tibble: 6 x 4
 ##   `Testing Date` Who      Result   Number
 ##   &lt;date&gt;         &lt;chr&gt;    &lt;chr&gt;     &lt;dbl&gt;
-## 1 2020-10-20     Employee Positive      0
-## 2 2020-10-20     Employee Negative     14
-## 3 2020-10-20     Student  Positive      2
-## 4 2020-10-20     Student  Negative     76
-## 5 2020-10-19     Employee Positive      3
-## 6 2020-10-19     Employee Negative    102
+## 1 2020-11-03     Employee Positive      2
+## 2 2020-11-03     Employee Negative     21
+## 3 2020-11-03     Student  Positive     53
+## 4 2020-11-03     Student  Negative    199
+## 5 2020-11-02     Employee Positive      3
+## 6 2020-11-02     Employee Negative     97
 ```
 ---
 
