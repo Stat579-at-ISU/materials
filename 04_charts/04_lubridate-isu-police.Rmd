@@ -74,7 +74,7 @@ location <- docs %>% rvest::html_nodes(".log") %>%
   rvest::html_attr(name="href")
 
 tmp <- extract_tables(location)
-final <- do.call(rbind, tmp[-length(tmp)])
+final <- do.call(rbind, tmp)
 
 headers <- c('Case.Number', 'Classification', 'Date.Reported', 'Time.Reported', 
              'Earliest.Occurrence.Date', 'Earliest.Occurrence.Time',
