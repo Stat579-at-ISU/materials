@@ -1,0 +1,203 @@
+---
+title: "Dates and times"
+author: "Heike Hofmann"
+output:
+  xaringan::moon_reader:
+    lib_dir: libs
+    nature:
+      highlightStyle: github
+      highlightLines: true
+      countIncrementalSlides: false
+---
+class: middle, inverse, center
+# Working with date and time
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+library(lubridate)
+```
+
+
+---
+
+# `lubridate` package
+
+- package for working with dates and times
+
+- defines different classes of time: instants, periods, intervals, durations
+
+- defines converter and accessor functions, enables time calculus
+
+---
+
+# Converter functions and instants in time
+
+- time instants: one (absolute) moment in time, e.g. `now()`, `Jan-1-2000`
+
+- easy-to-use converter functions: 
+    - date: `ymd`, `mdy`, `dmy`, ...
+    - time: `hm`, `hms`, ...
+    - date & time: `ymd_hms`, `mdy_hm`, ...
+
+- order of letters determines how strings are parsed
+
+- separators are automatically determined, then assumed to be the same
+
+Example:
+```{r message=FALSE}
+mdy("11-10-2020")
+```
+
+---
+class: inverse
+# Your Turn 
+
+- Create date objects for today's date by typing the date in text format and converting it with one of the `lubridate` converter functions. 
+
+- Try different formats of writing the date and compare the end results.
+
+---
+
+# Example: ISU Police Crime Log
+
+```{r, eval = FALSE}
+# install java and run in terminal:
+#  sudo R CMD javareconf
+library(tabulizer)
+library(dplyr)
+library(ggplot2)
+url <- "https://www.police.iastate.edu/crime-log/"
+docs <- xml2::read_html(url)
+
+location <- docs %>% rvest::html_nodes(".log") %>%
+  rvest::html_attr(name="href")
+
+tmp <- extract_tables(location)
+final <- do.call(rbind, tmp[-length(tmp)])
+
+headers <- c('Case.Number', 'Classification', 'Date.Reported', 'Time.Reported', 
+             'Earliest.Occurrence.Date', 'Earliest.Occurrence.Time',
+             'Latest.Occurrence.Date', 'Latest.Occurrence.Time',
+             'General Location', 'Disposition')
+
+final <- data.frame(final)
+names(final) <- headers
+head(final)
+final <- final[-1,]
+write.csv(final, "Crime-log-Nov05.csv", row.names=FALSE)
+```
+
+
+---
+
+# Example: ISU Police Crime Log
+
+```{r, message=FALSE}
+url <- "https://raw.githubusercontent.com/Stat579-at-ISU/materials/master/04_charts/Crime-log-Nov05.csv"
+isu <- read.csv(url, stringsAsFactors = FALSE)
+str(isu)
+```
+
+---
+
+# Example: ISU Police Crime Log
+
+Convert date variables to actual dates:
+
+```{r}
+isu <- isu %>% mutate(
+  Date.Reported = mdy(Date.Reported),
+  Earliest.Occurrence.Date = mdy(Earliest.Occurrence.Date),
+  Latest.Occurrence.Date = mdy(Latest.Occurrence.Date)
+)
+
+summary(isu)
+```
+---
+
+# Example: ISU Police Crime Log
+
+Oct 11 has 8 incidences?
+
+```{r}
+isu %>% 
+  group_by(Date.Reported) %>%
+  summarize(n = n()) %>%
+  ggplot(aes(x = Date.Reported, y = n)) + geom_point()
+```
+
+---
+
+# Example: ISU Police Crime Log 
+
+What happened on Oct 11?
+
+```{r}
+isu %>% filter(Date.Reported== ymd("2020/10/11"))
+```
+
+What happened on Oct 10?
+
+ISU Cyclones beat Texas Tech 31 to 15 (at Jack Trice)
+
+---
+
+# Accessor functions
+
+
+- accessor functions: `year`, `month`, `week`, `wday`, `mday`, `yday`, `hour`, `minute`, ...
+
+- accessor functions can also be used for setting elements of date and time, e.g. `hour(x) <- 12`
+
+Examples:
+
+```{r}
+month(now())
+wday(now(), label = TRUE)
+```
+
+---
+class: inverse
+# Your Turn: ISU Police (cont'd)
+
+Use the `isu` data (download from class website or download directly) to answer the following questions:
+
+- How many incidences did ISU police report on Oct 10? Where did those occur?
+- Can you identify a  pattern for the week? Draw a barchart.
+- How many different Mondays, Tuesdays, Wednesdays ... are in the data?
+- On how many days were there no reports?
+
+Challenge: What is the average number of incidences? Hint look into `?tiydr::complete`
+
+---
+class: inverse
+# Your Turn: ISU Police (cont'd)
+
+
+Use the `isu` data (download from class website or download directly) to execute the following tasks:
+
+- times in the `isu` data set are reported in the form of 1 to 4 digit integers describing hour and minute of the day. For the variable `Time.Reported` separate these values into hour and minute variables.
+Plot a barchart of the hour in which incidences are reported.
+
+- accessor functions such as `hour(.)` and `minute(.)` can be used on the left hand side of an assignment.
+Introduce a variable Date.Time.Reported into the dataset, that captures both time and date of an incidence report.
+
+
+---
+
+# Intervals and Durations
+
+- Intervals have a *start* and an *end* date/time: absolute difference
+
+- Durations are potentially of relative length (months, leap year, leap second, ...)
+
+```{r}
+end_date <- now()
+# span is interval, years(1) is duration
+span <- end_date - years(1)
+span
+end_date - days(10)
+```
+
+

@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+  <head>
+    <title>Dates and times</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Heike Hofmann" />
+    <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
+    <link href="libs/remark-css-0.0.1/default-fonts.css" rel="stylesheet" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+# Dates and times
+### Heike Hofmann
+
+---
+
+class: middle, inverse, center
+# Working with date and time
+
+
+
+
+---
+
+# `lubridate` package
+
+- package for working with dates and times
+
+- defines different classes of time: instants, periods, intervals, durations
+
+- defines converter and accessor functions, enables time calculus
+
+---
+
+# Converter functions and instants in time
+
+- time instants: one (absolute) moment in time, e.g. `now()`, `Jan-1-2000`
+
+- easy-to-use converter functions: 
+    - date: `ymd`, `mdy`, `dmy`, ...
+    - time: `hm`, `hms`, ...
+    - date &amp; time: `ymd_hms`, `mdy_hm`, ...
+
+- order of letters determines how strings are parsed
+
+- separators are automatically determined, then assumed to be the same
+
+Example:
+
+```r
+mdy("11-10-2020")
+```
+
+```
+## [1] "2020-11-10"
+```
+
+---
+class: inverse
+# Your Turn 
+
+- Create date objects for today's date by typing the date in text format and converting it with one of the `lubridate` converter functions. 
+
+- Try different formats of writing the date and compare the end results.
+
+---
+
+# Example: ISU Police Crime Log
+
+
+```r
+# install java and run in terminal:
+#  sudo R CMD javareconf
+library(tabulizer)
+library(dplyr)
+library(ggplot2)
+url &lt;- "https://www.police.iastate.edu/crime-log/"
+docs &lt;- xml2::read_html(url)
+
+location &lt;- docs %&gt;% rvest::html_nodes(".log") %&gt;%
+  rvest::html_attr(name="href")
+
+tmp &lt;- extract_tables(location)
+final &lt;- do.call(rbind, tmp[-length(tmp)])
+
+headers &lt;- c('Case.Number', 'Classification', 'Date.Reported', 'Time.Reported', 
+             'Earliest.Occurrence.Date', 'Earliest.Occurrence.Time',
+             'Latest.Occurrence.Date', 'Latest.Occurrence.Time',
+             'General Location', 'Disposition')
+
+final &lt;- data.frame(final)
+names(final) &lt;- headers
+head(final)
+final &lt;- final[-1,]
+write.csv(final, "Crime-log-Nov05.csv", row.names=FALSE)
+```
+
+
+---
+
+# Example: ISU Police Crime Log
+
+
+```r
+url &lt;- "https://raw.githubusercontent.com/Stat579-at-ISU/materials/master/04_charts/Crime-log-Nov05.csv"
+isu &lt;- read.csv(url, stringsAsFactors = FALSE)
+str(isu)
+```
+
+```
+## 'data.frame':	117 obs. of  10 variables:
+##  $ Case.Number             : chr  "20-000524" "20-000526" "20-000527" "20-000528" ...
+##  $ Classification          : chr  "OWI/Alcohol Violation" "Theft" "Traffic Violation/Drug Violation" "OWI/Drug Violation" ...
+##  $ Date.Reported           : chr  "9/6/2020" "9/6/2020" "9/7/2020" "9/7/2020" ...
+##  $ Time.Reported           : int  114 1559 104 233 1707 1159 1341 738 837 1543 ...
+##  $ Earliest.Occurrence.Date: chr  "9/6/2020" "9/4/2020" "9/7/2020" "9/7/2020" ...
+##  $ Earliest.Occurrence.Time: int  114 1200 104 233 2000 100 100 1700 1536 1000 ...
+##  $ Latest.Occurrence.Date  : chr  "9/6/2020" "9/6/2020" "9/7/2020" "9/7/2020" ...
+##  $ Latest.Occurrence.Time  : int  114 1545 104 233 1700 1100 1600 730 830 1543 ...
+##  $ General.Location        : chr  "Hayward Avenue and Storm Street" "41 Frederiksen Court" "Lot 89" "Mortensen Road/Seagrave Boulevard" ...
+##  $ Disposition             : chr  "Arrest" "Report Initiated" "Arrest" "Arrest" ...
+```
+
+---
+
+# Example: ISU Police Crime Log
+
+Convert date variables to actual dates:
+
+
+```r
+isu &lt;- isu %&gt;% mutate(
+  Date.Reported = mdy(Date.Reported),
+  Earliest.Occurrence.Date = mdy(Earliest.Occurrence.Date),
+  Latest.Occurrence.Date = mdy(Latest.Occurrence.Date)
+)
+
+summary(isu)
+```
+
+```
+##  Case.Number        Classification     Date.Reported        Time.Reported 
+##  Length:117         Length:117         Min.   :2020-09-06   Min.   :   6  
+##  Class :character   Class :character   1st Qu.:2020-09-21   1st Qu.: 202  
+##  Mode  :character   Mode  :character   Median :2020-10-05   Median :1242  
+##                                        Mean   :2020-10-04   Mean   :1096  
+##                                        3rd Qu.:2020-10-17   3rd Qu.:1741  
+##                                        Max.   :2020-10-31   Max.   :2339  
+##                                                                           
+##  Earliest.Occurrence.Date Earliest.Occurrence.Time Latest.Occurrence.Date
+##  Min.   :2020-04-01       Min.   :   6.0           Min.   :2020-08-28    
+##  1st Qu.:2020-09-13       1st Qu.: 123.8           1st Qu.:2020-09-20    
+##  Median :2020-10-01       Median :1100.0           Median :2020-10-04    
+##  Mean   :2020-09-25       Mean   :1007.2           Mean   :2020-10-03    
+##  3rd Qu.:2020-10-14       3rd Qu.:1921.0           3rd Qu.:2020-10-16    
+##  Max.   :2020-10-31       Max.   :2345.0           Max.   :2020-10-31    
+##  NA's   :11               NA's   :31                                     
+##  Latest.Occurrence.Time General.Location   Disposition       
+##  Min.   :   6.0         Length:117         Length:117        
+##  1st Qu.: 138.5         Class :character   Class :character  
+##  Median : 800.0         Mode  :character   Mode  :character  
+##  Mean   : 986.8                                              
+##  3rd Qu.:1783.0                                              
+##  Max.   :2339.0                                              
+##  NA's   :22
+```
+---
+
+# Example: ISU Police Crime Log
+
+Oct 11 has 8 incidences?
+
+
+```r
+isu %&gt;% 
+  group_by(Date.Reported) %&gt;%
+  summarize(n = n()) %&gt;%
+  ggplot(aes(x = Date.Reported, y = n)) + geom_point()
+```
+
+```
+## `summarise()` ungrouping output (override with `.groups` argument)
+```
+
+![](04_lubridate-isu-police_files/figure-html/unnamed-chunk-5-1.png)&lt;!-- --&gt;
+
+---
+
+# Example: ISU Police Crime Log 
+
+What happened on Oct 11?
+
+
+```r
+isu %&gt;% filter(Date.Reported== ymd("2020/10/11"))
+```
+
+```
+##   Case.Number                      Classification Date.Reported Time.Reported
+## 1   20-000646                   Alcohol Violation    2020-10-11            13
+## 2   20-000647                   Alcohol Violation    2020-10-11            29
+## 3   20-000648 Traffic Violation/Alcohol Violation    2020-10-11           141
+## 4   20-000649                                 OWI    2020-10-11           303
+## 5   20-000650                         Disturbance    2020-10-11           502
+## 6   20-000651                   Criminal Mischief    2020-10-11          1010
+## 7   20-000652                               Theft    2020-10-11          1623
+## 8   20-000655                                 OWI    2020-10-11          2251
+##   Earliest.Occurrence.Date Earliest.Occurrence.Time Latest.Occurrence.Date
+## 1               2020-10-11                       13             2020-10-11
+## 2               2020-10-11                       29             2020-10-11
+## 3               2020-10-11                      141             2020-10-11
+## 4               2020-10-11                      303             2020-10-11
+## 5               2020-10-11                      200             2020-10-11
+## 6                     &lt;NA&gt;                       NA             2020-10-10
+## 7                     &lt;NA&gt;                       NA             2020-10-10
+## 8               2020-10-11                     2251             2020-10-11
+##   Latest.Occurrence.Time               General.Location      Disposition
+## 1                     13 Lincoln Way and Stanton Avenue            Cited
+## 2                     29                     Horse Barn            Cited
+## 3                    141               4506 Lincoln Way            Cited
+## 4                    303               2229 Lincoln Way           Arrest
+## 5                    502          141 University Avenue Report Initiated
+## 6                   2300                  Geoffroy Hall Report Initiated
+## 7                   2100                     Birch Hall Report Initiated
+## 8                   2251  Campus Avenue and Lincoln Way           Arrest
+```
+
+What happened on Oct 10?
+
+ISU Cyclones beat Texas Tech 31 to 15 (at Jack Trice)
+
+---
+
+# Accessor functions
+
+
+- accessor functions: `year`, `month`, `week`, `wday`, `mday`, `yday`, `hour`, `minute`, ...
+
+- accessor functions can also be used for setting elements of date and time, e.g. `hour(x) &lt;- 12`
+
+Examples:
+
+
+```r
+month(now())
+```
+
+```
+## [1] 11
+```
+
+```r
+wday(now(), label = TRUE)
+```
+
+```
+## [1] Mon
+## Levels: Sun &lt; Mon &lt; Tue &lt; Wed &lt; Thu &lt; Fri &lt; Sat
+```
+
+---
+class: inverse
+# Your Turn: ISU Police (cont'd)
+
+Use the `isu` data (download from class website or download directly) to answer the following questions:
+
+- How many incidences did ISU police report on Oct 10? Where did those occur?
+- Can you identify a  pattern for the week? Draw a barchart.
+- How many different Mondays, Tuesdays, Wednesdays ... are in the data?
+- On how many days were there no reports?
+
+Challenge: What is the average number of incidences? Hint look into `?tiydr::complete`
+
+---
+class: inverse
+# Your Turn: ISU Police (cont'd)
+
+
+Use the `isu` data (download from class website or download directly) to execute the following tasks:
+
+- times in the `isu` data set are reported in the form of 1 to 4 digit integers describing hour and minute of the day. For the variable `Time.Reported` separate these values into hour and minute variables.
+Plot a barchart of the hour in which incidences are reported.
+
+- accessor functions such as `hour(.)` and `minute(.)` can be used on the left hand side of an assignment.
+Introduce a variable Date.Time.Reported into the dataset, that captures both time and date of an incidence report.
+
+
+---
+
+# Intervals and Durations
+
+- Intervals have a *start* and an *end* date/time: absolute difference
+
+- Durations are potentially of relative length (months, leap year, leap second, ...)
+
+
+```r
+end_date &lt;- now()
+# span is interval, years(1) is duration
+span &lt;- end_date - years(1)
+span
+```
+
+```
+## [1] "2019-11-09 08:35:46 CST"
+```
+
+```r
+end_date - days(10)
+```
+
+```
+## [1] "2020-10-30 08:35:46 CDT"
+```
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "github",
+"highlightLines": true,
+"countIncrementalSlides": false
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();</script>
+
+<script>
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>
