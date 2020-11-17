@@ -1,0 +1,46 @@
+---
+title: "Project Reports"
+author: "Heike Hofmann"
+output:
+  xaringan::moon_reader:
+    lib_dir: libs
+    nature:
+      highlightStyle: github
+      highlightLines: true
+      countIncrementalSlides: false
+---
+
+# Project 
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+library(lubridate)
+```
+
+- Rubric available from Canvas:
+
+- Structure of the report: 
+
+    - Introduction: Topic, Data, Roadmap
+    - Main findings: curiosity, scepticism, organization
+    - Conclusions
+
+- *Charts*:
+Graphs carefully tuned for desired purpose (axis labels, captions, color scheme). Evidence that many graphs were created before choosing each one for presentation. Each graph illustrates one point. Cohesive color scheme across the project. Repetition avoided.
+
+- *Reproducibility*:
+Sufficiently detailed to reproduce entire report. Code nicely formatted and organized to follow flow of report.
+
+
+---
+
+# Reproducibility
+
+- Submit your report in form of *one* knittable RMarkdown file ... i.e. code chunks for creating figures and results
+- code chunk options: https://rmarkdown.rstudio.com/lesson-3.html
+(mostly: echo=FALSE and fig.cap="Shown are ...")
+Annoying messages from the tiyverse startup can be silenced with the code chunk `message = FALSE`
+- include all data sources, use relative links to refer to these sources
+
+- submit a zipped folder of all resources - Canvas renames every stand-alone file, i.e. all file dependencies break.
