@@ -25,7 +25,7 @@ The last two weeks were filled with deadline after deadline for all of your proj
 --
 
 
-You are planning to leave in 30 minutes. 
+You are planning to leave in a couple of minutes. 
 
 --
 
@@ -45,6 +45,14 @@ Two minutes later you get a text with two links:
 
 
 ---
+## How bad can it be?
+
+- You confidently download the data in your favorite analysis software (this does not have to be R!)
+
+- and take a look at the data.
+
+---
+
 <!--
 ## A test case
 
@@ -63,17 +71,6 @@ Codebook with detailed explanations of variables is [available here](https://www
 knitr::include_graphics("images/work-why.png")
 ```
 
---
-
-You talk to your colleague ...
-
----
-
-## Yay for colleagues!
-
-Your colleague is willing to help out, but is busy right now finishing up a project of their own. 
-
-"Just do as much as you can, I'll pick things up after the weekend."
 
 ---
 class: inverse
@@ -81,9 +78,9 @@ class: inverse
 
 Prompt:
 
-> I need to know, what the average height and weight of Iowans was in 2015, and while you are at it, calculate the correlation as well."
+> I need to know, what the average weight of Iowans was in 2015."
 
-> Don't forget to put in a blurb about the source of the data and stuff
+> Don't forget to put in a blurb about how you got your number
 
 Two related links:
 
@@ -91,27 +88,15 @@ Two related links:
 - [Codebook](https://www.cdc.gov/brfss/annual_data/2015/pdf/codebook15_llcp.pdf)
 
 
-In the next 20 mins:
+In the next 5 mins:
 
 --
 
-1. Write down the time 
+1. Work on this problem
 
 --
 
-2. Write out a plan of work 
-
---
-
-3. Write down the time
-
---
-
-4. Fill in the plan as far as you come
-
---
-
-5. When the alarm rings, save your document and submit it to Canvas. 
+2. When the alarm rings, save your work, go to Canvas and answer the survey "a dispute". 
 
 <!--
 0. Complete the following tasks and **write instructions / documentation** for a collaborator to be able to reproduce your findings.
@@ -129,135 +114,5 @@ In the next 20 mins:
 class: inverse, middle, center
 background-image: url(https://github.com/Stat585-at-ISU/materials-2023/raw/main/01_collaborative-environment/images/view.jpg)
 background-size: contain
-
-
-
----
-
-## This is where we are
-
-How confident are you  ...
-
-```{r, echo=FALSE, out.width="80%", fig.cap="", fig.alt="Barchart with a breakdown of predicted outcomes. 'It will be fine' is by far the most frequent prediction"}
-knitr::include_graphics("images/vacation.png")
-```
-
-```{r echo=FALSE, fig.height = 3, fig.cap="Barchart of the number of minutes spent planning."}
-dframe <- data.frame(plan = c(20, 6, 7, 10, 1, 6, 6, 8, 20, 5, 2, 10, 20, 10, 2, 2, 2, 10, 5, 2, 9, 6, 15, 2, 2))
-
-dframe %>% ggplot(aes(x = plan)) + 
-  geom_bar() + 
-  geom_vline(xintercept=mean(dframe$plan), colour="grey80") + 
-  xlab("Number of minutes spent planning") +
-  theme_bw()
-```
-
-On average, you spent `r round(mean(dframe$plan),1)` minutes to plan the work. 
-
----
-
-## ... meanwhile at the office
-
-### Imagine you are the colleague
-
-Again, you don't have time, and you want to get this extra piece of work done as quickly as possible
-
-You are deeply regretting having been suckered in ... but you (as of now, still) like your colleague
-
----
-class: inverse
-## Your Turn
-In the next 10 mins:
-
-1. Go to Canvas, find the assignment for peer-review
-
-2. Download all of the documents
-
-
-3. Pick up where your colleague left off. 
-
-4. When the alarm rings, stop the work and go back to Canvas. 
-
-
----
-
-## How did that go? 
-
-
-Thanks to  Jenny Bryan and Mine Cetinkaya-Rundel for the idea for the original  example.
-
-![](images/meanwhile-at-home.png)
-
----
-
-## Reflection
-
-- Were you successful in reproducing each others' work? 
-
-- Where did things get problematic? 
-  
-  - time is always too short, no matter how much you have
-  - time is also our most strictly limited resource for now
-  - a good system will help us save time
-
-- What tools did you use?
-
-
----
-
-## What if?
-
-- What would happen if your collaborator is no longer available to walk you through 
-their analysis?
-
-- What made it easy / hard for reproducing your partners' work?
-
-- What would have to happen if 
-
-    - you had to swap out the dataset?
-    
-    - you had to extend the analysis further?
-    
-    - you caught further data errors and had to re-create the analysis
-    with corrections?
-    
-    - you had to revert back to the original dataset?
-
----
-
-## Summary
-
-- Everyone struggles with reproducibility and it is a hindrance to moving 
-science forward
-
-- [THE checklist](checklist.md), developed by Jenny Bryan and Mine Cetinkaya-Rundel
-
-
-- Even with a fairly simple analysis we face challenges in four main areas:
-organization, documentation, automation, and dissemination
-
----
-class: inverse, middle, center
-# Facets of reproducibility
-
----
-
-## Four facets of reproducibility
-
-1. **Documentation:** difference between binary files (e.g. docx) and text files and
-why text files are preferred for documentation
-    - *We will:* Use markdown to document our workflow so that anyone can pick up our
-    data and follow what we are doing
-    - *We will:* Use literate programming so that our analysis and our results are
-    tightly connected, or better yet, inseparable
-
-2. **Organization:** tools to organize our projects so that we don't have a single 
-folder with hundreds of files
-
-3. **Automation:** the power of scripting to create automated data analyses
-
-4. **Dissemination:** publishing is not the end of your analysis, rather it is a way 
-station towards  future research and the future research of others
-
 
 
