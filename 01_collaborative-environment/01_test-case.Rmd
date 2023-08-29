@@ -1,104 +1,263 @@
 ---
-title: "Stat 480 - Working in teams"
+title: "Stat 579 - A dispute"
 author: "Heike Hofmann"
-ratio: 16x10
 output:
-  rmdshower::shower_presentation:
-    self_contained: false
-    katex: true
-    theme: ribbon
+  xaringan::moon_reader:
+    lib_dir: libs
+    nature:
+      highlightStyle: github
+      highlightLines: true
+      countIncrementalSlides: false
 ---
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+
+```{r setup, include=FALSE, message=FALSE, warning=FALSE}
+options(htmltools.dir.version = FALSE)
+library(tidyverse)
 ```
-# Tools for collaborating in teams
+
+## One last thing ...
+
+### Imagine the following situation: 
+
+it's your last day before you go on your summer vacation after a stressful stretch of work. 
+The last two weeks were filled with deadline after deadline for all of your projects. 
+
+--
 
 
+You are planning to leave in 30 minutes. 
+
+--
+
+Your boss storms in ... "I'm glad I still caught you, I need to know, what the average weight of Iowans was in 2015. We have three different numbers and I know which one is the right one."
+
+Before you can explain that you won't be here for the next couple of weeks, she is gone.
+
+--
+
+
+Two minutes later you get a text with two links:
+
+"Don't forget to put in a blurb about how you got the number and stuff"
+
+- [2015 BRFSS records](https://raw.githubusercontent.com/Stat585-at-ISU/materials-2023/main/01_collaborative-environment/data/brfss_iowa.csv)
+- [Codebook](https://www.cdc.gov/brfss/annual_data/2015/pdf/codebook15_llcp.pdf)
+
+
+---
+<!--
 ## A test case
 
-This is a two-part exercise:
+The dataset `brfss_iowa.csv` (linked from website) contains 6227 records from the Behavioral Risk Factor Surveillance System (BRFSS) for Iowans.
 
-**Part 1:** Analyze + document
+> The Behavioral Risk Factor Surveillance System (BRFSS) is the nation's premier system of health-related telephone surveys that collect state data about U.S. residents regarding their health-related risk behaviors.
 
-**Part 2:** Swap + discuss
+It is conducted annually by the Center for Disease Control and Prevention (CDC).
 
+Codebook with detailed explanations of variables is [available here](https://www.cdc.gov/brfss/annual_data/2015/pdf/codebook15_llcp.pdf).
+-->
 
-## Part 1: Analyze + document
+## ... still imagining
 
-Introduce yourself to your neighbor. Solve the following problem as a team.
+```{r, echo=FALSE, out.width="50%", fig.cap="...", fig.alt="series of icons of a person at work. the person is obviously not happy with work."}
+knitr::include_graphics("images/work-why.png")
+```
 
-Assume you are a team within a larger project (i.e. keep your collaborators in mind). 
+--
 
-Complete the following tasks and **write instructions / documentation** for your
-collaborator to reproduce your work starting with the original dataset 
-([`data/gapminder-5060.csv`](data/gapminder-5060.csv) or [`data/gapminder-5060.xlsx`](data/gapminder-5060.xlsx)).
+You talk to your colleague ...
 
+---
 
+## Yay for colleagues!
 
-## Your turn: analyze + document (20 mins) {.white}
+Your colleague is willing to help out, but is busy right now finishing up a project of their own. 
 
-<img src="images/blue.jpeg" class="cover" height=1500>
+"Just do as much as you can, I'll pick things up after the weekend."
 
-1. <font color="white">Visualize life expectancy over time for Canada in the 1950s and 1960s using a line plot.</font>
-2. <font color="white">Something is clearly wrong with this plot! Turns out there's a data error 
-in the data file: life expectancy for Canada in the year 1957 is coded
-as `999999`, it should actually be `69.96`. Make this correction.</font>
-3. <font color="white">Visualize life expectancy over time for Canada again, with the corrected data.</font><br>
+---
+class: inverse
+## Your turn
 
-<font color="white">*Pro goal:* Add lines for Mexico and the United States.</font>
-</p>
+Prompt:
 
-## Part 2: swap + discuss (20 mins) {.white}
+> I need to know, what the average height and weight of Iowans was in 2015, and while you are at it, calculate the correlation as well."
 
-<img src="images/blue.jpeg" class="cover" height=1500>
+> Don't forget to put in a blurb about the source of the data and stuff
 
-<font color="white">Introduce yourself to the team closest to you.</font>
+Two related links:
 
-1. <font color="white">Swap instructions / documentation with the other team, and try to reproduce 
-their work, first **without talking to each oher**. </font>
-
-<font color="white">If your collaborator does not have/know the software they need to reproduce your work,  walk them through it on your computer 
-in a way that would emulate the experience. (Remember, this could be part of the
-irreproducibility problem!)</font>
-
-2. <font color="white">Then, talk to each other about challenges you faced (or didn't face) or why 
-you were or weren't able to reproduce their work.</font>
+- [2015 BRFSS records](https://raw.githubusercontent.com/Stat585-at-ISU/materials-2023/main/01_collaborative-environment/data/brfss_iowa.csv)
+- [Codebook](https://www.cdc.gov/brfss/annual_data/2015/pdf/codebook15_llcp.pdf)
 
 
-<br><br>
+In the next 20 mins:
 
-<font color="white">Thanks to  Jenny Bryant and Mine Cetinkaya-Rundel for the idea for the original  example!</font>
+--
+
+1. Write down the time 
+
+--
+
+2. Write out a plan of work 
+
+--
+
+3. Write down the time
+
+--
+
+4. Fill in the plan as far as you come
+
+--
+
+5. When the alarm rings, save your document and submit it to Canvas. 
+
+<!--
+0. Complete the following tasks and **write instructions / documentation** for a collaborator to be able to reproduce your findings.
+
+1. Verify that there are 6227 cases (= number of interviews) in the data. 
+
+2. Verify that there are variables `WEIGHT2` and `HEIGHT3` in the data and read the description of the variables in the codebook. 
+
+3. How are height and weight related? Find correlations of weight and height by gender (`SEX`). How many values are the correlations based on for each gender?
+
+2. Write a short report of your findings. Address potential problems in the data.
+
+-->
+---
+class: inverse, middle, center
+background-image: url(https://github.com/Stat585-at-ISU/materials-2023/raw/main/01_collaborative-environment/images/view.jpg)
+background-size: contain
 
 
 
+---
+
+## This is where we are
+
+How confident are you  ...
+
+```{r, echo=FALSE, out.width="80%", fig.cap="", fig.alt="Barchart with a breakdown of predicted outcomes. 'It will be fine' is by far the most frequent prediction"}
+knitr::include_graphics("images/vacation.png")
+```
+
+```{r echo=FALSE, fig.height = 3, fig.cap="Barchart of the number of minutes spent planning."}
+dframe <- data.frame(plan = c(20, 6, 7, 10, 1, 6, 6, 8, 20, 5, 2, 10, 20, 10, 2, 2, 2, 10, 5, 2, 9, 6, 15, 2, 2))
+
+dframe %>% ggplot(aes(x = plan)) + 
+  geom_bar() + 
+  geom_vline(xintercept=mean(dframe$plan), colour="grey80") + 
+  xlab("Number of minutes spent planning") +
+  theme_bw()
+```
+
+On average, you spent `r round(mean(dframe$plan),1)` minutes to plan the work. 
+
+---
+
+## ... meanwhile at the office
+
+### Imagine you are the colleague
+
+Again, you don't have time, and you want to get this extra piece of work done as quickly as possible
+
+You are deeply regretting having been suckered in ... but you (as of now, still) like your colleague
+
+---
+class: inverse
+## Your Turn
+In the next 10 mins:
+
+1. Go to Canvas, find the assignment for peer-review
+
+2. Download all of the documents
+
+
+3. Pick up where your colleague left off. 
+
+4. When the alarm rings, stop the work and go back to Canvas. 
+
+
+---
 
 ## How did that go? 
 
-<img src="images/desperation-0.jpg" height=300> or <img src="images/exaltation.jpeg" height=300> ?
 
+Thanks to  Jenny Bryan and Mine Cetinkaya-Rundel for the idea for the original  example.
 
-- Where did things get problematic?
+![](images/meanwhile-at-home.png)
 
+---
 
 ## Reflection
 
 - Were you successful in reproducing each others' work? 
+
+- Where did things get problematic? 
+  
+  - time is always too short, no matter how much you have
+  - time is also our most strictly limited resource for now
+  - a good system will help us save time
+
 - What tools did you use?
-<br><br>
+
+
+---
+
+## What if?
+
 - What would happen if your collaborator is no longer available to walk you through 
 their analysis?
+
 - What made it easy / hard for reproducing your partners' work?
+
 - What would have to happen if 
-    - you had to swap out the dataset or extend the analysis further?
+
+    - you had to swap out the dataset?
+    
+    - you had to extend the analysis further?
+    
     - you caught further data errors and had to re-create the analysis
     with corrections?
+    
     - you had to revert back to the original dataset?
+
+---
 
 ## Summary
 
 - Everyone struggles with reproducibility and it is a hindrance to moving 
 science forward
-- Even with a fairly simple analysis challenges were faced in four main areas:
+
+- [THE checklist](checklist.md), developed by Jenny Bryan and Mine Cetinkaya-Rundel
+
+
+- Even with a fairly simple analysis we face challenges in four main areas:
 organization, documentation, automation, and dissemination
+
+---
+class: inverse, middle, center
+# Facets of reproducibility
+
+---
+
+## Four facets of reproducibility
+
+1. **Documentation:** difference between binary files (e.g. docx) and text files and
+why text files are preferred for documentation
+    - *We will:* Use markdown to document our workflow so that anyone can pick up our
+    data and follow what we are doing
+    - *We will:* Use literate programming so that our analysis and our results are
+    tightly connected, or better yet, inseparable
+
+2. **Organization:** tools to organize our projects so that we don't have a single 
+folder with hundreds of files
+
+3. **Automation:** the power of scripting to create automated data analyses
+
+4. **Dissemination:** publishing is not the end of your analysis, rather it is a way 
+station towards  future research and the future research of others
+
 
 
