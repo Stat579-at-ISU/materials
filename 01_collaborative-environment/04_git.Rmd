@@ -87,11 +87,11 @@ from [github glossary](https://help.github.com/articles/github-glossary/)
 # git workflow:
 
 
-- Pull, *make changes*, Commit, Push
+- Pull, *make changes*, Commit, Pull, Push
 
-- Pull, *make changes*, Commit, Push
+- Pull, *make changes*, Commit, Pull, Push
 
-- Pull, *make changes*, Commit, Push
+- Pull, *make changes*, Commit, Pull, Push
 
 ---
 
