@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>Stat 579 - A dispute - An attempt at a solution</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Heike Hofmann" />
+    <script src="libs/header-attrs/header-attrs.js"></script>
+    <link href="libs/remark-css/default.css" rel="stylesheet" />
+    <link href="libs/remark-css/default-fonts.css" rel="stylesheet" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+.title[
+# Stat 579 - A dispute - An attempt at a solution
+]
+.author[
+### Heike Hofmann
+]
+
+---
+
+class: center, middle
+
+
+
+# A 'Solution' to the test case 
+
+
+---
+class: inverse
+## A Plan of work
+
+0. Find out where the data comes from
+
+1. Describe the working environment 
+
+2. Verify that there is a variable for weight in the data and read the description of the variables in the codebook. 
+
+3. Calculate average for weight, then report.
+
+5. Write a short report of your findings. Address potential problems in the data.
+
+
+
+---
+
+# A solution attempt
+
+0. Setup 
+
+    - this solution uses R v4.3.2 in RStudio (2023.06.2 Build 561). 
+    - You need the R packages `tidyverse` and `rmarkdown` to run the solution
+    - use the command `install.packages(c("tidyverse","rmarkdown"))` 
+    in the R console to install the two packages
+
+1. Navigate to https://github.com/Stat579-at-ISU/materials-2023
+
+2. Download  the file [`test-case-solution.Rmd`](https://raw.githubusercontent.com/Stat579-at-ISU/materials-2023/master/01_collaborative-environment/test-case-solution.Rmd) in folder  `01_collaborative-environment`  in RStudio to get this set of slides.
+
+3. "Knit" the file (Click on the button in the menu).
+
+---
+
+## The Data Source
+
+The dataset `brfss_iowa.csv` (linked from website) contains 6227 records from the Behavioral Risk Factor Surveillance System (BRFSS) for Iowans.
+
+&gt; The Behavioral Risk Factor Surveillance System (BRFSS) is the nation's premier system of health-related telephone surveys that collect state data about U.S. residents regarding their health-related risk behaviors.
+
+It is conducted annually by the Center for Disease Control and Prevention (CDC).
+
+Codebook with detailed explanations of variables is [available here](https://www.cdc.gov/brfss/annual_data/2015/pdf/codebook15_llcp.pdf).
+
+
+
+---
+
+
+
+
+## What is Iowan's average weigth in 2015? 
+
+Read the data: 
+
+
+```r
+library(tidyverse)
+iowa &lt;- readr::read_csv("https://github.com/Stat579-at-ISU/materials/raw/master/01_collaborative-environment/data/brfss_iowa.csv") 
+# the read_csv function from the readr package is faster than the standard read.csv
+# but the output is a tibble (we'll come back to that)
+
+iowa
+```
+
+```
+## # A tibble: 6,227 × 330
+##    X_STATE FMONTH IDATE    IMONTH IDAY  IYEAR DISPCODE     SEQNO  X_PSU CTELENUM
+##      &lt;dbl&gt;  &lt;dbl&gt; &lt;chr&gt;    &lt;chr&gt;  &lt;chr&gt; &lt;dbl&gt;    &lt;dbl&gt;     &lt;dbl&gt;  &lt;dbl&gt;    &lt;dbl&gt;
+##  1      19      7 07082015 07     08     2015     1200    2.02e9 2.02e9       NA
+##  2      19      3 03212015 03     21     2015     1200    2.02e9 2.02e9       NA
+##  3      19     10 01102016 01     10     2016     1200    2.02e9 2.02e9       NA
+##  4      19      4 05092015 05     09     2015     1200    2.02e9 2.02e9       NA
+##  5      19      5 06242015 06     24     2015     1200    2.02e9 2.02e9       NA
+##  6      19      7 08032015 08     03     2015     1200    2.02e9 2.02e9       NA
+##  7      19      7 08122015 08     12     2015     1200    2.02e9 2.02e9       NA
+##  8      19      7 08102015 08     10     2015     1200    2.02e9 2.02e9       NA
+##  9      19     10 11152015 11     15     2015     1200    2.02e9 2.02e9       NA
+## 10      19      8 08132015 08     13     2015     1200    2.02e9 2.02e9       NA
+## # ℹ 6,217 more rows
+## # ℹ 320 more variables: PVTRESD1 &lt;dbl&gt;, COLGHOUS &lt;lgl&gt;, STATERES &lt;dbl&gt;,
+## #   CELLFON3 &lt;dbl&gt;, LADULT &lt;lgl&gt;, NUMADULT &lt;dbl&gt;, NUMMEN &lt;dbl&gt;, NUMWOMEN &lt;dbl&gt;,
+## #   CTELNUM1 &lt;dbl&gt;, CELLFON2 &lt;dbl&gt;, CADULT &lt;dbl&gt;, PVTRESD2 &lt;dbl&gt;,
+## #   CCLGHOUS &lt;dbl&gt;, CSTATE &lt;dbl&gt;, LANDLINE &lt;dbl&gt;, HHADULT &lt;dbl&gt;, GENHLTH &lt;dbl&gt;,
+## #   PHYSHLTH &lt;dbl&gt;, MENTHLTH &lt;dbl&gt;, POORHLTH &lt;dbl&gt;, HLTHPLN1 &lt;dbl&gt;,
+## #   PERSDOC2 &lt;dbl&gt;, MEDCOST &lt;dbl&gt;, CHECKUP1 &lt;dbl&gt;, BPHIGH4 &lt;dbl&gt;, …
+```
+
+---
+
+## Variables for weight
+
+
+```r
+grep("WEIGHT", names(iowa), value=TRUE)
+```
+
+```
+## [1] "WEIGHT2"
+```
+
+```r
+iowa %&gt;% select(WEIGHT2) %&gt;% head()
+```
+
+```
+## # A tibble: 6 × 1
+##   WEIGHT2
+##     &lt;dbl&gt;
+## 1     191
+## 2     140
+## 3     135
+## 4     115
+## 5      NA
+## 6     210
+```
+
+Variable is there ... let's plot it ...
+
+---
+
+## Plot 
+
+Load the `ggplot2` package to plot weight:
+
+```r
+iowa %&gt;% 
+  ggplot(aes(x = WEIGHT2)) + geom_histogram()
+```
+
+![](01_test-case-solution_files/figure-html/unnamed-chunk-3-1.png)&lt;!-- --&gt;
+
+There are some very odd values. Check the codebook.
+
+
+---
+
+## Codebook excerpt
+
+From the [codebook](https://www.cdc.gov/brfss/annual_data/2015/pdf/codebook15_llcp.pdf): WEIGHT2 is the originally recorded variables.
+
+&lt;img src="images/codebook.png" width=750&gt;
+
+--
+
+Values are a mix of metric and empirial values, refusals are coded as 9999 and don't know's as 7777.
+
+---
+
+## Next steps
+
+Obviously, we need to spend some time cleaning these variables before we can make use of them. 
+
+We have a couple of choices : 
+
+1. We can buckle down and do that clean-up and then move on to the calculation.
+
+2. We can take another look at the variables and investigate `WTKG3` are ... 
+
+---
+
+## Route 2
+
+Let's take the second route first and draw a picture weight in metric units:
+
+
+```r
+iowa %&gt;% 
+  ggplot(aes(x = WTKG3)) + geom_histogram() + 
+  facet_grid(.~SEX) 
+```
+
+![](01_test-case-solution_files/figure-html/unnamed-chunk-4-1.png)&lt;!-- --&gt;
+
+These values look much better! But the weight is reported in tens of grams (???)
+
+---
+
+## Look at the variable's values
+
+Based on variable `WTKG3`
+
+
+```r
+summary(iowa$WTKG3) # divide by 100 for kg
+```
+
+```
+##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max.    NA's 
+##    3856    6804    8119    8319    9525   22680     552
+```
+
+```r
+summary(iowa$WTKG3/45.4) # in pounds
+```
+
+```
+##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max.    NA's 
+##   84.93  149.87  178.83  183.24  209.80  499.56     552
+```
+
+--
+
+This was solution number 3:  83.2 kg (or 183 lbs)
+
+---
+
+## How did we get the other values?
+
+Based on variable `WEIGHT2`
+
+
+```r
+summary(iowa$WEIGHT2) # don't do this!!!
+```
+
+```
+##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max.    NA's 
+##    85.0   150.0   180.0   894.3   220.0  9999.0      84
+```
+
+This mean was the inspiration for solution #1 of 89.4 kg. (This is the only very wrong answer)
+
+The median was used for solution #2 of 180 lbs. 
+
+
+---
+
+## Another way to get solution #2:
+
+
+```r
+iowa %&gt;% filter(WEIGHT2 &lt; 7777) %&gt;% select(WEIGHT2) %&gt;% 
+  summarize(n = n(), mean_lbs = mean(WEIGHT2), mean_kgs = mean(WEIGHT2*.454))
+```
+
+```
+## # A tibble: 1 × 3
+##       n mean_lbs mean_kgs
+##   &lt;int&gt;    &lt;dbl&gt;    &lt;dbl&gt;
+## 1  5667     183.     83.3
+```
+
+```r
+# number of metric responses:
+filter(iowa, between(WEIGHT2, 9001, 9500)) %&gt;% nrow()
+```
+
+```
+## [1] 8
+```
+
+---
+
+## Route 1
+
+This is quite a bit more work. Don't do things this way!
+
+
+```r
+# first of all, replace all missing values by NAs
+iowa &lt;- iowa %&gt;% mutate(
+  WEIGHT2 = replace(WEIGHT2, WEIGHT2 %in% c(7777,9999), NA)
+)
+```
+
+---
+
+## Route 1 (cont'd.)
+
+1 pound is 0.454 kg: convert to metric:
+
+
+```r
+iowa &lt;- iowa %&gt;% mutate(
+  weight = ifelse(WEIGHT2 &gt;= 9000, 
+                  WEIGHT2 - 9000, # transform all metric values by subtracting 9000
+                  WEIGHT2*.454 # 1 lbs = 0.454 kg
+                  )
+)
+```
+
+---
+
+## Route 1
+
+
+```r
+iowa %&gt;% 
+  select(WEIGHT2, WTKG3, weight) %&gt;% summary()
+```
+
+```
+##     WEIGHT2           WTKG3           weight      
+##  Min.   :  85.0   Min.   : 3856   Min.   : 38.59  
+##  1st Qu.: 150.0   1st Qu.: 6804   1st Qu.: 68.10  
+##  Median : 179.0   Median : 8119   Median : 81.27  
+##  Mean   : 195.9   Mean   : 8319   Mean   : 83.27  
+##  3rd Qu.: 210.0   3rd Qu.: 9525   3rd Qu.: 95.34  
+##  Max.   :9145.0   Max.   :22680   Max.   :227.00  
+##  NA's   :552      NA's   :552     NA's   :552
+```
+
+---
+
+## Recap 
+
+- Route 1 and 2 give identical solutions
+
+- Read the codebook, visualize the data, even if the question does not ask for it.
+
+
+---
+
+## Recap
+
+- this slide deck is rendered from an R Markdown document, located at [a github repo](https://github.com/Stat579-at-ISU/materials-2023/tree/master/01_collaborative-environment).
+
+- code and text/documentation are interwoven: reproducible and self-documenting.
+
+- extend or refine analyses by copying and modifying code blocks.
+
+- disseminate your work by sharing the RMarkdown file
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "github",
+"highlightLines": true,
+"countIncrementalSlides": false
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+// add `data-at-shortcutkeys` attribute to <body> to resolve conflicts with JAWS
+// screen reader (see PR #262)
+(function(d) {
+  let res = {};
+  d.querySelectorAll('.remark-help-content table tr').forEach(tr => {
+    const t = tr.querySelector('td:nth-child(2)').innerText;
+    tr.querySelectorAll('td:first-child .key').forEach(key => {
+      const k = key.innerText;
+      if (/^[a-z]$/.test(k)) res[k] = t;  // must be a single letter (key)
+    });
+  });
+  d.body.setAttribute('data-at-shortcutkeys', JSON.stringify(res));
+})(document);
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>
