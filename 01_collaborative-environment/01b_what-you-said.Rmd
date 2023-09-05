@@ -1,7 +1,6 @@
 ---
 title: "Stat 579 - What you said"
 author: "Heike Hofmann"
-date: "`r Sys.Date()`"
 output:
   xaringan::moon_reader:
     lib_dir: libs
@@ -22,9 +21,9 @@ library(tidyverse)
 
 ## ... this is what wufoo tells us
 
-<img src="images/topics-2019.png" width=600>
-
-... there's nine more of these charts ... which topic is the best?
+<img src="images/topics-2023.png" width=600>
+  
+  ... there's eight more of these charts ... which topic is the best?
 
 ---
 
@@ -33,17 +32,18 @@ library(tidyverse)
 ... this is what the raw data looks like ...
 
 ```{r, echo=FALSE}
-topics <- read.csv("data/topics-2020.csv")
+topics <- read.csv("data/topics-2023.csv")
 topics <- topics %>% select(-Entry.Id)
 head(topics)
 ```
+
 
 ---
 
 ## All topics in one
 
 ```{r, echo=FALSE, fig.width = 10, fig.height = 6}
-tlong <- topics %>% gather(topic, rating, 1:10)
+tlong <- topics %>% pivot_longer(cols=8:17, names_to="topic", values_to="rating")
 tlong %>% 
   ggplot(aes(x = rating)) + geom_bar(aes(fill=rating)) +
   facet_wrap(~topic, ncol=5) +
@@ -84,7 +84,7 @@ tlong %>%
 
 ---
 
-## ... a different picture ...
+## ... comparisons across topics ...
 
 ```{r, echo=FALSE, fig.width = 10, fig.height = 6}
 library(RColorBrewer)
@@ -98,7 +98,7 @@ tlong %>%
 
 ---
 
-## ... a different picture ...
+## ... with readable topics ...
 
 ```{r, echo=FALSE, fig.width = 10, fig.height = 6}
 tlong %>% 
@@ -157,11 +157,13 @@ tlong %>%
 
 ---
 
-## Additional topic suggestions
-
+## Additional Topics
 
 Range of other suggestions: 
-
+  
 Everything mentioned once or twice ... great for final projects `r emo::ji("smile")`!
+  
+Education data (science, online learning, cognitive abilities, self-rating of abilities), agricultural data (seeds, pesticides, genomics), psychology and law, health: sleep, housing, media use, engineering/manufacturing, auto racing
 
-transportation (2), golf, Reinforcement Learning & Anomaly detection Learning, microbiota composition, anything COVID related including comparisons with other countries, socio economic status etc, marketing,  education, natural resources, natural language processing
+
+
