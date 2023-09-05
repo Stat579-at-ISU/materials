@@ -1,9 +1,10 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<html lang="" xml:lang="">
   <head>
     <title>R is a Calculator</title>
     <meta charset="utf-8" />
     <meta name="author" content="Heike Hofmann" />
+    <script src="libs/header-attrs/header-attrs.js"></script>
     <link href="libs/remark-css/default.css" rel="stylesheet" />
     <link href="libs/remark-css/default-fonts.css" rel="stylesheet" />
   </head>
@@ -11,9 +12,15 @@
     <textarea id="source">
 class: center, middle, inverse, title-slide
 
+.title[
 # R is a Calculator
+]
+.subtitle[
 ## Hello World, this is R
+]
+.author[
 ### Heike Hofmann
+]
 
 ---
 
@@ -60,7 +67,7 @@ class: inverse, center
 
 - explicit operators: `2*x` not `2x`,  `2^p` instead of `2p`
 
-- Applying a function is similar
+- Applying a function is similar 
 
 - Making a variable, use `&lt;-` or `=`
 
@@ -70,18 +77,18 @@ class: inverse, center
 
 ## Examples
 
-| Math   | Type          | Code           |
+| Math   | Type          | Code           | 
 |:--- |:-------------:|-------------:|
 |  `$$x = \frac{2}{3}$$` | Assignments      | `x &lt;- 2/3` |
 | `$$\sqrt{x}$$` | Functions  | `sqrt(x)` |
 | `$$y = \left( \begin{array}{c} 1\\4\\5\\2\end{array}\right)$$` | Vectors  | `y &lt;- c(1, 4, 5, 2) ` |
-| `$$y_2$$` | Indices | `y[2]`|
+| `$$y_2$$` | Indices | `y[2]`| 
 
 ---
 
 ## More Examples
 
-| Math   | Type          | Code           |
+| Math   | Type          | Code           | 
 |:--- |:-------------:|-------------:|
 | `$$\sum_{i=1}^{4} y_i$$` | Mathematical Operators | `sum(y)` |
 | `$$2y$$` |  | `2*y` |
@@ -89,7 +96,7 @@ class: inverse, center
 ---
 class: inverse
 
-## Your Turn (5 min)
+## Your Turn (5 min) 
 
 
 - Introduce vector `\(x\)` defined as `$$x = \left( \begin{array}{c} 4\\1\\3\\9\end{array}\right)$$`
@@ -97,13 +104,13 @@ class: inverse
 - Introduce vector `\(y\)` defined as  `$$y = \left( \begin{array}{c} 1\\2\\3\\5\end{array}\right)$$`
 
 
-- Calculate the Euclidean distance between the two vectors `\(x\)` and `\(y\)`, defined as
+- Calculate the Euclidean distance between the two vectors `\(x\)` and `\(y\)`, defined as 
 
 `$$d = \sqrt{\sum_{i=1}^4 (x_i - y_i)^2}$$`
 
 ---
 
-## Vocabulary
+## Vocabulary 
 
 - What verbs (=functions) do you need to know?
 
@@ -136,7 +143,7 @@ If you want to know what a specific `command` is doing:
 ```r
 ?command
 
-help("command")
+help("command") 
 
 help.search("command")
 
@@ -161,7 +168,7 @@ Quits out of the console
 
 - Some R packages have in-built datasets
 
-- For this class, there is an R package available on github
+- For this class, there is an R package available on github 
 
 - Installing/Updating `classdata` package (once every so often):
 
@@ -178,7 +185,7 @@ library(classdata)
 
 ---
 class: inverse
-## Your Turn (5 min)
+## Your Turn (5 min) 
 
 
 - Install the package `classdata` on your machine &lt;br&gt;
@@ -229,14 +236,15 @@ str(fbi)
 ```
 
 ```
-## 'data.frame':	23672 obs. of  7 variables:
-##  $ State        : chr  "Alabama" "Alabama" "Alabama" "Alabama" ...
-##  $ Abb          : chr  "AL" "AL" "AL" "AL" ...
-##  $ Year         : int  1961 1962 1963 1964 1965 1966 1967 1968 1969 1970 ...
-##  $ Population   : int  3302000 3358000 3347000 3407000 3462000 3517000 3540000 3566000 3531000 3444165 ...
-##  $ Type         : Factor w/ 8 levels "Aggravated.assault",..: 6 6 6 6 6 6 6 6 6 6 ...
-##  $ Count        : int  427 316 340 316 395 384 415 421 485 404 ...
-##  $ Violent.crime: logi  TRUE TRUE TRUE TRUE TRUE TRUE ...
+## Classes 'tbl_df', 'tbl' and 'data.frame':	19476 obs. of  8 variables:
+##  $ state        : chr  "Alabama" "Alabama" "Alabama" "Alabama" ...
+##  $ state_id     : int  2 2 2 2 2 2 2 2 2 2 ...
+##  $ state_abbr   : chr  "AL" "AL" "AL" "AL" ...
+##  $ year         : int  1983 1983 1983 1983 1983 1983 1983 1983 1983 1985 ...
+##  $ population   : int  3959000 3959000 3959000 3959000 3959000 3959000 3959000 3959000 3959000 4021000 ...
+##  $ type         : chr  "homicide" "rape_legacy" "rape_revised" "robbery" ...
+##  $ count        : int  364 931 NA 3895 11281 42485 94279 9126 981 396 ...
+##  $ violent_crime: logi  TRUE TRUE TRUE TRUE TRUE FALSE ...
 ```
 
 ---
@@ -277,7 +285,7 @@ Summaries of two variables:&lt;br&gt;
 
 ---
 class: inverse
-## Your turn
+## Your turn 
 
 
 - Look at the first 10 data records of the `fbi` data
@@ -288,8 +296,8 @@ class: inverse
 
 
 ---
-class: inverse
-## Your turn - practice to ask questions
+class: inverse 
+## Your turn - practice to ask questions 
 
 
 Write down questions that you could answer with this data 4 minutes by yourself, then pair up for another 3 minutes, and we'll write ideas on the board
@@ -343,9 +351,38 @@ if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
     }
     deleted = true;
   });
-})();</script>
-
-<script>
+})();
+// add `data-at-shortcutkeys` attribute to <body> to resolve conflicts with JAWS
+// screen reader (see PR #262)
+(function(d) {
+  let res = {};
+  d.querySelectorAll('.remark-help-content table tr').forEach(tr => {
+    const t = tr.querySelector('td:nth-child(2)').innerText;
+    tr.querySelectorAll('td:first-child .key').forEach(key => {
+      const k = key.innerText;
+      if (/^[a-z]$/.test(k)) res[k] = t;  // must be a single letter (key)
+    });
+  });
+  d.body.setAttribute('data-at-shortcutkeys', JSON.stringify(res));
+})(document);
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
 (function() {
   var links = document.getElementsByTagName('a');
   for (var i = 0; i < links.length; i++) {
@@ -354,7 +391,23 @@ if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
     }
   }
 })();
-</script>
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
 
 <script>
 slideshow._releaseMath = function(el) {
