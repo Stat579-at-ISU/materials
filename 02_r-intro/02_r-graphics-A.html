@@ -1,9 +1,10 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<html lang="" xml:lang="">
   <head>
     <title>Stat 579: Graphics with ggplot2</title>
     <meta charset="utf-8" />
     <meta name="author" content="Heike Hofmann" />
+    <script src="libs/header-attrs-2.24/header-attrs.js"></script>
     <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
     <link href="libs/remark-css-0.0.1/default-fonts.css" rel="stylesheet" />
   </head>
@@ -11,8 +12,12 @@
     <textarea id="source">
 class: center, middle, inverse, title-slide
 
+.title[
 # Stat 579: Graphics with ggplot2
+]
+.author[
 ### Heike Hofmann
+]
 
 ---
 
@@ -97,7 +102,7 @@ class: inverse, middle, center
 
 &lt;br&gt;
 
-- http://ggplot2.org/book/ or Hadley's book *ggplot2: Elegant Graphics for Data Analysis* for reference
+- http://ggplot2.org/book/ or Hadley's book *ggplot2: Elegant Graphics for Data Analysis* for reference 
 
 ---
 
@@ -107,7 +112,7 @@ A graphical representation (plot) consists of:
 
 1. **mappings** (`aes`):  data variables are mapped to graphical elements
 
-2. **layers**:  geometric elements (`geoms`, such as points, lines,
+2. **layers**:  geometric elements (`geoms`, such as points, lines, 
 rectangles, text, ...) and statistical transformations (`stats`, are identity, counts, bins, ...)
 
 3. **scales**: map values in the data space to values in an aesthetic space (e.g. color, size, shape, but also position)
@@ -129,18 +134,18 @@ data(fbiwide, package = "classdata")
 
 ggplot(data = fbiwide, aes(x = Burglary, y = Murder)) +
   geom_point()
-```
+```  
 
 ```
 ggplot(data = fbiwide, aes(x = log(Burglary), y = log(Murder))) +
   geom_point()
-```
+```  
 
 ```
-ggplot(data = fbiwide, aes(x = log(Burglary),
+ggplot(data = fbiwide, aes(x = log(Burglary), 
                            y = log(Motor.vehicle.theft))) +
   geom_point()
-```
+```  
 
 ---
 
@@ -165,16 +170,16 @@ Consequences:
 ## Using the pipe `%&gt;%`
 
 ```
-ggplot(data = filter(fbi, Type=="Murder.and.nonnegligent.Manslaughter",
+ggplot(data = filter(fbi, Type=="Murder.and.nonnegligent.Manslaughter", 
 aes(x = Year, y = Count)) + geom_point()
 ```
 
 becomes
 
 ```
-fbi %&gt;%
+fbi %&gt;% 
   filter(Type=="Murder.and.nonnegligent.Manslaughter") %&gt;%
-  ggplot(aes(x = Year, y = Count)) +
+  ggplot(aes(x = Year, y = Count)) + 
     geom_point()
 ```
 ---
@@ -205,7 +210,8 @@ class: inverse
 
 - Work through each of the example plots
 
-- Try variations of the plots to find answers to (some of) your questions.
+- Try variations of the plots to find answers to (some of) your questions. 
+
     </textarea>
 <style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
@@ -252,9 +258,38 @@ if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
     }
     deleted = true;
   });
-})();</script>
-
-<script>
+})();
+// add `data-at-shortcutkeys` attribute to <body> to resolve conflicts with JAWS
+// screen reader (see PR #262)
+(function(d) {
+  let res = {};
+  d.querySelectorAll('.remark-help-content table tr').forEach(tr => {
+    const t = tr.querySelector('td:nth-child(2)').innerText;
+    tr.querySelectorAll('td:first-child .key').forEach(key => {
+      const k = key.innerText;
+      if (/^[a-z]$/.test(k)) res[k] = t;  // must be a single letter (key)
+    });
+  });
+  d.body.setAttribute('data-at-shortcutkeys', JSON.stringify(res));
+})(document);
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
 (function() {
   var links = document.getElementsByTagName('a');
   for (var i = 0; i < links.length; i++) {
@@ -263,7 +298,23 @@ if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
     }
   }
 })();
-</script>
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
 
 <script>
 slideshow._releaseMath = function(el) {

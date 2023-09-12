@@ -1,10 +1,11 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<html lang="" xml:lang="">
   <head>
     <title>Stat 579: Graphics with ggplot2</title>
     <meta charset="utf-8" />
     <meta name="author" content="Heike Hofmann" />
-    <meta name="date" content="2019-09-07" />
+    <meta name="date" content="2023-09-12" />
+    <script src="libs/header-attrs-2.24/header-attrs.js"></script>
     <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
     <link href="libs/remark-css-0.0.1/default-fonts.css" rel="stylesheet" />
   </head>
@@ -12,9 +13,15 @@
     <textarea id="source">
 class: center, middle, inverse, title-slide
 
+.title[
 # Stat 579: Graphics with ggplot2
+]
+.author[
 ### Heike Hofmann
-### 2019-09-07
+]
+.date[
+### 2023-09-12
+]
 
 ---
 
@@ -40,11 +47,13 @@ Look at 3 next, then come back to 1 and 2.
 Load libraries:
 
 
+
+
 ```r
-library(ggplot2)
+library(ggplot2) 
 # not found? run install.packages("ggplot2")
 
-library(classdata)
+library(classdata) 
 # not found? run remotes::install_github("heike/classdata")
 ```
 
@@ -56,12 +65,12 @@ Can facet to display plots for different subsets: `facet_wrap`, `facet_grid`
 
 
 ```r
-ggplot(aes(x = Year, y = Murder), data=fbiwide) +
-  facet_wrap(~State) +
+ggplot(aes(x = year, y = homicide), data=fbiwide) +
+  facet_wrap(~state) +
   geom_point()
 ```
 
-![](03_r-graphics_files/figure-html/unnamed-chunk-2-1.png)&lt;!-- --&gt;
+&lt;img src="03_r-graphics_files/figure-html/unnamed-chunk-2-1.png" height="350" /&gt;
 
 ---
 
@@ -69,15 +78,15 @@ ggplot(aes(x = Year, y = Murder), data=fbiwide) +
 
 - `facet_grid` has formula specification: `rows ~ cols`
 
-- `facet_wrap` has specification `~ variables`
+- `facet_wrap` has specification `~ variables` 
 
-- multiple variables (in either specification) are included in form of a sum, i.e. `rowvar1 + rowvar2 ~ colvar1+ colvar2`
+- multiple variables (in either specification) are included in form of a sum, i.e. `rowvar1 + rowvar2 ~ colvar1 + colvar2`
 
 - no variable (in `facet_grid`) is written as `.`, i.e. `rowvar ~ .` are plots in a single column.
 
 ---
 class: inverse
-## Your turn
+## Your turn 
 
 Use the `fbiwide` data from the package `classdata` for this your turn.
 
@@ -99,7 +108,7 @@ Use the `fbiwide` data from the package `classdata` for this your turn.
 
 ## Boxplots
 
-![](03_r-graphics_files/figure-html/unnamed-chunk-3-1.png)&lt;!-- --&gt;
+&lt;img src="03_r-graphics_files/figure-html/unnamed-chunk-3-1.png" height="500" /&gt;
 
 ---
 
@@ -121,27 +130,23 @@ Use the `fbiwide` data from the package `classdata` for this your turn.
 
 
 ```r
-ggplot(data = fbi, aes(x = Type, y = log10(Count))) +
-  geom_boxplot() +
+ggplot(data = fbi, aes(x = type, y = log10(count))) +
+  geom_boxplot() + 
   coord_flip()
 ```
 
-```
-## Warning: Removed 2699 rows containing non-finite values (stat_boxplot).
-```
-
-![](03_r-graphics_files/figure-html/unnamed-chunk-4-1.png)&lt;!-- --&gt;
+&lt;img src="03_r-graphics_files/figure-html/unnamed-chunk-4-1.png" height="300" /&gt;
 
 
 
 ---
 class: inverse
-## Your turn
+## Your turn 
 
 
 - Using ggplot2, draw side-by-side boxplots of the number of robberies by state. Use a log transformation on y and compare results.
 
-- **Stretch goal:** Compare rates of robberies by state, i.e. adjust robberies by the state population. Then plot side-by-side boxplots.
+- **Stretch goal:** Compare rates of robberies by state, i.e. adjust robberies by the state population. Then plot side-by-side boxplots. 
 
 ---
 
@@ -161,31 +166,31 @@ class: inverse
 
 ## Univariate plots
 
-Histograms:
+Histograms: 
 
 
 ```r
-ggplot(fbiwide, aes(x = Motor.vehicle.theft)) +
+ggplot(fbiwide, aes(x = motor_vehicle_theft)) + 
   geom_histogram(binwidth=5000) +
   ggtitle("binwidth = 5000")
 ```
 
-![](03_r-graphics_files/figure-html/unnamed-chunk-5-1.png)&lt;!-- --&gt;
+&lt;img src="03_r-graphics_files/figure-html/unnamed-chunk-5-1.png" height="350" /&gt;
 
 ---
 
 ## Univariate plots
 
-Histograms:
+Histograms: 
 
 
 ```r
-ggplot(fbiwide, aes(x = Motor.vehicle.theft)) +
+ggplot(fbiwide, aes(x = motor_vehicle_theft)) + 
   geom_histogram(binwidth=1000) +
   ggtitle("binwidth = 1000")
 ```
 
-![](03_r-graphics_files/figure-html/unnamed-chunk-6-1.png)&lt;!-- --&gt;
+&lt;img src="03_r-graphics_files/figure-html/unnamed-chunk-6-1.png" height="350" /&gt;
 
 Always change the bin width! There is no perfect bin width, but a lot of different views of the data at different resolutions!
 ---
@@ -194,12 +199,12 @@ Always change the bin width! There is no perfect bin width, but a lot of differe
 
 
 ```r
-ggplot(fbi, aes(x = Type)) +
-  geom_bar(aes(weight= Count)) +
+ggplot(fbi, aes(x = type)) + 
+  geom_bar(aes(weight= count)) +
   coord_flip()
 ```
 
-![](03_r-graphics_files/figure-html/unnamed-chunk-7-1.png)&lt;!-- --&gt;
+&lt;img src="03_r-graphics_files/figure-html/unnamed-chunk-7-1.png" height="350" /&gt;
 
 ---
 
@@ -211,7 +216,7 @@ A weighted barchart has an additional numeric variable `\(W\)` of weights `\(w_1
 
 Mathematically, both barcharts are a visualization of a set of tuples of the form `\((C_k, y_k)\)`, where for `\(1 \ge k \ge K\)`:
 
-regular barchart:
+regular barchart: 
 `$$y_k = \sum_{i=1}^n I{(x_i = C_k)}$$`
 
 Weighted barchart:
@@ -237,12 +242,12 @@ In a barchart, choose the order of the categories consciously (later)
 
 ---
 class: inverse
-## Your turn
+## Your turn 
 
 
-- Use the `fbi` data set to draw a barchart of the variable `Violent Crime`. Make the height of the bars dependent on the number of reports (use `weight`). Then facet by type (does the result match your expectation? good! get rid of facetting). Color bars by `Type`.
+- Use the `fbi` data set to draw a barchart of the variable `Violent Crime`. Make the height of the bars dependent on the number of reports (use `weight`). Then facet by type (does the result match your expectation? good! get rid of facetting). Color bars by `Type`. 
 
-- Use the `fbi` data set to draw a histogram of the number of reports. Facet by type, make sure to use individual scales for the panels.
+- Use the `fbi` data set to draw a histogram of the number of reports. Facet by type, make sure to use individual scales for the panels. 
 
 ---
 
@@ -252,8 +257,9 @@ class: inverse
 
 - RStudio cheat sheet for [ggplot2](https://www.rstudio.com/wp-content/uploads/2015/03/ggplot2-cheatsheet.pdf)
 
-- ggplot2 mailing list:
+- ggplot2 mailing list: 
 https://groups.google.com/forum/?fromgroups#!forum/ggplot2
+
     </textarea>
 <style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
@@ -300,9 +306,38 @@ if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
     }
     deleted = true;
   });
-})();</script>
-
-<script>
+})();
+// add `data-at-shortcutkeys` attribute to <body> to resolve conflicts with JAWS
+// screen reader (see PR #262)
+(function(d) {
+  let res = {};
+  d.querySelectorAll('.remark-help-content table tr').forEach(tr => {
+    const t = tr.querySelector('td:nth-child(2)').innerText;
+    tr.querySelectorAll('td:first-child .key').forEach(key => {
+      const k = key.innerText;
+      if (/^[a-z]$/.test(k)) res[k] = t;  // must be a single letter (key)
+    });
+  });
+  d.body.setAttribute('data-at-shortcutkeys', JSON.stringify(res));
+})(document);
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
 (function() {
   var links = document.getElementsByTagName('a');
   for (var i = 0; i < links.length; i++) {
@@ -311,7 +346,23 @@ if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
     }
   }
 })();
-</script>
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
 
 <script>
 slideshow._releaseMath = function(el) {

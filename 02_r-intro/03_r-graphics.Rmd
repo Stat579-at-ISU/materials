@@ -31,6 +31,11 @@ Look at 3 next, then come back to 1 and 2.
 
 Load libraries:
 
+```{r setup, echo=FALSE}
+library(knitr)
+opts_chunk$set(warning=FALSE, out.height=350)
+```
+
 ```{r}
 library(ggplot2) 
 # not found? run install.packages("ggplot2")
@@ -46,8 +51,8 @@ library(classdata)
 Can facet to display plots for different subsets: `facet_wrap`, `facet_grid`
 
 ```{r, message=FALSE}
-ggplot(aes(x = Year, y = Murder), data=fbiwide) +
-  facet_wrap(~State) +
+ggplot(aes(x = year, y = homicide), data=fbiwide) +
+  facet_wrap(~state) +
   geom_point()
 ```
 
@@ -59,7 +64,7 @@ ggplot(aes(x = Year, y = Murder), data=fbiwide) +
 
 - `facet_wrap` has specification `~ variables` 
 
-- multiple variables (in either specification) are included in form of a sum, i.e. `rowvar1 + rowvar2 ~ colvar1+ colvar2`
+- multiple variables (in either specification) are included in form of a sum, i.e. `rowvar1 + rowvar2 ~ colvar1 + colvar2`
 
 - no variable (in `facet_grid`) is written as `.`, i.e. `rowvar ~ .` are plots in a single column.
 
@@ -87,8 +92,8 @@ Use the `fbiwide` data from the package `classdata` for this your turn.
 
 ## Boxplots
 
-```{r, echo=FALSE, warning=FALSE, fig.width = 8, fig.height = 5}
-ggplot(data = fbi, aes(x = Type, y = log10(Count))) + geom_boxplot() + coord_flip()
+```{r, echo=FALSE, warning=FALSE, out.height=500, fig.width = 8, fig.height = 5}
+ggplot(data = fbi, aes(x = type, y = log10(count))) + geom_boxplot() + coord_flip()
 ```
 
 ---
@@ -109,8 +114,8 @@ ggplot(data = fbi, aes(x = Type, y = log10(Count))) + geom_boxplot() + coord_fli
 
 - `geom_boxplot` in ggplot2 needs `x` and `y` variable (`y` is measurement, `x` is categorical)
 
-```{r}
-ggplot(data = fbi, aes(x = Type, y = log10(Count))) +
+```{r fig.height=4, fig.width=8, out.height = 300}
+ggplot(data = fbi, aes(x = type, y = log10(count))) +
   geom_boxplot() + 
   coord_flip()
 ```
@@ -146,8 +151,8 @@ class: inverse
 
 Histograms: 
 
-```{r, fig.width=4, fig.height=3}
-ggplot(fbiwide, aes(x = Motor.vehicle.theft)) + 
+```{r, fig.width=4, fig.height=2.5}
+ggplot(fbiwide, aes(x = motor_vehicle_theft)) + 
   geom_histogram(binwidth=5000) +
   ggtitle("binwidth = 5000")
 ```
@@ -158,8 +163,8 @@ ggplot(fbiwide, aes(x = Motor.vehicle.theft)) +
 
 Histograms: 
 
-```{r, fig.width=4, fig.height=3}
-ggplot(fbiwide, aes(x = Motor.vehicle.theft)) + 
+```{r, fig.width=4, fig.height=2.5}
+ggplot(fbiwide, aes(x = motor_vehicle_theft)) + 
   geom_histogram(binwidth=1000) +
   ggtitle("binwidth = 1000")
 ```
@@ -170,8 +175,8 @@ Always change the bin width! There is no perfect bin width, but a lot of differe
 ## Barchart
 
 ```{r}
-ggplot(fbi, aes(x = Type)) + 
-  geom_bar(aes(weight= Count)) +
+ggplot(fbi, aes(x = type)) + 
+  geom_bar(aes(weight= count)) +
   coord_flip()
 ```
 

@@ -54,7 +54,22 @@ class: inverse, middle, center
 
 ## Why `ggplot2`
 
-- Wildly popular package for statistical graphics: over 2.5 million downloads from CRAN in 2017 (several thousand times per day)
+
+- Wildly popular package for statistical graphics: millions of downloads per month
+
+```{r, echo=FALSE, cache = TRUE, fig.height = 5}
+library(dlstats)
+library(ggplot2)
+
+dframe <- cran_stats("ggplot2", use_cache = FALSE)
+ggplot(data = dframe[-nrow(dframe),], aes(x = end, y = downloads/1000000)) + geom_point() + geom_line() +
+  ylab("Number of monthly downloads (in millions)") + xlab("Date") +
+  ggtitle("Number of monthly downloads of ggplot2")
+```
+
+---
+
+## Why `ggplot2`
 
 - Developed by Hadley Wickham (An ISU Alumni)
 
@@ -94,18 +109,18 @@ rectangles, text, ...) and statistical transformations (`stats`, are identity, c
 `aes` allows us to specify mappings; scatterplots need a mapping for `x` and a mapping for `y`:
 
 ```
-ggplot(data = fbiwide, aes(x = Burglary, y = Murder)) +
+ggplot(data = fbiwide, aes(x = burglary, y = murder)) +
   geom_point()
 ```  
 
 ```
-ggplot(data = fbiwide, aes(x = log(Burglary), y = log(Murder))) +
+ggplot(data = fbiwide, aes(x = log(burglary), y = log(murder))) +
   geom_point()
 ```  
 
 ```
-ggplot(data = fbiwide, aes(x = log(Burglary), 
-                           y = log(Motor.vehicle.theft))) +
+ggplot(data = fbiwide, aes(x = log(burglary), 
+                           y = log(motor_vehicle_theft))) +
   geom_point()
 ```  
 
@@ -170,12 +185,12 @@ Can map other variables to size or colour
 ggplot(aes(x = log(Burglary), y = log(Motor.vehicle.theft),
            colour=State), data=fbiwide) + geom_point()
 
-ggplot(aes(x = log(Burglary), y = log(Motor.vehicle.theft),
+ggplot(aes(x = log(burglary), y = log(motor_vehicle_theft),
            colour=Year), data=fbiwide) + geom_point()
 ```
 
 ```
-ggplot(aes(x = log(Burglary), y = log(Motor.vehicle.theft),
+ggplot(aes(x = log(burglary), y = log(motor_vehicle_theft),
            size=Population), data=fbiwide) + geom_point()
 ```
 

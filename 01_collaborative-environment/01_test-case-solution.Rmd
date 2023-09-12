@@ -13,6 +13,7 @@ class: center, middle
 
 ```{r setup, include=FALSE}
 options(htmltools.dir.version = FALSE)
+knitr::opts_chunk$set(cache=TRUE)
 ```
 
 # A 'Solution' to the test case 
@@ -87,7 +88,7 @@ iowa
 
 ## Variables for weight
 
-```{r, message = FALSE}
+```{r  message = FALSE}
 grep("WEIGHT", names(iowa), value=TRUE)
 
 
@@ -101,7 +102,7 @@ Variable is there ... let's plot it ...
 ## Plot 
 
 Load the `ggplot2` package to plot weight:
-```{r message = FALSE, fig.width=7, fig.height = 3.5, warning = FALSE}
+```{r hello, message = FALSE, fig.width=7, fig.height = 3.5, warning = FALSE}
 iowa %>% 
   ggplot(aes(x = WEIGHT2)) + geom_histogram()
 ```
@@ -139,7 +140,7 @@ We have a couple of choices :
 
 Let's take the second route first and draw a picture weight in metric units:
 
-```{r message = FALSE, warning = FALSE, fig.width = 5.5, fig.height = 2.5}
+```{r hello2, message = FALSE, warning = FALSE, fig.width = 5.5, fig.height = 2.5}
 iowa %>% 
   ggplot(aes(x = WTKG3)) + geom_histogram() + 
   facet_grid(.~SEX) 
