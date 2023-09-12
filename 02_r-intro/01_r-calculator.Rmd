@@ -274,4 +274,4 @@ Write down questions that you could answer with this data 4 minutes by yourself,
 
 
 
-The types of crimes are defined on the UCR website, see http://www.ucrdatatool.gov/offenses.cfm
+The types of crimes are defined on the UCR website, see https://www.fbi.gov/how-we-can-help-you/more-fbi-services-and-information/ucr
