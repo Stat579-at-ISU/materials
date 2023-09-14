@@ -61,6 +61,7 @@ for object `x`, the following commands:
 
 - `dim(x)` gives dimensionality of `x` (rows, columns)
 
+- `names(x)` gives the name(s) of `x` and its sub-objects
 
 ---
 class: inverse, middle, center
@@ -70,7 +71,7 @@ class: inverse, middle, center
 
 ## Why `ggplot2`?
 
-- Wildly popular package for statistical graphics: well over 25k downloads per day
+- Wildly popular package for statistical graphics: millions of downloads each month
 
 ```{r, echo=FALSE, cache = TRUE, fig.height = 5}
 library(dlstats)
@@ -126,18 +127,18 @@ rectangles, text, ...) and statistical transformations (`stats`, are identity, c
 ```
 data(fbiwide, package = "classdata")
 
-ggplot(data = fbiwide, aes(x = Burglary, y = Murder)) +
+ggplot(data = fbiwide, aes(x = burglary, y = murder)) +
   geom_point()
 ```  
 
 ```
-ggplot(data = fbiwide, aes(x = log(Burglary), y = log(Murder))) +
+ggplot(data = fbiwide, aes(x = log(burglary), y = log(murder))) +
   geom_point()
 ```  
 
 ```
-ggplot(data = fbiwide, aes(x = log(Burglary), 
-                           y = log(Motor.vehicle.theft))) +
+ggplot(data = fbiwide, aes(x = log(burglary), 
+                           y = log(motor_vehicle_theft))) +
   geom_point()
 ```  
 
@@ -164,16 +165,16 @@ Consequences:
 ## Using the pipe `%>%`
 
 ```
-ggplot(data = filter(fbi, Type=="Murder.and.nonnegligent.Manslaughter", 
-aes(x = Year, y = Count)) + geom_point()
+ggplot(data = filter(fbi, Type=="homicide", 
+aes(x = year, y = count)) + geom_point()
 ```
 
 becomes
 
 ```
 fbi %>% 
-  filter(Type=="Murder.and.nonnegligent.Manslaughter") %>%
-  ggplot(aes(x = Year, y = Count)) + 
+  filter(type=="homicide") %>%
+  ggplot(aes(x = year, y = count)) + 
     geom_point()
 ```
 ---
@@ -183,16 +184,16 @@ fbi %>%
 Can map other variables to size or colour
 
 ```
-ggplot(aes(x = log(Burglary), y = log(Motor.vehicle.theft),
-           colour=State), data=fbiwide) + geom_point()
+ggplot(aes(x = log(burglary), y = log(motor_vehicle_theft),
+           colour=state), data=fbiwide) + geom_point()
 
-ggplot(aes(x = log(Burglary), y = log(Motor.vehicle.theft),
-           colour=Year), data=fbiwide) + geom_point()
+ggplot(aes(x = log(burglary), y = log(motor_vehicle_theft),
+           colour=year), data=fbiwide) + geom_point()
 ```
 
 ```
-ggplot(aes(x = log(Burglary), y = log(Motor.vehicle.theft),
-           size=Population), data=fbiwide) + geom_point()
+ggplot(aes(x = log(burglary), y = log(motor_vehicle_theft),
+           size=population), data=fbiwide) + geom_point()
 ```
 
 other aesthetics: shape
