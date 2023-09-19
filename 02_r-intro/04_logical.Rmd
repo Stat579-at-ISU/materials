@@ -31,8 +31,8 @@ Consequences:
 ## Using the pipe `%>%`
 
 ```
-ggplot(data = filter(fbi, Type=="Murder.and.nonnegligent.Manslaughter", 
-aes(x = Year, y = Count)) + geom_point()
+ggplot(data = filter(fbi, type=="homicide", 
+aes(x = year, y = count)) + geom_point()
 ```
 
 becomes
@@ -41,8 +41,8 @@ becomes
 library(tidyverse)
 
 fbi %>% 
-  filter(Type=="Murder.and.nonnegligent.Manslaughter") %>%
-  ggplot(aes(x = Year, y = Count)) + 
+  filter(type=="homicide") %>%
+  ggplot(aes(x = year, y = count)) + 
     geom_point()
 ```
 
@@ -111,8 +111,8 @@ Hint: have a look at the help for the operator `%%`
 
 `filter(data, ...)` finds subset of `data` where conditions specified by logical expression in `...` are true, e.g.
 
-  - `filter(fbi, Year == 2014)`
-  - `filter(fbi, Type == "Larceny.Theft", State %in% c("Iowa", "Minnesota"))`
+  - `filter(fbi, year == 2014)`
+  - `filter(fbi, type == "larceny", state %in% c("Iowa", "Minnesota"))`
 
 multiple expressions are implicitly combined by a logical and `&`
 
@@ -205,7 +205,7 @@ data sets and their parts can be used as right hand side of an assignment:
 library(classdata)
 
 # introduces new variable in the data set fbiwide
-fbiwide$murder.rate <- fbiwide$Murder/fbiwide$Population*100000
+fbiwide$murder.rate <- fbiwide$homicide/fbiwide$population*100000
 
 names(fbiwide)
 ```
@@ -223,22 +223,11 @@ It allows us to introduce/upate variables in a dataset
 ```{r}
 fbiwide <- fbiwide %>% 
   mutate(
-    murder.rate = Murder/Population*100000
+    murder.rate = homicide/population*100000
   )
 ```
 
 Allows us to focus on the WHAT, rather than the HOW.
 
----
-class: inverse
-## Your turn 
 
-
-The gapminder data from homework 2 is available [here](https://raw.githubusercontent.com/Stat579-at-ISU/stat579-at-isu.github.io/master/homework/data/gapminder-5060.csv). 
-
-- `read.csv` helps you read the gapminder data from the given link. Store the result in an object.
-
-- What format does the object have?
-
-- Replace the problematic value in life expectancy for Canada in 1957  by the value 69.96. 
 
