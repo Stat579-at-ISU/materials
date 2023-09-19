@@ -109,12 +109,12 @@ rectangles, text, ...) and statistical transformations (`stats`, are identity, c
 `aes` allows us to specify mappings; scatterplots need a mapping for `x` and a mapping for `y`:
 
 ```
-ggplot(data = fbiwide, aes(x = burglary, y = murder)) +
+ggplot(data = fbiwide, aes(x = burglary, y = homicide)) +
   geom_point()
 ```  
 
 ```
-ggplot(data = fbiwide, aes(x = log(burglary), y = log(murder))) +
+ggplot(data = fbiwide, aes(x = log(burglary), y = log(homicide))) +
   geom_point()
 ```  
 
