@@ -1,9 +1,10 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<html lang="" xml:lang="">
   <head>
     <title>Stat 579: Factor variables</title>
     <meta charset="utf-8" />
     <meta name="author" content="Heike Hofmann" />
+    <script src="libs/header-attrs-2.24/header-attrs.js"></script>
     <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
     <link href="libs/remark-css-0.0.1/default-fonts.css" rel="stylesheet" />
   </head>
@@ -11,8 +12,12 @@
     <textarea id="source">
 class: center, middle, inverse, title-slide
 
+.title[
 # Stat 579: Factor variables
+]
+.author[
 ### Heike Hofmann
+]
 
 ---
 
@@ -39,7 +44,7 @@ class: inverse
 
 - Make a summary of Year
 
-- Make Year  a factor variable: `fbi$Year &lt;- factor(fbi$Year)`
+- Make Year  a factor variable: `fbi$year &lt;- factor(fbi$year)`
 
 - Compare summary of Year to the previous result
 
@@ -55,15 +60,15 @@ boxplots in ggplot2 only work properly if the x variable is a character variable
 
 
 ```r
-twoyear &lt;- dplyr::filter(fbi, Year %in% c(1961, 2016))
+twoyear &lt;- dplyr::filter(fbi, year %in% c(1961, 2016))
 ```
 
 .pull-left[
 
 ```r
 ggplot(data = twoyear, 
-       aes(x = Year, 
-           y = Count)) + 
+       aes(x = year, 
+           y = count)) + 
   geom_boxplot()
 ```
 
@@ -74,8 +79,8 @@ ggplot(data = twoyear,
 
 ```r
 ggplot(data = twoyear, 
-       aes(x = factor(Year), 
-           y = Count)) + 
+       aes(x = factor(year), 
+           y = count)) + 
   geom_boxplot()
 ```
 
@@ -124,36 +129,27 @@ To get the labels of a factor as numbers, first cast to character and then to a 
 
 
 ```r
-levels(fbi$Type)
+fbi$type &lt;- factor(fbi$type)
+levels(fbi$type)
 ```
 
 ```
-## [1] "Aggravated.assault"                  
-## [2] "Burglary"                            
-## [3] "Larceny.theft"                       
-## [4] "Legacy.rape"                         
-## [5] "Motor.vehicle.theft"                 
-## [6] "Murder.and.nonnegligent.Manslaughter"
-## [7] "Rape"                                
-## [8] "Robbery"
+## [1] "aggravated_assault"  "arson"               "burglary"           
+## [4] "homicide"            "larceny"             "motor_vehicle_theft"
+## [7] "rape_legacy"         "rape_revised"        "robbery"
 ```
 
 manually (extremely sensitive to typos):
 
 
 ```r
-levels(factor(fbi$Type, levels=c("Larceny.theft", "Burglary", "Motor.vehicle.theft", "Aggravated.assault", "Robbery", "Legacy.rape", "Murder.and.nonnegligent.Manslaughter", "Rape")))
+levels(factor(fbi$type, levels=c("larceny", "burglary", "motor_vehicle_theft", "aggravated_assult", "robbery", "rape_legacy", "homicide", "rape_revised")))
 ```
 
 ```
-## [1] "Larceny.theft"                       
-## [2] "Burglary"                            
-## [3] "Motor.vehicle.theft"                 
-## [4] "Aggravated.assault"                  
-## [5] "Robbery"                             
-## [6] "Legacy.rape"                         
-## [7] "Murder.and.nonnegligent.Manslaughter"
-## [8] "Rape"
+## [1] "larceny"             "burglary"            "motor_vehicle_theft"
+## [4] "aggravated_assult"   "robbery"             "rape_legacy"        
+## [7] "homicide"            "rape_revised"
 ```
 
 ---
@@ -166,32 +162,16 @@ reorder levels in factor by values in `numbers`. Use `function` to summarise (av
 
 
 ```r
-levels(reorder(fbi$Type, fbi$Count, na.rm=TRUE))
+levels(reorder(fbi$type, fbi$count, na.rm=TRUE))
 ```
 
 ```
-## [1] "Murder.and.nonnegligent.Manslaughter"
-## [2] "Legacy.rape"                         
-## [3] "Rape"                                
-## [4] "Robbery"                             
-## [5] "Aggravated.assault"                  
-## [6] "Motor.vehicle.theft"                 
-## [7] "Burglary"                            
-## [8] "Larceny.theft"
+## [1] "homicide"            "arson"               "rape_legacy"        
+## [4] "rape_revised"        "robbery"             "aggravated_assault" 
+## [7] "motor_vehicle_theft" "burglary"            "larceny"
 ```
 
 missing values in `numbers`? make sure to use parameter `na.rm=TRUE`!
-
----
-class:inverse
-## Your Turn
-
-This your turn is about re-ordering factor variables.
-We are using the `tips` dataset from the package `reshape2` (you might have to install that package using the command `install.packages("reshape2")`)
-
-- Plot side-by-side boxplots of `tip` by `day`. Are there differences in the amount of tips? 
-- Get the levels of `tip` in an order of Thursday, Friday, Saturday, Sunday and plot again.
-- Is amount of `tip` the best variable to check for differences? What other variable might affect the size of a tip?
 
 
 ---
@@ -216,31 +196,26 @@ For this your turn use the `fbi` object from the `classdata` package.
 
 
 ```r
-levels(fbi$Type)
+levels(fbi$type)
 ```
 
 ```
-## [1] "Aggravated.assault"                  
-## [2] "Burglary"                            
-## [3] "Larceny.theft"                       
-## [4] "Legacy.rape"                         
-## [5] "Motor.vehicle.theft"                 
-## [6] "Murder.and.nonnegligent.Manslaughter"
-## [7] "Rape"                                
-## [8] "Robbery"
+## [1] "aggravated_assault"  "arson"               "burglary"           
+## [4] "homicide"            "larceny"             "motor_vehicle_theft"
+## [7] "rape_legacy"         "rape_revised"        "robbery"
 ```
 
 
 ```r
-levels(fbi$Type)[6] &lt;- "Murder"
+levels(fbi$type)[4] &lt;- "murder"
 
-levels(fbi$Type)
+levels(fbi$type)
 ```
 
 ```
-## [1] "Aggravated.assault"  "Burglary"            "Larceny.theft"      
-## [4] "Legacy.rape"         "Motor.vehicle.theft" "Murder"             
-## [7] "Rape"                "Robbery"
+## [1] "aggravated_assault"  "arson"               "burglary"           
+## [4] "murder"              "larceny"             "motor_vehicle_theft"
+## [7] "rape_legacy"         "rape_revised"        "robbery"
 ```
 
 ---
@@ -253,7 +228,7 @@ levels(fbi$Type)
 
 - Thomas Lumley: &lt;a href="http://notstatschat.tumblr.com/post/124987394001/stringsasfactors-sigh"&gt;&lt;em&gt;stringsAsFactors = &amp;lt;sigh&amp;gt;&lt;/em&gt;&lt;/a&gt; 
 
-- The `forcats` package has a lot of additional functions that make working with factors easier.
+- The &lt;a href="https://forcats.tidyverse.org/"&gt;`forcats` package&lt;/a&gt; has a lot of additional functions that make working with factors easier.
     </textarea>
 <style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
@@ -300,9 +275,38 @@ if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
     }
     deleted = true;
   });
-})();</script>
-
-<script>
+})();
+// add `data-at-shortcutkeys` attribute to <body> to resolve conflicts with JAWS
+// screen reader (see PR #262)
+(function(d) {
+  let res = {};
+  d.querySelectorAll('.remark-help-content table tr').forEach(tr => {
+    const t = tr.querySelector('td:nth-child(2)').innerText;
+    tr.querySelectorAll('td:first-child .key').forEach(key => {
+      const k = key.innerText;
+      if (/^[a-z]$/.test(k)) res[k] = t;  // must be a single letter (key)
+    });
+  });
+  d.body.setAttribute('data-at-shortcutkeys', JSON.stringify(res));
+})(document);
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
 (function() {
   var links = document.getElementsByTagName('a');
   for (var i = 0; i < links.length; i++) {
@@ -311,7 +315,23 @@ if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
     }
   }
 })();
-</script>
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
 
 <script>
 slideshow._releaseMath = function(el) {

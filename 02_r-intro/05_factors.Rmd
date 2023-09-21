@@ -33,7 +33,7 @@ class: inverse
 
 - Make a summary of Year
 
-- Make Year  a factor variable: `fbi$Year <- factor(fbi$Year)`
+- Make Year  a factor variable: `fbi$year <- factor(fbi$year)`
 
 - Compare summary of Year to the previous result
 
@@ -51,14 +51,14 @@ library(classdata)
 ```
 
 ```{r}
-twoyear <- dplyr::filter(fbi, Year %in% c(1961, 2016))
+twoyear <- dplyr::filter(fbi, year %in% c(1961, 2016))
 ```
 
 .pull-left[
 ```{r, fig.width=3, fig.height = 3, message = FALSE, warning = FALSE}
 ggplot(data = twoyear, 
-       aes(x = Year, 
-           y = Count)) + 
+       aes(x = year, 
+           y = count)) + 
   geom_boxplot()
 ```
 ]
@@ -66,8 +66,8 @@ ggplot(data = twoyear,
 .pull-right[
 ```{r, fig.width=3, fig.height = 3, message = FALSE, warning = FALSE}
 ggplot(data = twoyear, 
-       aes(x = factor(Year), 
-           y = Count)) + 
+       aes(x = factor(year), 
+           y = count)) + 
   geom_boxplot()
 ```
 ]
@@ -113,13 +113,14 @@ To get the labels of a factor as numbers, first cast to character and then to a 
 # Reordering factor levels - manual
 
 ```{r}
-levels(fbi$Type)
+fbi$type <- factor(fbi$type)
+levels(fbi$type)
 ```
 
 manually (extremely sensitive to typos):
 
 ```{r}
-levels(factor(fbi$Type, levels=c("Larceny.theft", "Burglary", "Motor.vehicle.theft", "Aggravated.assault", "Robbery", "Legacy.rape", "Murder.and.nonnegligent.Manslaughter", "Rape")))
+levels(factor(fbi$type, levels=c("larceny", "burglary", "motor_vehicle_theft", "aggravated_assult", "robbery", "rape_legacy", "homicide", "rape_revised")))
 ```
 
 ---
@@ -131,21 +132,10 @@ levels(factor(fbi$Type, levels=c("Larceny.theft", "Burglary", "Motor.vehicle.the
 reorder levels in factor by values in `numbers`. Use `function` to summarise (average is used by default). 
 
 ```{r}
-levels(reorder(fbi$Type, fbi$Count, na.rm=TRUE))
+levels(reorder(fbi$type, fbi$count, na.rm=TRUE))
 ```
 
 missing values in `numbers`? make sure to use parameter `na.rm=TRUE`!
-
----
-class:inverse
-## Your Turn
-
-This your turn is about re-ordering factor variables.
-We are using the `tips` dataset from the package `reshape2` (you might have to install that package using the command `install.packages("reshape2")`)
-
-- Plot side-by-side boxplots of `tip` by `day`. Are there differences in the amount of tips? 
-- Get the levels of `tip` in an order of Thursday, Friday, Saturday, Sunday and plot again.
-- Is amount of `tip` the best variable to check for differences? What other variable might affect the size of a tip?
 
 
 ---
@@ -169,13 +159,13 @@ For this your turn use the `fbi` object from the `classdata` package.
 # Changing Levels' names
 
 ```{r}
-levels(fbi$Type)
+levels(fbi$type)
 ```
 
 ```{r}
-levels(fbi$Type)[6] <- "Murder"
+levels(fbi$type)[4] <- "murder"
 
-levels(fbi$Type)
+levels(fbi$type)
 ```
 
 ---
@@ -188,4 +178,4 @@ levels(fbi$Type)
 
 - Thomas Lumley: <a href="http://notstatschat.tumblr.com/post/124987394001/stringsasfactors-sigh"><em>stringsAsFactors = &lt;sigh&gt;</em></a> 
 
-- The `forcats` package has a lot of additional functions that make working with factors easier.
+- The <a href="https://forcats.tidyverse.org/">`forcats` package</a> has a lot of additional functions that make working with factors easier.
