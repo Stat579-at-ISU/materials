@@ -69,12 +69,12 @@ Hint: have a look at the help for the operator `%%`
 
 ## `filter {dplyr}`
 
-`filter` is a command of package `dplyr`
+`filter` is a function in the package `dplyr`
 
 `filter(data, ...)` finds subset of `data` where conditions specified by logical expression in `...` are true, e.g.
 
-  - `filter(fbi, Year == 2014)`
-  - `filter(fbi, Type == "Larceny.Theft", State %in% c("Iowa", "Minnesota"))`
+  - `filter(fbi, year == 2014)`
+  - `filter(fbi, type == "larceny", state %in% c("Iowa", "Minnesota"))`
 
 multiple expressions are implicitly combined by a logical and `&`
 
@@ -108,12 +108,12 @@ Use the `fbi` data object to answer the following questions:
 
 - how many reports of Burglaries are there for California?
 
-- for any of the violent crimes, which state had the highest rate (and for which crime) in 2014? in 1961? 
+- for any of the violent crimes, which state had the highest rate (and for which crime) in 2014? in 2020? 
 
 
 Use the `fbiwide` data object to answer the following question: 
 
-- in how many states in 2011 were there more vehicle thefts than robberies? (which states are those?)
+- in how many states were fewer cars stolen than robberies made in 2014? (which states are those?)
 
 ---
 
@@ -136,10 +136,26 @@ Find all indices for which an expression is TRUE:
 which(logical variable)  
 ```
 
+
 Retrieve index of maximum/minimum value:
 ```
 which.max(variable)
 which.min(variable) 
+```
+
+---
+
+# Slicing a data set
+
+- the function `dplyr::slice` is a variant of `filter` that returns a subset of a dataset by position
+
+```
+slice(fbi, 1:6) # same as head(fbi)
+```
+- `slice_min` and `slice_max` return the record of a dataset with the smallest or largest value in a variable
+
+```
+slice_max(fbiwide, burglary)
 ```
 
 ---
@@ -173,7 +189,7 @@ data sets and their parts can be used as right hand side of an assignment:
 library(classdata)
 
 # introduces new variable in the data set fbiwide
-fbiwide$murder.rate <- fbiwide$Murder/fbiwide$Population*100000
+fbiwide$homicide.rate <- fbiwide$homicide/fbiwide$population*100000
 
 names(fbiwide)
 ```
@@ -191,7 +207,7 @@ It allows us to introduce/upate variables in a dataset
 ```{r}
 fbiwide <- fbiwide %>% 
   mutate(
-    murder.rate = Murder/Population*100000
+    homicide.rate = homicide/population*100000
   )
 ```
 
@@ -216,7 +232,7 @@ class: inverse
 
 3. Draw a barchart of the variable `SLEPTIM1`
 
-4. Read up on the variable coding in the [codebook](https://www.cdc.gov/brfss/annual_data/2017/pdf/codebook17_llcp-v2-508.pdf)
+4. Read up on the variable encoding in the [codebook](https://www.cdc.gov/brfss/annual_data/2017/pdf/codebook17_llcp-v2-508.pdf)
 
 5. Some of the values should be encoded as `NA`. Use `mutate` to fix those values. Then re-draw the barchart. Include gender (`SEX1`) into the chart.
 
