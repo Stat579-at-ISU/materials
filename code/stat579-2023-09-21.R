@@ -130,4 +130,5 @@ x == 3
 
 dplyr::near(1/10+2/10- 3/10, 0)
 
-
+# have a look at https://0.30000000000000004.com/ for an overview of how different
+# languages handle the machine precision.
