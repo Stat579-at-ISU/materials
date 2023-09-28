@@ -1,9 +1,10 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<html lang="" xml:lang="">
   <head>
     <title>Intro to the tidyverse</title>
     <meta charset="utf-8" />
     <meta name="author" content="Heike Hofmann" />
+    <script src="libs/header-attrs-2.24/header-attrs.js"></script>
     <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
     <link href="libs/remark-css-0.0.1/default-fonts.css" rel="stylesheet" />
   </head>
@@ -11,8 +12,12 @@
     <textarea id="source">
 class: center, middle, inverse, title-slide
 
+.title[
 # Intro to the tidyverse
+]
+.author[
 ### Heike Hofmann
+]
 
 ---
 
@@ -80,13 +85,13 @@ all functions of the tidyverse have `data` as their first element
 Important: do not use `$` notation for variables within these functions, e.g: 
 
 ```
-ggplot(data = fbi, aes(x = Year, y = Count)) + 
+ggplot(data = fbi, aes(x = year, y = count)) + 
   geom_point()
 ```
 
 
 ```
-filter(fbi, Year &gt;= 2017, State == "Iowa")
+filter(fbi, year &gt;= 2017, state == "Iowa")
 ```
 
 
@@ -121,17 +126,19 @@ From the `fbi` data, extract all burglaries in 2016:
 library(classdata)
 library(dplyr)
 
-fbi %&gt;% filter(Type=="Burglary", Year==2016) %&gt;% head()
+fbi %&gt;% filter(type=="burglary", year==2016) %&gt;% head()
 ```
 
 ```
-##        State Abb Year Population     Type  Count Violent.crime
-## 1    Alabama  AL 2016    4863300 Burglary  34065         FALSE
-## 2     Alaska  AK 2016     741894 Burglary   4053         FALSE
-## 3    Arizona  AZ 2016    6931071 Burglary  37736         FALSE
-## 4   Arkansas  AR 2016    2988248 Burglary  23771         FALSE
-## 5 California  CA 2016   39250017 Burglary 188304         FALSE
-## 6   Colorado  CO 2016    5540545 Burglary  23903         FALSE
+## # A tibble: 6 × 8
+##   state      state_id state_abbr  year population type      count violent_crime
+##   &lt;chr&gt;         &lt;int&gt; &lt;chr&gt;      &lt;int&gt;      &lt;int&gt; &lt;chr&gt;     &lt;int&gt; &lt;lgl&gt;        
+## 1 Alabama           2 AL          2016    4860545 burglary  34045 FALSE        
+## 2 Alaska            1 AK          2016     741522 burglary   4053 FALSE        
+## 3 Arizona           5 AZ          2016    6908642 burglary  38216 FALSE        
+## 4 Arkansas          3 AR          2016    2988231 burglary  23814 FALSE        
+## 5 California        6 CA          2016   39296476 burglary 188304 FALSE        
+## 6 Colorado          7 CO          2016    5530105 burglary  23825 FALSE
 ```
 
 ---
@@ -164,24 +171,19 @@ Introduce a variable `Rate` into the `fbi` data:
 
 
 ```r
-fbi %&gt;% mutate(Rate = Count/Population*70000) %&gt;% head()
+fbi %&gt;% mutate(rate = count/population*90000) %&gt;% head()
 ```
 
 ```
-##     State Abb Year Population                                 Type Count
-## 1 Alabama  AL 1961    3302000 Murder.and.nonnegligent.Manslaughter   427
-## 2 Alabama  AL 1962    3358000 Murder.and.nonnegligent.Manslaughter   316
-## 3 Alabama  AL 1963    3347000 Murder.and.nonnegligent.Manslaughter   340
-## 4 Alabama  AL 1964    3407000 Murder.and.nonnegligent.Manslaughter   316
-## 5 Alabama  AL 1965    3462000 Murder.and.nonnegligent.Manslaughter   395
-## 6 Alabama  AL 1966    3517000 Murder.and.nonnegligent.Manslaughter   384
-##   Violent.crime     Rate
-## 1          TRUE 9.052090
-## 2          TRUE 6.587254
-## 3          TRUE 7.110846
-## 4          TRUE 6.492515
-## 5          TRUE 7.986713
-## 6          TRUE 7.642877
+## # A tibble: 6 × 9
+##   state   state_id state_abbr  year population type   count violent_crime   rate
+##   &lt;chr&gt;      &lt;int&gt; &lt;chr&gt;      &lt;int&gt;      &lt;int&gt; &lt;chr&gt;  &lt;int&gt; &lt;lgl&gt;          &lt;dbl&gt;
+## 1 Alabama        2 AL          1983    3959000 homic…   364 TRUE            8.27
+## 2 Alabama        2 AL          1983    3959000 rape_…   931 TRUE           21.2 
+## 3 Alabama        2 AL          1983    3959000 rape_…    NA TRUE           NA   
+## 4 Alabama        2 AL          1983    3959000 robbe…  3895 TRUE           88.5 
+## 5 Alabama        2 AL          1983    3959000 aggra… 11281 TRUE          256.  
+## 6 Alabama        2 AL          1983    3959000 burgl… 42485 FALSE         966.
 ```
 
 
@@ -197,17 +199,19 @@ Successive variables break ties in previous ones
 
 
 ```r
-fbi %&gt;% arrange(desc(Year), Type, desc(Count)) %&gt;% head()
+fbi %&gt;% arrange(desc(year), type, desc(count)) %&gt;% head()
 ```
 
 ```
-##        State Abb Year Population               Type  Count Violent.crime
-## 1 California  CA 2018   39557045 Aggravated.assault 105412          TRUE
-## 2      Texas  TX 2018   28701845 Aggravated.assault  73656          TRUE
-## 3    Florida  FL 2018   21299325 Aggravated.assault  55551          TRUE
-## 4   New York  NY 2018   19542209 Aggravated.assault  43171          TRUE
-## 5  Tennessee  TN 2018    6770010 Aggravated.assault  31717          TRUE
-## 6   Michigan  MI 2018    9995915 Aggravated.assault  31021          TRUE
+## # A tibble: 6 × 8
+##   state      state_id state_abbr  year population type       count violent_crime
+##   &lt;chr&gt;         &lt;int&gt; &lt;chr&gt;      &lt;int&gt;      &lt;int&gt; &lt;chr&gt;      &lt;int&gt; &lt;lgl&gt;        
+## 1 California        6 CA          2020   39368078 aggravat… 113646 TRUE         
+## 2 Texas            48 TX          2020   29360759 aggravat…  88810 TRUE         
+## 3 Florida          12 FL          2020   21733312 aggravat…  60871 TRUE         
+## 4 New York         38 NY          2020   19336776 aggravat…  46538 TRUE         
+## 5 Tennessee        47 TN          2020    6886834 aggravat…  37412 TRUE         
+## 6 Michigan         26 MI          2020    9966555 aggravat…  36384 TRUE
 ```
 
 ---
@@ -238,22 +242,24 @@ Negative selection also works, e.g. `-1` (not the first variable)
 # `select` Example
 
 
-Select `Type, Count, State`, and `Year` from the `fbi` data:
+Select `type, count, state`, and `year` from the `fbi` data:
 
 
 ```r
-fbi %&gt;% arrange(desc(Year), Type, desc(Count)) %&gt;%
-  select(Type, Count, State, Year) %&gt;% head()
+fbi %&gt;% arrange(desc(year), type, desc(count)) %&gt;%
+  select(type, count, state, year) %&gt;% head()
 ```
 
 ```
-##                 Type  Count      State Year
-## 1 Aggravated.assault 105412 California 2018
-## 2 Aggravated.assault  73656      Texas 2018
-## 3 Aggravated.assault  55551    Florida 2018
-## 4 Aggravated.assault  43171   New York 2018
-## 5 Aggravated.assault  31717  Tennessee 2018
-## 6 Aggravated.assault  31021   Michigan 2018
+## # A tibble: 6 × 4
+##   type                count state       year
+##   &lt;chr&gt;               &lt;int&gt; &lt;chr&gt;      &lt;int&gt;
+## 1 aggravated_assault 113646 California  2020
+## 2 aggravated_assault  88810 Texas       2020
+## 3 aggravated_assault  60871 Florida     2020
+## 4 aggravated_assault  46538 New York    2020
+## 5 aggravated_assault  37412 Tennessee   2020
+## 6 aggravated_assault  36384 Michigan    2020
 ```
 
 ---
@@ -293,13 +299,15 @@ Calculate the mean and standard deviation of Crime rates in the `fbi` data
 
 ```r
 fbi %&gt;% 
-    summarise(mean_rate = mean(Count/Population*70000, na.rm=TRUE), 
-              sd_rate = sd(Count/Population*70000, na.rm = TRUE))
+    summarise(mean_rate = mean(count/population*90000, na.rm=TRUE), 
+              sd_rate = sd(count/population*90000, na.rm = TRUE))
 ```
 
 ```
+## # A tibble: 1 × 2
 ##   mean_rate sd_rate
-## 1  395.5483 609.999
+##       &lt;dbl&gt;   &lt;dbl&gt;
+## 1      467.    777.
 ```
 
 ---
@@ -332,32 +340,31 @@ For each type of crime, calculate average crime rate and standard deviation.
 
 ```r
 fbi %&gt;%
-    group_by(Type) %&gt;%
-    summarise(mean_rate = mean(Count/Population*70000, na.rm=TRUE), 
-              sd_rate = sd(Count/Population*70000, na.rm = TRUE))
+*   group_by(type) %&gt;%
+    summarise(mean_rate = mean(count/population*90000, na.rm=TRUE), 
+              sd_rate = sd(count/population*90000, na.rm = TRUE))
 ```
 
 ```
-## `summarise()` ungrouping output (override with `.groups` argument)
-```
-
-```
-## # A tibble: 8 x 3
-##   Type                                 mean_rate sd_rate
-##   &lt;fct&gt;                                    &lt;dbl&gt;   &lt;dbl&gt;
-## 1 Aggravated.assault                      167.    112.  
-## 2 Burglary                                623.    312.  
-## 3 Larceny.theft                          1648.    626.  
-## 4 Legacy.rape                              20.2    10.8 
-## 5 Motor.vehicle.theft                     243.    157.  
-## 6 Murder.and.nonnegligent.Manslaughter      4.58    4.22
-## 7 Rape                                     30.1    12.9 
-## 8 Robbery                                  87.8   102.
+## # A tibble: 9 × 3
+##   type                mean_rate sd_rate
+##   &lt;chr&gt;                   &lt;dbl&gt;   &lt;dbl&gt;
+## 1 aggravated_assault     253.    146.  
+## 2 arson                   24.1    15.2 
+## 3 burglary               770.    389.  
+## 4 homicide                 5.87    5.83
+## 5 larceny               2257.    749.  
+## 6 motor_vehicle_theft    317.    204.  
+## 7 rape_legacy             30.9    12.3 
+## 8 rape_revised            40.1    17.6 
+## 9 robbery                119.    126.
 ```
 
 ---
 class: inverse, center, middle
 # Let's use these tools
+
+
     </textarea>
 <style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
@@ -404,9 +411,38 @@ if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
     }
     deleted = true;
   });
-})();</script>
-
-<script>
+})();
+// add `data-at-shortcutkeys` attribute to <body> to resolve conflicts with JAWS
+// screen reader (see PR #262)
+(function(d) {
+  let res = {};
+  d.querySelectorAll('.remark-help-content table tr').forEach(tr => {
+    const t = tr.querySelector('td:nth-child(2)').innerText;
+    tr.querySelectorAll('td:first-child .key').forEach(key => {
+      const k = key.innerText;
+      if (/^[a-z]$/.test(k)) res[k] = t;  // must be a single letter (key)
+    });
+  });
+  d.body.setAttribute('data-at-shortcutkeys', JSON.stringify(res));
+})(document);
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
 (function() {
   var links = document.getElementsByTagName('a');
   for (var i = 0; i < links.length; i++) {
@@ -415,7 +451,23 @@ if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
     }
   }
 })();
-</script>
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
 
 <script>
 slideshow._releaseMath = function(el) {

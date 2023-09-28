@@ -73,13 +73,13 @@ all functions of the tidyverse have `data` as their first element
 Important: do not use `$` notation for variables within these functions, e.g: 
 
 ```
-ggplot(data = fbi, aes(x = Year, y = Count)) + 
+ggplot(data = fbi, aes(x = year, y = count)) + 
   geom_point()
 ```
 
 
 ```
-filter(fbi, Year >= 2017, State == "Iowa")
+filter(fbi, year >= 2017, state == "Iowa")
 ```
 
 
@@ -113,7 +113,7 @@ From the `fbi` data, extract all burglaries in 2016:
 library(classdata)
 library(dplyr)
 
-fbi %>% filter(Type=="Burglary", Year==2016) %>% head()
+fbi %>% filter(type=="burglary", year==2016) %>% head()
 ```
 
 ---
@@ -145,7 +145,7 @@ variables introduced become available in following changes
 Introduce a variable `Rate` into the `fbi` data:
 
 ```{r}
-fbi %>% mutate(Rate = Count/Population*70000) %>% head()
+fbi %>% mutate(rate = count/population*90000) %>% head()
 ```
 
 
@@ -160,7 +160,7 @@ Successive variables break ties in previous ones
 `desc` stands for descending, otherwise rows are sorted from smallest to largest
 
 ```{r, message=FALSE}
-fbi %>% arrange(desc(Year), Type, desc(Count)) %>% head()
+fbi %>% arrange(desc(year), type, desc(count)) %>% head()
 ```
 
 ---
@@ -191,11 +191,11 @@ Negative selection also works, e.g. `-1` (not the first variable)
 # `select` Example
 
 
-Select `Type, Count, State`, and `Year` from the `fbi` data:
+Select `type, count, state`, and `year` from the `fbi` data:
 
 ```{r}
-fbi %>% arrange(desc(Year), Type, desc(Count)) %>%
-  select(Type, Count, State, Year) %>% head()
+fbi %>% arrange(desc(year), type, desc(count)) %>%
+  select(type, count, state, year) %>% head()
 ```
 
 ---
@@ -234,8 +234,8 @@ Calculate the mean and standard deviation of Crime rates in the `fbi` data
 
 ```{r}
 fbi %>% 
-    summarise(mean_rate = mean(Count/Population*70000, na.rm=TRUE), 
-              sd_rate = sd(Count/Population*70000, na.rm = TRUE))
+    summarise(mean_rate = mean(count/population*90000, na.rm=TRUE), 
+              sd_rate = sd(count/population*90000, na.rm = TRUE))
 ```
 
 ---
@@ -267,9 +267,9 @@ For each type of crime, calculate average crime rate and standard deviation.
 
 ```{r}
 fbi %>%
-    group_by(Type) %>%
-    summarise(mean_rate = mean(Count/Population*70000, na.rm=TRUE), 
-              sd_rate = sd(Count/Population*70000, na.rm = TRUE))
+    group_by(type) %>% #<<
+    summarise(mean_rate = mean(count/population*90000, na.rm=TRUE), 
+              sd_rate = sd(count/population*90000, na.rm = TRUE))
 ```
 
 ---
