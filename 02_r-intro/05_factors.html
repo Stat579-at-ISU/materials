@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang="" xml:lang="">
   <head>
-    <title>Stat 579: Factor variables</title>
+    <title>Stat 579: Missing values and Factor variables</title>
     <meta charset="utf-8" />
     <meta name="author" content="Heike Hofmann" />
-    <script src="libs/header-attrs-2.24/header-attrs.js"></script>
+    <script src="libs/header-attrs-2.25/header-attrs.js"></script>
     <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
     <link href="libs/remark-css-0.0.1/default-fonts.css" rel="stylesheet" />
   </head>
@@ -13,7 +13,7 @@
 class: center, middle, inverse, title-slide
 
 .title[
-# Stat 579: Factor variables
+# Stat 579: Missing values and Factor variables
 ]
 .author[
 ### Heike Hofmann
@@ -21,6 +21,176 @@ class: center, middle, inverse, title-slide
 
 ---
 
+
+# Missing values
+
+- missing values in R are encoded as `NA` (for Not Available) 
+
+- missing values are 'contagious':
+
+
+
+
+```r
+1 + NA
+```
+
+```
+## [1] NA
+```
+
+```r
+max(c(1, 2, 3, NA))
+```
+
+```
+## [1] NA
+```
+
+```r
+mean(c(1, 2, 3, NA))
+```
+
+```
+## [1] NA
+```
+
+```r
+x == NA
+```
+
+```
+## [1] NA
+```
+---
+
+# Missing values (2)
+
+- Check for missing values with `is.na`
+
+```r
+is.na(c(1, 2, 3, NA))
+```
+
+```
+## [1] FALSE FALSE FALSE  TRUE
+```
+- address missing values specifically and systematically: a lot of functions have argument `na.rm` (remove `NA`)
+
+
+```r
+mean(c(7, 4, NA, 10), na.rm=TRUE) 
+```
+
+```
+## [1] 7
+```
+
+```r
+cor(c(7, 4, NA, 10), c(1,2,3,4), use = "pairwise.complete") 
+```
+
+```
+## [1] 0.6546537
+```
+
+---
+
+# Missing values (3)
+
+- Note: `NA` is different from `NaN` (not a number) and `Inf`:
+
+```r
+1/0
+```
+
+```
+## [1] Inf
+```
+
+```r
+0/0
+```
+
+```
+## [1] NaN
+```
+
+- missing values come last (by default), 
+
+```r
+order(c(7, 4, NA, 10)) 
+```
+
+```
+## [1] 2 1 4 3
+```
+
+- **careful:** `sort` quietly drops `NA` values
+
+```r
+length(sort(c(7, 4, NA, 10)))
+```
+
+```
+## [1] 3
+```
+
+---
+
+# Dealing with missing values
+
+A lot of functions deal with getting rid of missing values: `?na.omit`, `?complete.cases`
+
+It is dangerous and usually results in wrong conclusions to simply reduce a data set to complete records only. 
+
+Values can be missing for a variety of reasons: (completely) at random or according to some mechanism involving other variables   
+
+
+
+Example (homework file)
+
+
+```r
+iowa &lt;- read.csv("https://raw.githubusercontent.com/Stat579-at-ISU/stat579-at-isu.github.io/master/homework/data/brfss-iowa-2022.csv")
+dim(iowa)
+```
+
+```
+## [1] 8949  326
+```
+
+```r
+sum(complete.cases(iowa))
+```
+
+```
+## [1] 0
+```
+
+---
+class: inverse
+# Your Turn 
+
+- Inspect the `fbi` object. 
+
+- Which variable(s) have missing values? how many?
+
+- Create a subset of the fbi that contains all missing values. Can you identify a pattern in the structure of missing values?
+
+---
+
+```
+missing %&gt;% ggplot(aes(x = year, y = state_abbr)) + geom_tile()
+missing %&gt;% ggplot(aes(x = year, y = type)) + geom_tile()
+```
+
+---
+class: inverse, center, middle
+
+# Factors
+
+---
 
 # Factors
 
@@ -60,7 +230,7 @@ boxplots in ggplot2 only work properly if the x variable is a character variable
 
 
 ```r
-twoyear &lt;- dplyr::filter(fbi, year %in% c(1961, 2016))
+twoyear &lt;- dplyr::filter(fbi, year %in% c(1980, 2016))
 ```
 
 .pull-left[
@@ -72,7 +242,7 @@ ggplot(data = twoyear,
   geom_boxplot()
 ```
 
-![](05_factors_files/figure-html/unnamed-chunk-3-1.png)&lt;!-- --&gt;
+![](05_factors_files/figure-html/unnamed-chunk-11-1.png)&lt;!-- --&gt;
 ]
 
 .pull-right[
@@ -84,7 +254,7 @@ ggplot(data = twoyear,
   geom_boxplot()
 ```
 
-![](05_factors_files/figure-html/unnamed-chunk-4-1.png)&lt;!-- --&gt;
+![](05_factors_files/figure-html/unnamed-chunk-12-1.png)&lt;!-- --&gt;
 ]
 
 
@@ -123,6 +293,7 @@ To get the labels of a factor as numbers, first cast to character and then to a 
 - We can make the order of the levels in one variable dependent on the summary statistic of another variable
 
 
+
 ---
 
 # Reordering factor levels - manual
@@ -151,6 +322,21 @@ levels(factor(fbi$type, levels=c("larceny", "burglary", "motor_vehicle_theft", "
 ## [4] "aggravated_assult"   "robbery"             "rape_legacy"        
 ## [7] "homicide"            "rape_revised"
 ```
+
+
+---
+
+# The `forcats` package
+
+- part of the tidyverse set of packages
+
+- goal: make working with factors easier
+
+- Four main functions:
+  - `fct_reorder()`: Reordering a factor by another variable.
+  - `fct_infreq()`: Reordering a factor by the frequency of values.
+  - `fct_relevel()`: Changing the order of a factor by hand.
+  - `fct_lump()`: Collapsing the least/most frequent values of a factor into "other".
 
 ---
 
