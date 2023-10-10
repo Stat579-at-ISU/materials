@@ -159,22 +159,34 @@ Retrieve index of maximum/minimum value:
 which.max(variable)
 which.min(variable) 
 ```
+---
+
+
+# Slicing a data set
+
+- the function `dplyr::slice` is a variant of `filter` that returns a subset of a dataset by position
+
+```
+slice(fbi, 1:6) # same as head(fbi)
+
+```
+
+- `slice_min` and `slice_max` return the record of a dataset with the smallest or largest value in a variable
+
+```
+slice_max(fbiwide, burglary)
+slice_max(fbiwide, burglary, prop = 0.1) # highest 10 percent
+```
+
 
 ---
 class: inverse
 ## Your turn 
 
 
-Use the `fbi` data object to answer the following questions: 
+Use the `fbi` data object to answer the following questions. The following question can be answered with a combination of `filter` and `slice`
 
-- how many reports of Burglaries are there for California?
-
-- for any of the violent crimes, which state had the highest rate (and for which crime) in 2014? in 1961? 
-
-
-Use the `fbiwide` data object to answer the following question: 
-
-- in how many states in 2011 were there more vehicle thefts than robberies? (which states are those?)
+- Get a subset of the data that includes number of homicides for the last five years. Find the rate of homicides, extract all states that have a rate of greater than 90% of the rates across all states, and plot.
 
 
 
