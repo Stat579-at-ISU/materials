@@ -4,7 +4,7 @@
     <title>dplyr examples: happiness</title>
     <meta charset="utf-8" />
     <meta name="author" content="Heike Hofmann" />
-    <script src="libs/header-attrs-2.24/header-attrs.js"></script>
+    <script src="libs/header-attrs-2.25/header-attrs.js"></script>
     <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
     <link href="libs/remark-css-0.0.1/default-fonts.css" rel="stylesheet" />
   </head>
@@ -48,12 +48,12 @@ head(happy)
 ## 5 1972  61    high school above average  pretty happy      good       married
 ## 6 1972  26    high school above average  pretty happy      good never married
 ##      sex polviews          partyid wtssall wtssnr
-## 1 female     &lt;NA&gt;     ind,near dem       7   1147
-## 2   male     &lt;NA&gt; not str democrat      54   1147
-## 3 female     &lt;NA&gt;      independent      54   1147
-## 4 female     &lt;NA&gt; not str democrat      54   1147
-## 5 female     &lt;NA&gt;  strong democrat      54   1147
-## 6   male     &lt;NA&gt;     ind,near dem       7   1147
+## 1 female     &lt;NA&gt;     ind,near dem  0.4446     NA
+## 2   male     &lt;NA&gt; not str democrat  0.8893     NA
+## 3 female     &lt;NA&gt;      independent  0.8893     NA
+## 4 female     &lt;NA&gt; not str democrat  0.8893     NA
+## 5 female     &lt;NA&gt;  strong democrat  0.8893     NA
+## 6   male     &lt;NA&gt;     ind,near dem  0.4446     NA
 ```
 
 You can find a codebook with explanations for each of the variables at https://gssdataexplorer.norc.org/
@@ -112,9 +112,9 @@ happy %&gt;% group_by(sex) %&gt;% summarise(n = n())
 ## # A tibble: 3 × 2
 ##   sex        n
 ##   &lt;fct&gt;  &lt;int&gt;
-## 1 male   30350
-## 2 female 38404
-## 3 &lt;NA&gt;      92
+## 1 male   31977
+## 2 female 40301
+## 3 &lt;NA&gt;     112
 ```
 
 - `tally()` is a combination of `summarise` and `n`
@@ -127,9 +127,9 @@ happy %&gt;% group_by(sex) %&gt;% tally()
 ## # A tibble: 3 × 2
 ##   sex        n
 ##   &lt;fct&gt;  &lt;int&gt;
-## 1 male   30350
-## 2 female 38404
-## 3 &lt;NA&gt;      92
+## 1 male   31977
+## 2 female 40301
+## 3 &lt;NA&gt;     112
 ```
 
 ---
@@ -144,25 +144,27 @@ happy %&gt;% count(sex, degree)
 ```
 
 ```
-##       sex         degree     n
-## 1    male lt high school  6021
-## 2    male    high school 14828
-## 3    male junior college  1637
-## 4    male       bachelor  4951
-## 5    male       graduate  2828
-## 6    male           &lt;NA&gt;    85
-## 7  female lt high school  7766
-## 8  female    high school 19942
-## 9  female junior college  2400
-## 10 female       bachelor  5551
-## 11 female       graduate  2641
-## 12 female           &lt;NA&gt;   104
-## 13   &lt;NA&gt; lt high school    46
-## 14   &lt;NA&gt;    high school    22
-## 15   &lt;NA&gt; junior college     1
-## 16   &lt;NA&gt;       bachelor     9
-## 17   &lt;NA&gt;       graduate     7
-## 18   &lt;NA&gt;           &lt;NA&gt;     7
+## # A tibble: 18 × 3
+##    sex    degree             n
+##    &lt;fct&gt;  &lt;fct&gt;          &lt;int&gt;
+##  1 male   lt high school  6181
+##  2 male   high school    15611
+##  3 male   junior college  1786
+##  4 male   bachelor        5286
+##  5 male   graduate        3028
+##  6 male   &lt;NA&gt;              85
+##  7 female lt high school  7960
+##  8 female high school    20804
+##  9 female junior college  2565
+## 10 female bachelor        5952
+## 11 female graduate        2916
+## 12 female &lt;NA&gt;             104
+## 13 &lt;NA&gt;   lt high school    51
+## 14 &lt;NA&gt;   high school       31
+## 15 &lt;NA&gt;   junior college     4
+## 16 &lt;NA&gt;   bachelor          10
+## 17 &lt;NA&gt;   graduate           9
+## 18 &lt;NA&gt;   &lt;NA&gt;               7
 ```
 
 - `count()` doesn't introduce any grouping
