@@ -176,3 +176,20 @@ fbi_mod %>%
   geom_boxplot() +
   geom_point(data = filter(fbi_mod, year==2020),
              colour = "red")
+
+# fbi %>%
+#   filter(year >= 2016) %>%
+#   filter(type=="motor_vehicle_theft") %>%
+#   group_by(state_abbr) %>%
+#   mutate(
+#     rate2020= rate[year==2020],
+#     trend = ifelse(near(rate2020, max(rate)), "up",
+#               ifelse(near(rate2020, min(rate)), "down", "stable"))
+#     ) %>%
+#   ungroup() %>%
+#   mutate(
+#     state_abbr = fct_reorder(state_abbr, rate2020)
+#   ) %>%
+#   ggplot(aes(x = state_abbr, y=rate, color=year)) +
+#   geom_point() +
+#   facet_grid(~trend, scales="free", space="free")
