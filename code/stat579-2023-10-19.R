@@ -41,4 +41,6 @@ fbi %>%
   facet_grid(~trend, scales="free", space="free")
 
 ####
-
+remotes::install_gihtub("heike/classdata")
+library(haven)
+library(classdata)
