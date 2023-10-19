@@ -20,6 +20,17 @@ fbi_mod %>%
   geom_point(data = filter(fbi_mod, year==2020),
              colour = "red")
 
+fbi %>%
+  filter(type=="motor_vehicle_theft") %>%
+  mutate(
+    rate = count/population*100000,
+    state_abbr = fct_reorder(state_abbr, rate)
+  ) %>%
+  ggplot(aes(x = state_abbr, y=rate)) +
+  geom_boxplot() +
+  geom_point(data = . %>% filter(year==2020),   # doesn't work: filter(., year==2020) ???
+             colour = "red")
+
 ######
 fbi %>%
   filter(year >= 2016) %>%
