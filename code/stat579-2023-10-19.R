@@ -42,5 +42,12 @@ fbi %>%
 
 ####
 remotes::install_github("heike/classdata")
-library(haven)
 library(classdata)
+summary(happy)
+summary(happy$year)
+
+library(tidyverse)
+summary(happy)
+
+library(haven)
+
