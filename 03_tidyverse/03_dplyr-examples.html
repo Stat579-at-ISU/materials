@@ -1,9 +1,10 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<html lang="" xml:lang="">
   <head>
     <title>dplyr examples: mutate + group_by</title>
     <meta charset="utf-8" />
     <meta name="author" content="Heike Hofmann" />
+    <script src="libs/header-attrs-2.25/header-attrs.js"></script>
     <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
     <link href="libs/remark-css-0.0.1/default-fonts.css" rel="stylesheet" />
   </head>
@@ -11,8 +12,12 @@
     <textarea id="source">
 class: center, middle, inverse, title-slide
 
+.title[
 # dplyr examples: mutate + group_by
+]
+.author[
 ### Heike Hofmann
+]
 
 ---
 
@@ -40,13 +45,15 @@ tail(fbi)
 ```
 
 ```
-##               State Abb Year Population        Type Count Violent.crime
-## 23667       Vermont  VT 2018     626299 Legacy.rape    NA          TRUE
-## 23668      Virginia  VA 2018    8517685 Legacy.rape    NA          TRUE
-## 23669    Washington  WA 2018    7535591 Legacy.rape    NA          TRUE
-## 23670 West Virginia  WV 2018    1805832 Legacy.rape    NA          TRUE
-## 23671     Wisconsin  WI 2018    5813568 Legacy.rape    NA          TRUE
-## 23672       Wyoming  WY 2018     577737 Legacy.rape    NA          TRUE
+## # A tibble: 6 × 8
+##   state       state_id state_abbr  year population type      count violent_crime
+##   &lt;chr&gt;          &lt;int&gt; &lt;chr&gt;      &lt;int&gt;      &lt;int&gt; &lt;chr&gt;     &lt;int&gt; &lt;lgl&gt;        
+## 1 Puerto Rico       43 PR          2020    3159343 robbery    1177 TRUE         
+## 2 Puerto Rico       43 PR          2020    3159343 aggravat…  3342 TRUE         
+## 3 Puerto Rico       43 PR          2020    3159343 burglary   2952 FALSE        
+## 4 Puerto Rico       43 PR          2020    3159343 larceny    8311 FALSE        
+## 5 Puerto Rico       43 PR          2020    3159343 motor_ve…  1978 FALSE        
+## 6 Puerto Rico       43 PR          2020    3159343 arson        NA FALSE
 ```
 
 ---
@@ -55,7 +62,7 @@ class: inverse
 
 For this your turn use the `fbi` data from the `classdata` package
 
-- Use `mutate` to introduce a variable `Rate` into the `fbi` data
+- Use `mutate` to introduce a variable `rate` into the `fbi` data
 
 - Use `mutate` to reorder types of crimes by (median) rate.
 
@@ -69,26 +76,26 @@ Introduce a ranking by rate for each type of crime.
 
 
 ```r
-fbi &lt;- fbi %&gt;% group_by(Type) %&gt;% mutate(
-  Rate = Count/Population*70000,
-  Rank = rank(Rate) # ranks from lowest rate to highest rate
+fbi &lt;- fbi %&gt;% group_by(type) %&gt;% mutate(
+  rate = count/population*100000,
+  rank = rank(rate) # ranks from lowest rate to highest rate
 )
-fbi %&gt;% filter(Rank == 1) %&gt;% select(Type, State, Year, Rate)
+fbi %&gt;% filter(rank == 1) %&gt;% select(type, state, year, rate)
 ```
 
 ```
-## # A tibble: 8 x 4
-## # Groups:   Type [8]
-##   Type                                 State          Year    Rate
-##   &lt;fct&gt;                                &lt;chr&gt;         &lt;int&gt;   &lt;dbl&gt;
-## 1 Murder.and.nonnegligent.Manslaughter North Dakota   1967   0.110
-## 2 Robbery                              Vermont        1967   1.34 
-## 3 Aggravated.assault                   Vermont        1962   2.51 
-## 4 Larceny.theft                        West Virginia  1961 205.   
-## 5 Rape                                 Puerto Rico    2013   0.658
-## 6 Legacy.rape                          Puerto Rico    2013   0.503
-## 7 Motor.vehicle.theft                  Vermont        2015  19.9  
-## 8 Burglary                             New Hampshire  2018  95.3
+## # A tibble: 8 × 4
+## # Groups:   type [8]
+##   type                state         year    rate
+##   &lt;chr&gt;               &lt;chr&gt;        &lt;int&gt;   &lt;dbl&gt;
+## 1 robbery             North Dakota  1997   6.40 
+## 2 aggravated_assault  North Dakota  1983  31.3  
+## 3 homicide            North Dakota  1994   0.157
+## 4 motor_vehicle_theft Vermont       2016  29.5  
+## 5 rape_legacy         Puerto Rico   2013   0.723
+## 6 rape_revised        Puerto Rico   2013   0.946
+## 7 burglary            Puerto Rico   2020  93.4  
+## 8 larceny             Puerto Rico   2020 263.
 ```
 
 ---
@@ -116,7 +123,7 @@ For this your turn use the `fbi` data from the `classdata` package
 
 ---
 
-# Potential traps
+# Avoiding potential traps
 
 - using the $ notation in tidyverse can lead to strange behavior and error messages
 
@@ -169,9 +176,38 @@ if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
     }
     deleted = true;
   });
-})();</script>
-
-<script>
+})();
+// add `data-at-shortcutkeys` attribute to <body> to resolve conflicts with JAWS
+// screen reader (see PR #262)
+(function(d) {
+  let res = {};
+  d.querySelectorAll('.remark-help-content table tr').forEach(tr => {
+    const t = tr.querySelector('td:nth-child(2)').innerText;
+    tr.querySelectorAll('td:first-child .key').forEach(key => {
+      const k = key.innerText;
+      if (/^[a-z]$/.test(k)) res[k] = t;  // must be a single letter (key)
+    });
+  });
+  d.body.setAttribute('data-at-shortcutkeys', JSON.stringify(res));
+})(document);
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
 (function() {
   var links = document.getElementsByTagName('a');
   for (var i = 0; i < links.length; i++) {
@@ -180,7 +216,23 @@ if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
     }
   }
 })();
-</script>
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
 
 <script>
 slideshow._releaseMath = function(el) {

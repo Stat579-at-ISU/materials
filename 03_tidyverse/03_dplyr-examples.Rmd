@@ -37,7 +37,7 @@ class: inverse
 
 For this your turn use the `fbi` data from the `classdata` package
 
-- Use `mutate` to introduce a variable `Rate` into the `fbi` data
+- Use `mutate` to introduce a variable `rate` into the `fbi` data
 
 - Use `mutate` to reorder types of crimes by (median) rate.
 
@@ -50,11 +50,11 @@ For this your turn use the `fbi` data from the `classdata` package
 Introduce a ranking by rate for each type of crime.
 
 ```{r}
-fbi <- fbi %>% group_by(Type) %>% mutate(
-  Rate = Count/Population*70000,
-  Rank = rank(Rate) # ranks from lowest rate to highest rate
+fbi <- fbi %>% group_by(type) %>% mutate(
+  rate = count/population*100000,
+  rank = rank(rate) # ranks from lowest rate to highest rate
 )
-fbi %>% filter(Rank == 1) %>% select(Type, State, Year, Rate)
+fbi %>% filter(rank == 1) %>% select(type, state, year, rate)
 ```
 
 ---
@@ -67,14 +67,14 @@ For this your turn use the `fbi` data from the `classdata` package
 - Focus on the top states. Find a visual that shows how often each state managed to take the top spot since 1961.
 
 ```{r, echo=FALSE, fig.width=10, fig.height =5}
-fbi <- fbi %>% group_by(Type, Year) %>% mutate(
-  Rate = Count/Population*70000,
-  Rank = rank(Rate) # ranks from lowest rate to highest rate
+fbi <- fbi %>% group_by(type, year) %>% mutate(
+  rate = count/population*100000,
+  rank = rank(rate) # ranks from lowest rate to highest rate
 )
-fbi %>% filter(Rank == 1) %>% 
-  select(Type, State, Abb, Year, Rate) %>%
-  ggplot(aes(x = Abb)) + 
-  facet_wrap(~Type, scales="free", ncol=4) +
+fbi %>% filter(rank == 1) %>% 
+  select(type, state, state_abbr, year, rate) %>%
+  ggplot(aes(x = state_abbr)) + 
+  facet_wrap(~type, scales="free", ncol=4) +
   geom_bar()
 
 ```
@@ -93,7 +93,7 @@ fbi %>% filter(Rank == 1) %>%
 
 ---
 
-# Potential traps
+# Avoiding potential traps
 
 - using the $ notation in tidyverse can lead to strange behavior and error messages
 
