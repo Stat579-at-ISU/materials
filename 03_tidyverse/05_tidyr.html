@@ -1,9 +1,10 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<html lang="" xml:lang="">
   <head>
     <title>Reshaping data</title>
     <meta charset="utf-8" />
     <meta name="author" content="Heike Hofmann" />
+    <script src="libs/header-attrs-2.25/header-attrs.js"></script>
     <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
     <link href="libs/remark-css-0.0.1/default-fonts.css" rel="stylesheet" />
   </head>
@@ -11,8 +12,12 @@
     <textarea id="source">
 class: center, middle, inverse, title-slide
 
+.title[
 # Reshaping data
+]
+.author[
 ### Heike Hofmann
+]
 
 ---
 
@@ -193,7 +198,7 @@ ffm
 ```
 
 ```
-## # A tibble: 3,480 x 6
+## # A tibble: 3,480 × 6
 ##    time  treatment subject   rep scale   score
 ##    &lt;fct&gt; &lt;fct&gt;     &lt;fct&gt;   &lt;dbl&gt; &lt;chr&gt;   &lt;dbl&gt;
 ##  1 1     1         3           1 potato    2.9
@@ -206,18 +211,18 @@ ffm
 ##  8 1     1         3           2 grassy    0  
 ##  9 1     1         3           2 rancid    1.1
 ## 10 1     1         3           2 painty    0  
-## # … with 3,470 more rows
+## # ℹ 3,470 more rows
 ```
 
 ---
 
 # Gather/Pivot to long
 
-![](images/gather-spread.png)
+&lt;img src="images/gather-spread.png" height="500"&gt;
 
 ---
 
-# Spread/Pivot to wide
+# Pivot to wide
 
 
 ```r
@@ -225,7 +230,7 @@ ffm %&gt;% pivot_wider(names_from = rep, values_from = score)
 ```
 
 ```
-## # A tibble: 1,740 x 6
+## # A tibble: 1,740 × 6
 ##    time  treatment subject scale     `1`   `2`
 ##    &lt;fct&gt; &lt;fct&gt;     &lt;fct&gt;   &lt;chr&gt;   &lt;dbl&gt; &lt;dbl&gt;
 ##  1 1     1         3       potato    2.9  14  
@@ -238,15 +243,22 @@ ffm %&gt;% pivot_wider(names_from = rep, values_from = score)
 ##  8 1     1         10      grassy    0     2.9
 ##  9 1     1         10      rancid    0     2.2
 ## 10 1     1         10      painty    0     0  
-## # … with 1,730 more rows
+## # ℹ 1,730 more rows
 ```
+
+---
+
+# Pivot to wide
+
+formerly: 
+
 
 ```r
 ffm %&gt;% spread(key = rep, value = score)
 ```
 
 ```
-## # A tibble: 1,740 x 6
+## # A tibble: 1,740 × 6
 ##    time  treatment subject scale     `1`   `2`
 ##    &lt;fct&gt; &lt;fct&gt;     &lt;fct&gt;   &lt;chr&gt;   &lt;dbl&gt; &lt;dbl&gt;
 ##  1 1     1         3       buttery   0     0  
@@ -259,23 +271,44 @@ ffm %&gt;% spread(key = rep, value = score)
 ##  8 1     1         10      painty    0     0  
 ##  9 1     1         10      potato   11     9.9
 ## 10 1     1         10      rancid    0     2.2
-## # … with 1,730 more rows
+## # ℹ 1,730 more rows
+```
+---
+
+# Pivot to wide
+
+
+```r
+ffm %&gt;% pivot_wider(names_from = rep, values_from = score, names_prefix="Rep")
+```
+
+```
+## # A tibble: 1,740 × 6
+##    time  treatment subject scale    Rep1  Rep2
+##    &lt;fct&gt; &lt;fct&gt;     &lt;fct&gt;   &lt;chr&gt;   &lt;dbl&gt; &lt;dbl&gt;
+##  1 1     1         3       potato    2.9  14  
+##  2 1     1         3       buttery   0     0  
+##  3 1     1         3       grassy    0     0  
+##  4 1     1         3       rancid    0     1.1
+##  5 1     1         3       painty    5.5   0  
+##  6 1     1         10      potato   11     9.9
+##  7 1     1         10      buttery   6.4   5.9
+##  8 1     1         10      grassy    0     2.9
+##  9 1     1         10      rancid    0     2.2
+## 10 1     1         10      painty    0     0  
+## # ℹ 1,730 more rows
 ```
 
 ---
 
 
 ```r
-ffm %&gt;% spread(key = rep, value = score) %&gt;%
-  ggplot(aes(x = `1`, y = `2`)) + geom_point() +
+ffm %&gt;% pivot_wider(names_from = rep, values_from = score, names_prefix="Rep") %&gt;%
+  ggplot(aes(x = Rep1, y = Rep2)) + geom_point() +
   facet_wrap(~scale) + geom_abline(colour = "grey50")
 ```
 
-```
-## Warning: Removed 9 rows containing missing values (geom_point).
-```
-
-![](05_tidyr_files/figure-html/unnamed-chunk-8-1.png)&lt;!-- --&gt;
+![](05_tidyr_files/figure-html/unnamed-chunk-10-1.png)&lt;!-- --&gt;
 
 ---
 class: inverse
@@ -283,9 +316,9 @@ class: inverse
 
 For this your turn use the `french_fries` data from the `reshape2` package: `data("french_fries", package="reshape2")` 
 
-- Use `gather` or `pivot_longer` from the `tidyr` package to combine the different scales for assessing french fries into a single variable. Call the key-value pair "scale" and "score". 
+- Use `pivot_longer` from the `tidyr` package to combine the different scales for assessing french fries into a single variable. Call the key-value pair "scale" and "score". 
 
-- Use `spread` or `pivot_wider` from the `tidyr` package to get a format in which you can directly compare values from week 1 to week 10. Plot a scatterplot of values in week 1 against week 10. Facet by treatment and scale, color by individuals   and use different shapes for the replicates. Is there a pattern visible?
+- Use  `pivot_wider` from the `tidyr` package to get a format in which you can directly compare values from week 1 to week 10. Plot a scatterplot of values in week 1 against week 10. Facet by treatment and scale, color by individuals   and use different shapes for the replicates. Is there a pattern visible?
 
 ---
 class: inverse
@@ -293,26 +326,29 @@ class: inverse
 
 For this your turn use the `fbiwide` data from the `classdata` package: `data("fbiwide", package="classdata")` 
 
-- Use `gather` or `pivot_longer` from the `tidyr` package to combine the variables for the different types of crimes into one variable. Call the key-value pair "Type" and "Incidences". Compute a crime rate
+- Use  `pivot_longer` from the `tidyr` package to combine the variables for the different types of crimes into one variable. Call the key-value pair "Type" and "Incidences". Compute a crime rate
 
-- Only consider crime rates for Iowa and Minnesota. Use `spread` or `pivot_wider` to create incidence columns for each of these states. Plot crimes in Iowa against crimes in Minnesota, colour by type of crime. Note: you need to exclude some variables. 
-
----
-
-# Spread works as inverse of gather
-
-`pivot_wider` works as inverse of `pivot_longer` ...
-![](images/spread-gather-clean.png)
+- Only consider crime rates for Iowa and Minnesota. Use `pivot_wider` to create incidence columns for each of these states. Plot crimes in Iowa against crimes in Minnesota, colour by type of crime. Note: you need to exclude some variables. 
 
 ---
 
-# Front part is not identical - not collapsible
+# `pivot_wider` works as 
 
-![](images/spread-gather-unclean.png)
+... the inverse of `pivot_longer` ... almost
+
+&lt;img src="images/spread-gather-clean.png" height="450"&gt;
 
 ---
 
-# Where using `spread` or `pivot_wider` is tricky
+# If the front part is not identical
+
+... it's not collapsible
+
+&lt;img src="images/spread-gather-unclean.png" height=450"&gt;
+
+---
+
+# Where using `pivot_wider` is tricky
 
 - `spread`/`pivot_wider` is the (almost) inverse operation of `gather`/`pivot_longer`
 
@@ -329,50 +365,54 @@ For this your turn use the `fbiwide` data from the `classdata` package: `data("f
 
 ```r
 library(classdata)
-fbi %&gt;% filter(Year==2014, State %in% c("Iowa", "Minnesota"),
-               Type=="Burglary")
+fbi %&gt;% filter(year==2014, state_abbr %in% c("IA", "MN"),
+               type=="burglary")
 ```
 
 ```
-##       State Abb Year Population     Type Count Violent.crime
-## 1      Iowa  IA 2014    3107126 Burglary 14428         FALSE
-## 2 Minnesota  MN 2014    5457173 Burglary 20773         FALSE
+## # A tibble: 2 × 8
+##   state     state_id state_abbr  year population type     count violent_crime
+##   &lt;chr&gt;        &lt;int&gt; &lt;chr&gt;      &lt;int&gt;      &lt;int&gt; &lt;chr&gt;    &lt;int&gt; &lt;lgl&gt;        
+## 1 Iowa            16 IA          2014    3109481 burglary 14363 FALSE        
+## 2 Minnesota       27 MN          2014    5457125 burglary 20773 FALSE
 ```
 
 Other state specific values don't allow spread to collapse the front part and introduce missing values:
 
 
 ```r
-fbi %&gt;% filter(Year==2014, State %in% c("Iowa", "Minnesota"),
-               Type=="Burglary") %&gt;% 
-  spread(State, Count)
+fbi %&gt;% filter(year==2014, state_abbr %in% c("IA", "MN"),
+               type=="burglary") %&gt;%
+  pivot_wider(names_from="state_abbr", values_from="count")
 ```
 
 ```
-##   Abb Year Population     Type Violent.crime  Iowa Minnesota
-## 1  IA 2014    3107126 Burglary         FALSE 14428        NA
-## 2  MN 2014    5457173 Burglary         FALSE    NA     20773
+## # A tibble: 2 × 8
+##   state     state_id  year population type     violent_crime    IA    MN
+##   &lt;chr&gt;        &lt;int&gt; &lt;int&gt;      &lt;int&gt; &lt;chr&gt;    &lt;lgl&gt;         &lt;int&gt; &lt;int&gt;
+## 1 Iowa            16  2014    3109481 burglary FALSE         14363    NA
+## 2 Minnesota       27  2014    5457125 burglary FALSE            NA 20773
 ```
 
 ---
 
-# fixing `pivot_wder` in the example
+# fixing `pivot_wider` in the example
 
 Negative selection of all state specific variables gets the example to "work": 
 
 
 ```r
-fbi %&gt;% filter(Year==2014, State %in% c("Iowa", "Minnesota"),
-               Type=="Burglary") %&gt;% 
-  select(-Abb, -Population) %&gt;% 
-  pivot_wider(names_from=State, values_from=Count)
+fbi %&gt;% filter(year==2014, state_abbr %in% c("IA", "MN"),
+               type=="burglary") %&gt;%
+  select(-state, -state_id, -population) %&gt;%
+  pivot_wider(names_from="state_abbr", values_from="count")
 ```
 
 ```
-## # A tibble: 1 x 5
-##    Year Type     Violent.crime  Iowa Minnesota
-##   &lt;int&gt; &lt;fct&gt;    &lt;lgl&gt;         &lt;int&gt;     &lt;int&gt;
-## 1  2014 Burglary FALSE         14428     20773
+## # A tibble: 1 × 5
+##    year type     violent_crime    IA    MN
+##   &lt;int&gt; &lt;chr&gt;    &lt;lgl&gt;         &lt;int&gt; &lt;int&gt;
+## 1  2014 burglary FALSE         14363 20773
 ```
     </textarea>
 <style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
@@ -420,9 +460,38 @@ if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
     }
     deleted = true;
   });
-})();</script>
-
-<script>
+})();
+// add `data-at-shortcutkeys` attribute to <body> to resolve conflicts with JAWS
+// screen reader (see PR #262)
+(function(d) {
+  let res = {};
+  d.querySelectorAll('.remark-help-content table tr').forEach(tr => {
+    const t = tr.querySelector('td:nth-child(2)').innerText;
+    tr.querySelectorAll('td:first-child .key').forEach(key => {
+      const k = key.innerText;
+      if (/^[a-z]$/.test(k)) res[k] = t;  // must be a single letter (key)
+    });
+  });
+  d.body.setAttribute('data-at-shortcutkeys', JSON.stringify(res));
+})(document);
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
 (function() {
   var links = document.getElementsByTagName('a');
   for (var i = 0; i < links.length; i++) {
@@ -431,7 +500,23 @@ if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
     }
   }
 })();
-</script>
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
 
 <script>
 slideshow._releaseMath = function(el) {

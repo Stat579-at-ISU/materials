@@ -168,22 +168,38 @@ ffm
 
 # Gather/Pivot to long
 
-![](images/gather-spread.png)
+<img src="images/gather-spread.png" height="500">
 
 ---
 
-# Spread/Pivot to wide
+# Pivot to wide
 
 ```{r}
 ffm %>% pivot_wider(names_from = rep, values_from = score)
-ffm %>% spread(key = rep, value = score)
 ```
 
 ---
 
+# Pivot to wide
+
+formerly: 
+
 ```{r}
-ffm %>% spread(key = rep, value = score) %>%
-  ggplot(aes(x = `1`, y = `2`)) + geom_point() +
+ffm %>% spread(key = rep, value = score)
+```
+---
+
+# Pivot to wide
+
+```{r}
+ffm %>% pivot_wider(names_from = rep, values_from = score, names_prefix="Rep")
+```
+
+---
+
+```{r warning=FALSE}
+ffm %>% pivot_wider(names_from = rep, values_from = score, names_prefix="Rep") %>%
+  ggplot(aes(x = Rep1, y = Rep2)) + geom_point() +
   facet_wrap(~scale) + geom_abline(colour = "grey50")
 ```
 
@@ -193,9 +209,9 @@ class: inverse
 
 For this your turn use the `french_fries` data from the `reshape2` package: `data("french_fries", package="reshape2")` 
 
-- Use `gather` or `pivot_longer` from the `tidyr` package to combine the different scales for assessing french fries into a single variable. Call the key-value pair "scale" and "score". 
+- Use `pivot_longer` from the `tidyr` package to combine the different scales for assessing french fries into a single variable. Call the key-value pair "scale" and "score". 
 
-- Use `spread` or `pivot_wider` from the `tidyr` package to get a format in which you can directly compare values from week 1 to week 10. Plot a scatterplot of values in week 1 against week 10. Facet by treatment and scale, color by individuals   and use different shapes for the replicates. Is there a pattern visible?
+- Use  `pivot_wider` from the `tidyr` package to get a format in which you can directly compare values from week 1 to week 10. Plot a scatterplot of values in week 1 against week 10. Facet by treatment and scale, color by individuals   and use different shapes for the replicates. Is there a pattern visible?
 
 ---
 class: inverse
@@ -203,26 +219,29 @@ class: inverse
 
 For this your turn use the `fbiwide` data from the `classdata` package: `data("fbiwide", package="classdata")` 
 
-- Use `gather` or `pivot_longer` from the `tidyr` package to combine the variables for the different types of crimes into one variable. Call the key-value pair "Type" and "Incidences". Compute a crime rate
+- Use  `pivot_longer` from the `tidyr` package to combine the variables for the different types of crimes into one variable. Call the key-value pair "Type" and "Incidences". Compute a crime rate
 
-- Only consider crime rates for Iowa and Minnesota. Use `spread` or `pivot_wider` to create incidence columns for each of these states. Plot crimes in Iowa against crimes in Minnesota, colour by type of crime. Note: you need to exclude some variables. 
-
----
-
-# Spread works as inverse of gather
-
-`pivot_wider` works as inverse of `pivot_longer` ...
-![](images/spread-gather-clean.png)
+- Only consider crime rates for Iowa and Minnesota. Use `pivot_wider` to create incidence columns for each of these states. Plot crimes in Iowa against crimes in Minnesota, colour by type of crime. Note: you need to exclude some variables. 
 
 ---
 
-# Front part is not identical - not collapsible
+# `pivot_wider` works as 
 
-![](images/spread-gather-unclean.png)
+... the inverse of `pivot_longer` ... almost
+
+<img src="images/spread-gather-clean.png" height="450">
 
 ---
 
-# Where using `spread` or `pivot_wider` is tricky
+# If the front part is not identical
+
+... it's not collapsible
+
+<img src="images/spread-gather-unclean.png" height=450">
+
+---
+
+# Where using `pivot_wider` is tricky
 
 - `spread`/`pivot_wider` is the (almost) inverse operation of `gather`/`pivot_longer`
 
@@ -238,27 +257,27 @@ For this your turn use the `fbiwide` data from the `classdata` package: `data("f
 
 ```{r, message=FALSE, warning=FALSE}
 library(classdata)
-fbi %>% filter(Year==2014, State %in% c("Iowa", "Minnesota"),
-               Type=="Burglary")
+fbi %>% filter(year==2014, state_abbr %in% c("IA", "MN"),
+               type=="burglary")
 ```
 
 Other state specific values don't allow spread to collapse the front part and introduce missing values:
 
 ```{r}
-fbi %>% filter(Year==2014, State %in% c("Iowa", "Minnesota"),
-               Type=="Burglary") %>% 
-  spread(State, Count)
+fbi %>% filter(year==2014, state_abbr %in% c("IA", "MN"),
+               type=="burglary") %>%
+  pivot_wider(names_from="state_abbr", values_from="count")
 ```
 
 ---
 
-# fixing `pivot_wder` in the example
+# fixing `pivot_wider` in the example
 
 Negative selection of all state specific variables gets the example to "work": 
 
 ```{r}
-fbi %>% filter(Year==2014, State %in% c("Iowa", "Minnesota"),
-               Type=="Burglary") %>% 
-  select(-Abb, -Population) %>% 
-  pivot_wider(names_from=State, values_from=Count)
+fbi %>% filter(year==2014, state_abbr %in% c("IA", "MN"),
+               type=="burglary") %>%
+  select(-state, -state_id, -population) %>%
+  pivot_wider(names_from="state_abbr", values_from="count")
 ```
