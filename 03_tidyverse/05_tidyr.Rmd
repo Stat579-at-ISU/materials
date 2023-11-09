@@ -237,7 +237,7 @@ For this your turn use the `fbiwide` data from the `classdata` package: `data("f
 
 ... it's not collapsible
 
-<img src="images/spread-gather-unclean.png" height=450">
+<img src="images/spread-gather-unclean.png" height=450>
 
 ---
 
