@@ -23,7 +23,7 @@ Messy (2): Multiple variables are stored in one column
 library(tidyverse)
 df <- data.frame(x = c(NA, "a.b", "a.d", "b.c"))
 df
-df %>% separate(x, into = c("A", "B"))
+df %>% separate_wider_delim(x, delim=".", names = c("A", "B"))
 ```
 
 ---
