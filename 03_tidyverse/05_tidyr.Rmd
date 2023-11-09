@@ -255,7 +255,7 @@ For this your turn use the `fbiwide` data from the `classdata` package: `data("f
 
 # `spread`/`pivot_wider` in the example
 
-```{r, message=FALSE, warning=FALSE}
+```{r, message=FALSE, warning=FALSE, include=FALSE}
 library(classdata)
 fbi %>% filter(year==2014, state_abbr %in% c("IA", "MN"),
                type=="burglary")

@@ -363,19 +363,6 @@ For this your turn use the `fbiwide` data from the `classdata` package: `data("f
 # `spread`/`pivot_wider` in the example
 
 
-```r
-library(classdata)
-fbi %&gt;% filter(year==2014, state_abbr %in% c("IA", "MN"),
-               type=="burglary")
-```
-
-```
-## # A tibble: 2 × 8
-##   state     state_id state_abbr  year population type     count violent_crime
-##   &lt;chr&gt;        &lt;int&gt; &lt;chr&gt;      &lt;int&gt;      &lt;int&gt; &lt;chr&gt;    &lt;int&gt; &lt;lgl&gt;        
-## 1 Iowa            16 IA          2014    3109481 burglary 14363 FALSE        
-## 2 Minnesota       27 MN          2014    5457125 burglary 20773 FALSE
-```
 
 Other state specific values don't allow spread to collapse the front part and introduce missing values:
 
