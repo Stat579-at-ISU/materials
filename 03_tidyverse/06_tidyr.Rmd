@@ -15,9 +15,26 @@ class: middle, inverse, center
 
 ---
 
-# separate
+# Different Types of Messiness
 
-Messy (2): Multiple variables are stored in one column
+1. Column headers are values, not variable names.<br>
+e.g. *treatmenta, treatmentb*
+
+2. Multiple variables are stored in one column.<br>
+e.g. *Fall 2015, Spring 2016* or *"1301 8th St SE, Orange City, Iowa 51041
+(42.99755, -96.04149)", "2102 Durant, Harlan, Iowa 51537
+(41.65672, -95.33780)"*
+
+3. Multiple observational units are stored in the same table.
+
+4. A single observational unit is stored in multiple tables.
+
+
+---
+
+# Messiness (2)
+
+Messy (2): Multiple pieces of information are stored in one column
 
 ```{r, message=FALSE, warning = FALSE}
 library(tidyverse)
@@ -34,7 +51,7 @@ class: inverse
 The Iowa Data Portal is a wealth of information on and about the State of Iowa. 
 
 The website 
-[Liquor Sales](https://data.iowa.gov/Sales-Distribution/Iowa-Liquor-Sales/m3tr-qhgy) provides data on every liquor sale in a licensed store in Iowa. The code below reads (part of) the data into an R session.
+[Liquor Sales](https://data.iowa.gov/Sales-Distribution/Iowa-Liquor-Sales/m3tr-qhgy) provides data on every liquor order a licensed store in Iowa makes (to then presumably sell it to the public). The code below reads (part of) the data into an R session.
 
 ```
 url <- "https://github.com/Stat579-at-ISU/materials/blob/master/03_tidyverse/data/Iowa_Liquor_Sales.csv.zip?raw=TRUE"
@@ -50,12 +67,15 @@ class: inverse
 
 Run the following code to load the Iowa Liquor Sales into your working session
 
-```
+```{r message=FALSE}
 url <- "https://github.com/Stat579-at-ISU/materials/blob/master/03_tidyverse/data/Iowa_Liquor_Sales.csv.zip?raw=TRUE"
 download.file(url, "iowa.zip", mode="wb")
 iowa <- readr::read_csv("iowa.zip")
 ```
-Open the Fast Fingers Quiz in Canvas for a chance to earn 5 points of extra credit. Good luck!
+
+- Number of variables? number of observations?
+- How many different stores in Ames order liquor?
+- What is the time frame of the data?
 
 ---
 
@@ -69,27 +89,46 @@ Open the Fast Fingers Quiz in Canvas for a chance to earn 5 points of extra cred
 no Messy 1? - problems of type Messy 1 are typically hard to detect and often up to interpretation/dependent on the analysis to be done.
 
 ---
+
+# ... finding other people's solutions
+
+- Working with dates: [package `lubridate`](https://lubridate.tidyverse.org/)
+
+```{r}
+iowa <- iowa %>% mutate(
+  proper_date = mdy(Date)
+) 
+iowa %>% select(proper_date) %>% summary()
+```
+
+... but sometimes we still have to do things ourselves ... 
+
+
+---
 class: inverse
 # Your Turn (10 min)
 
 
 - Check the help for the function `parse_number` in the `readr` package and use it on the store location. What result do you get?
 
-- Use `separate` to split the date variable into year, month and day.
+- Use `separate_wider` with a delimiter of " " to separate `date` into strings that contain geographic latitude and longitude, then apply `parse_number`
 
-- Use `separate` again to extract geographic latitude and longitude (Hint - you might need several steps of `separate`)
+- For a challenge: `separate_wider_regex` allows to do the above step in one go
+
 
 ---
-class: inverse
-# Your Turn - exploration (10 mins)
 
-Use `dplyr` functionality to answer the following questions:
-
-  1. What is the total amount spent on Liquor Sales?
-
-  2. What is the single largest sale (in volume/in dollar amount)?
-<!--  3. What time frame does the campaign expenditure cover?-->
-
-  4. Plot geographic longitude and latitude. Where are liquor sales in Ames happening? 
-
-
+```{r echo=FALSE}
+gg <- iowa %>% 
+  separate_wider_regex(cols=`Store Location`, cols_remove = FALSE, 
+                       patterns = c("POINT \\(", Latitude=".+", " ", Longitude=".+", "\\)")) %>%
+  mutate(
+    Latitude = as.numeric(Latitude),
+    Longitude = as.numeric(Longitude)
+  ) %>% 
+  select(`Store Number`, `Store Name`, Latitude, Longitude) %>% 
+  unique() %>%
+  ggplot(aes(x = Latitude, y = Longitude, label=`Store Name`)) + 
+  geom_point()
+plotly::ggplotly(gg)
+```

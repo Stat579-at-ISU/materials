@@ -7,6 +7,14 @@
     <script src="libs/header-attrs-2.25/header-attrs.js"></script>
     <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
     <link href="libs/remark-css-0.0.1/default-fonts.css" rel="stylesheet" />
+    <script src="libs/htmlwidgets-1.6.2/htmlwidgets.js"></script>
+    <script src="libs/plotly-binding-4.10.2/plotly.js"></script>
+    <script src="libs/typedarray-0.1/typedarray.min.js"></script>
+    <script src="libs/jquery-3.5.1/jquery.min.js"></script>
+    <link href="libs/crosstalk-1.2.0/css/crosstalk.min.css" rel="stylesheet" />
+    <script src="libs/crosstalk-1.2.0/js/crosstalk.min.js"></script>
+    <link href="libs/plotly-htmlwidgets-css-2.11.1/plotly-htmlwidgets.css" rel="stylesheet" />
+    <script src="libs/plotly-main-2.11.1/plotly-latest.min.js"></script>
   </head>
   <body>
     <textarea id="source">
@@ -27,9 +35,26 @@ class: middle, inverse, center
 
 ---
 
-# separate
+# Different Types of Messiness
 
-Messy (2): Multiple variables are stored in one column
+1. Column headers are values, not variable names.&lt;br&gt;
+e.g. *treatmenta, treatmentb*
+
+2. Multiple variables are stored in one column.&lt;br&gt;
+e.g. *Fall 2015, Spring 2016* or *"1301 8th St SE, Orange City, Iowa 51041
+(42.99755, -96.04149)", "2102 Durant, Harlan, Iowa 51537
+(41.65672, -95.33780)"*
+
+3. Multiple observational units are stored in the same table.
+
+4. A single observational unit is stored in multiple tables.
+
+
+---
+
+# Messiness (2)
+
+Messy (2): Multiple pieces of information are stored in one column
 
 
 ```r
@@ -68,7 +93,7 @@ class: inverse
 The Iowa Data Portal is a wealth of information on and about the State of Iowa. 
 
 The website 
-[Liquor Sales](https://data.iowa.gov/Sales-Distribution/Iowa-Liquor-Sales/m3tr-qhgy) provides data on every liquor sale in a licensed store in Iowa. The code below reads (part of) the data into an R session.
+[Liquor Sales](https://data.iowa.gov/Sales-Distribution/Iowa-Liquor-Sales/m3tr-qhgy) provides data on every liquor order a licensed store in Iowa makes (to then presumably sell it to the public). The code below reads (part of) the data into an R session.
 
 ```
 url &lt;- "https://github.com/Stat579-at-ISU/materials/blob/master/03_tidyverse/data/Iowa_Liquor_Sales.csv.zip?raw=TRUE"
@@ -84,12 +109,16 @@ class: inverse
 
 Run the following code to load the Iowa Liquor Sales into your working session
 
-```
+
+```r
 url &lt;- "https://github.com/Stat579-at-ISU/materials/blob/master/03_tidyverse/data/Iowa_Liquor_Sales.csv.zip?raw=TRUE"
 download.file(url, "iowa.zip", mode="wb")
 iowa &lt;- readr::read_csv("iowa.zip")
 ```
-Open the Fast Fingers Quiz in Canvas for a chance to earn 5 points of extra credit. Good luck!
+
+- Number of variables? number of observations?
+- How many different stores in Ames order liquor?
+- What is the time frame of the data?
 
 ---
 
@@ -103,30 +132,47 @@ Open the Fast Fingers Quiz in Canvas for a chance to earn 5 points of extra cred
 no Messy 1? - problems of type Messy 1 are typically hard to detect and often up to interpretation/dependent on the analysis to be done.
 
 ---
+
+# ... finding other people's solutions
+
+- Working with dates: [package `lubridate`](https://lubridate.tidyverse.org/)
+
+
+```r
+iowa &lt;- iowa %&gt;% mutate(
+  proper_date = mdy(Date)
+) 
+iowa %&gt;% select(proper_date) %&gt;% summary()
+```
+
+```
+##   proper_date        
+##  Min.   :2012-01-03  
+##  1st Qu.:2014-02-26  
+##  Median :2016-02-03  
+##  Mean   :2016-01-07  
+##  3rd Qu.:2017-12-06  
+##  Max.   :2019-09-30
+```
+
+... but sometimes we still have to do things ourselves ... 
+
+
+---
 class: inverse
 # Your Turn (10 min)
 
 
 - Check the help for the function `parse_number` in the `readr` package and use it on the store location. What result do you get?
 
-- Use `separate` to split the date variable into year, month and day.
+- Use `separate_wider` with a delimiter of " " to separate `date` into strings that contain geographic latitude and longitude, then apply `parse_number`
 
-- Use `separate` again to extract geographic latitude and longitude (Hint - you might need several steps of `separate`)
+- For a challenge: `separate_wider_regex` allows to do the above step in one go
 
 ---
-class: inverse
-# Your Turn - exploration (10 mins)
 
-Use `dplyr` functionality to answer the following questions:
-
-  1. What is the total amount spent on Liquor Sales?
-
-  2. What is the single largest sale (in volume/in dollar amount)?
-&lt;!--  3. What time frame does the campaign expenditure cover?--&gt;
-
-  4. Plot geographic longitude and latitude. Where are liquor sales in Ames happening? 
-
-
+<div class="plotly html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-2e3a9d41572feb64432d" style="width:504px;height:504px;"></div>
+<script type="application/json" data-for="htmlwidget-2e3a9d41572feb64432d">{"x":{"data":[{"x":[-93.618910999999997,-93.618576000000004,-93.613647999999998,-93.639358000000001,-93.650131000000002,-93.620683000000014,null,-93.619455000000002,-93.610343,null,null,-93.645008000000004,-93.611772999999999,-93.585891000000004,-93.615427999999994,-93.610363000000021,null,-93.650837999999993,-93.650125000000003,-93.610395999999994,-93.668530000000004,-93.575702000000007,-93.581305,-93.679803000000007,-93.648959000000005,-93.620634999999993,-93.644947999999999,-93.618246999999997,-93.649579000000003,-93.650837999999993,-93.619455000000002,null,null,-93.616517000000002,null,-93.650131000000002,-93.667931999999993,-93.620697000000007,-93.650121999999996,-93.618576000000004],"y":[42.022854000000002,42.051189999999998,42.001123,42.000717999999999,42.021788999999998,42.052419999999998,null,42.022848000000003,42.017114999999997,null,null,42.057107999999999,42.026938000000001,42.009585999999999,42.027425999999998,42.019875000000006,null,42.021461000000002,42.021236000000002,42.023592000000001,42.022818999999998,42.034562000000001,42.016041000000001,42.012140000000002,42.021456000000001,42.048974000000001,42.056688999999999,42.025041999999999,42.022745,42.021461000000002,42.022848000000003,null,null,42.022916000000002,null,42.021788999999998,42.022911000000001,42.053378000000002,42.020696000000008,42.051189999999998],"text":["Latitude: -93.61891<br />Longitude: 42.02285<br />Store Name: Cyclone Liquors","Latitude: -93.61858<br />Longitude: 42.05119<br />Store Name: Casey's General Store # 2560/ Ames","Latitude: -93.61365<br />Longitude: 42.00112<br />Store Name: Sam's Club 6568 / Ames","Latitude: -93.63936<br />Longitude: 42.00072<br />Store Name: The Filling Station / Ames","Latitude: -93.65013<br />Longitude: 42.02179<br />Store Name: MMDG SPIRITS / Ames","Latitude: -93.62068<br />Longitude: 42.05242<br />Store Name: Wal-Mart 0749 / Ames","Latitude:        NA<br />Longitude:       NA<br />Store Name: Kum & Go #1215 / Ames","Latitude: -93.61946<br />Longitude: 42.02285<br />Store Name: Hy-Vee  #2 / Ames","Latitude: -93.61034<br />Longitude: 42.01711<br />Store Name: Wal-Mart 4256 / Ames","Latitude:        NA<br />Longitude:       NA<br />Store Name: Casey's General Store #2301 / Ames","Latitude:        NA<br />Longitude:       NA<br />Store Name: Hy-Vee Food Store #1 / Ames","Latitude: -93.64501<br />Longitude: 42.05711<br />Store Name: Fareway Stores #093 / Ames","Latitude: -93.61177<br />Longitude: 42.02694<br />Store Name: Kwik Stop Liquor & Groceries Ames","Latitude: -93.58589<br />Longitude: 42.00959<br />Store Name: Kum & Go #227 / Ames","Latitude: -93.61543<br />Longitude: 42.02743<br />Store Name: Fareway Stores #386 / Ames","Latitude: -93.61036<br />Longitude: 42.01988<br />Store Name: Target Store T-1170 / Ames","Latitude:        NA<br />Longitude:       NA<br />Store Name: JW Liquor","Latitude: -93.65084<br />Longitude: 42.02146<br />Store Name: AJ'S LIQUOR II","Latitude: -93.65013<br />Longitude: 42.02124<br />Store Name: Kum & Go #216  Ames","Latitude: -93.61040<br />Longitude: 42.02359<br />Store Name: Kum & Go #214  Ames","Latitude: -93.66853<br />Longitude: 42.02282<br />Store Name: Fareway Stores #189 / Ames","Latitude: -93.57570<br />Longitude: 42.03456<br />Store Name: Kum & Go #113 / Ames","Latitude: -93.58131<br />Longitude: 42.01604<br />Store Name: goPuff / Ames","Latitude: -93.67980<br />Longitude: 42.01214<br />Store Name: Kum & Go #200 / Ames","Latitude: -93.64896<br />Longitude: 42.02146<br />Store Name: AJ's Liquor III","Latitude: -93.62063<br />Longitude: 42.04897<br />Store Name: Walgreens #12108 / Ames","Latitude: -93.64495<br />Longitude: 42.05669<br />Store Name: Casey's General Store #2905 / Ames","Latitude: -93.61825<br />Longitude: 42.02504<br />Store Name: Hy-Vee Drugstore #2 / Ames","Latitude: -93.64958<br />Longitude: 42.02275<br />Store Name: CVS Pharmacy #10452  /  Ames","Latitude: -93.65084<br />Longitude: 42.02146<br />Store Name: A J'S LIQUOR II","Latitude: -93.61946<br />Longitude: 42.02285<br />Store Name: Hy-vee  #2 / Ames","Latitude:        NA<br />Longitude:       NA<br />Store Name: Aj's Liquor / Ames","Latitude:        NA<br />Longitude:       NA<br />Store Name: Kum & Go #215  Ames","Latitude: -93.61652<br />Longitude: 42.02292<br />Store Name: Almost Always Open","Latitude:        NA<br />Longitude:       NA<br />Store Name: AJ's Liquor / Ames","Latitude: -93.65013<br />Longitude: 42.02179<br />Store Name: Mmdg Spirits / Ames","Latitude: -93.66793<br />Longitude: 42.02291<br />Store Name: Hy-Vee Wine and Spirits / Ames","Latitude: -93.62070<br />Longitude: 42.05338<br />Store Name: Dahl's Foods / Ames","Latitude: -93.65012<br />Longitude: 42.02070<br />Store Name: Campustown Liquor","Latitude: -93.61858<br />Longitude: 42.05119<br />Store Name: Casey's General Store # 2560"],"type":"scatter","mode":"markers","marker":{"autocolorscale":false,"color":"rgba(0,0,0,1)","opacity":1,"size":5.6692913385826778,"symbol":"circle","line":{"width":1.8897637795275593,"color":"rgba(0,0,0,1)"}},"hoveron":"points","showlegend":false,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null}],"layout":{"margin":{"t":23.305936073059364,"r":7.3059360730593621,"b":37.260273972602747,"l":54.794520547945211},"plot_bgcolor":"rgba(235,235,235,1)","paper_bgcolor":"rgba(255,255,255,1)","font":{"color":"rgba(0,0,0,1)","family":"","size":14.611872146118724},"xaxis":{"domain":[0,1],"automargin":true,"type":"linear","autorange":false,"range":[-93.685008050000008,-93.570496950000006],"tickmode":"array","ticktext":["-93.66","-93.63","-93.60"],"tickvals":[-93.659999999999997,-93.629999999999995,-93.599999999999994],"categoryorder":"array","categoryarray":["-93.66","-93.63","-93.60"],"nticks":null,"ticks":"outside","tickcolor":"rgba(51,51,51,1)","ticklen":3.6529680365296811,"tickwidth":0.66417600664176002,"showticklabels":true,"tickfont":{"color":"rgba(77,77,77,1)","family":"","size":11.68949771689498},"tickangle":-0,"showline":false,"linecolor":null,"linewidth":0,"showgrid":true,"gridcolor":"rgba(255,255,255,1)","gridwidth":0.66417600664176002,"zeroline":false,"anchor":"y","title":{"text":"Latitude","font":{"color":"rgba(0,0,0,1)","family":"","size":14.611872146118724}},"hoverformat":".2f"},"yaxis":{"domain":[0,1],"automargin":true,"type":"linear","autorange":false,"range":[41.997898499999998,42.059927500000001],"tickmode":"array","ticktext":["42.00","42.02","42.04"],"tickvals":[42,42.020000000000003,42.039999999999999],"categoryorder":"array","categoryarray":["42.00","42.02","42.04"],"nticks":null,"ticks":"outside","tickcolor":"rgba(51,51,51,1)","ticklen":3.6529680365296811,"tickwidth":0.66417600664176002,"showticklabels":true,"tickfont":{"color":"rgba(77,77,77,1)","family":"","size":11.68949771689498},"tickangle":-0,"showline":false,"linecolor":null,"linewidth":0,"showgrid":true,"gridcolor":"rgba(255,255,255,1)","gridwidth":0.66417600664176002,"zeroline":false,"anchor":"x","title":{"text":"Longitude","font":{"color":"rgba(0,0,0,1)","family":"","size":14.611872146118724}},"hoverformat":".2f"},"shapes":[{"type":"rect","fillcolor":null,"line":{"color":null,"width":0,"linetype":[]},"yref":"paper","xref":"paper","x0":0,"x1":1,"y0":0,"y1":1}],"showlegend":false,"legend":{"bgcolor":"rgba(255,255,255,1)","bordercolor":"transparent","borderwidth":1.8897637795275593,"font":{"color":"rgba(0,0,0,1)","family":"","size":11.68949771689498}},"hovermode":"closest","barmode":"relative"},"config":{"doubleClick":"reset","modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false},"source":"A","attrs":{"a36538f224d":{"x":{},"y":{},"label":{},"type":"scatter"}},"cur_data":"a36538f224d","visdat":{"a36538f224d":["function (y) ","x"]},"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.20000000000000001,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
     </textarea>
 <style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
