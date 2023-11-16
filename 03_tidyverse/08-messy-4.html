@@ -1,9 +1,10 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<html lang="" xml:lang="">
   <head>
     <title>Pulling data from different sources</title>
     <meta charset="utf-8" />
     <meta name="author" content="Heike Hofmann" />
+    <script src="libs/header-attrs-2.25/header-attrs.js"></script>
     <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
     <link href="libs/remark-css-0.0.1/default-fonts.css" rel="stylesheet" />
   </head>
@@ -11,8 +12,12 @@
     <textarea id="source">
 class: center, middle, inverse, title-slide
 
+.title[
 # Pulling data from different sources
+]
+.author[
 ### Heike Hofmann
+]
 
 ---
 
@@ -43,30 +48,33 @@ LahmanData
 
 ```
 ##                   file      class   nobs nvar                     title
-## 1          AllstarFull data.frame   4993    8         AllstarFull table
-## 2          Appearances data.frame  99466   21         Appearances table
-## 3       AwardsManagers data.frame    171    6      AwardsManagers table
-## 4        AwardsPlayers data.frame   6026    6       AwardsPlayers table
-## 5  AwardsShareManagers data.frame    401    7 AwardsShareManagers table
-## 6   AwardsSharePlayers data.frame   6705    7  AwardsSharePlayers table
-## 7              Batting data.frame  99846   22             Batting table
-## 8          BattingPost data.frame  11294   22         BattingPost table
+## 1          AllstarFull data.frame   5454    8         AllstarFull table
+## 2          Appearances data.frame 110423   21         Appearances table
+## 3       AwardsManagers data.frame    179    6      AwardsManagers table
+## 4        AwardsPlayers data.frame   6531    6       AwardsPlayers table
+## 5  AwardsShareManagers data.frame    425    7 AwardsShareManagers table
+## 6   AwardsSharePlayers data.frame   6879    7  AwardsSharePlayers table
+## 7              Batting data.frame 110495   22             Batting table
+## 8          BattingPost data.frame  15879   22         BattingPost table
 ## 9       CollegePlaying data.frame  17350    3      CollegePlaying table
-## 10            Fielding data.frame 167938   18            Fielding table
+## 10            Fielding data.frame 147080   18            Fielding table
 ## 11          FieldingOF data.frame  12028    6          FieldingOF table
-## 12        FieldingPost data.frame  11924   17         FieldingPost data
-## 13          HallOfFame data.frame   4088    9  Hall of Fame Voting Data
-## 14            Managers data.frame   3370   10            Managers table
-## 15        ManagersHalf data.frame     93   10        ManagersHalf table
-## 16              Master data.frame  18589   26              Master table
-## 17            Pitching data.frame  43330   30            Pitching table
-## 18        PitchingPost data.frame   4945   30        PitchingPost table
-## 19            Salaries data.frame  24758    5            Salaries table
-## 20             Schools data.frame   1207    5             Schools table
-## 21          SeriesPost data.frame    298    9          SeriesPost table
-## 22               Teams data.frame   2775   48               Teams table
-## 23     TeamsFranchises data.frame    120    4      TeamFranchises table
-## 24           TeamsHalf data.frame     52   10           TeamsHalf table
+## 12     FieldingOFsplit data.frame  34563   18     FieldingOFsplit table
+## 13        FieldingPost data.frame  15063   17         FieldingPost data
+## 14          HallOfFame data.frame   4191    9  Hall of Fame Voting Data
+## 15           HomeGames data.frame   3195    9           HomeGames table
+## 16            Managers data.frame   3684   10            Managers table
+## 17        ManagersHalf data.frame     93   10        ManagersHalf table
+## 18               Parks data.frame    255    6               Parks table
+## 19              People data.frame  20370   26              People table
+## 20            Pitching data.frame  49430   30            Pitching table
+## 21        PitchingPost data.frame   6308   30        PitchingPost table
+## 22            Salaries data.frame  26428    5            Salaries table
+## 23             Schools data.frame   1207    5             Schools table
+## 24          SeriesPost data.frame    367    9          SeriesPost table
+## 25               Teams data.frame   2985   48               Teams table
+## 26     TeamsFranchises data.frame    120    4      TeamFranchises table
+## 27           TeamsHalf data.frame     52   10           TeamsHalf table
 ```
 
 ---
@@ -339,6 +347,7 @@ For this example, use the data from the `classdata` package
 
 - Use `box` to show cumulative box office revenue over time. Extra point: label very successful movies in a readable manner.
 - Identify box office hits and flops and visualize them.
+
     </textarea>
 <style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
@@ -385,9 +394,38 @@ if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
     }
     deleted = true;
   });
-})();</script>
-
-<script>
+})();
+// add `data-at-shortcutkeys` attribute to <body> to resolve conflicts with JAWS
+// screen reader (see PR #262)
+(function(d) {
+  let res = {};
+  d.querySelectorAll('.remark-help-content table tr').forEach(tr => {
+    const t = tr.querySelector('td:nth-child(2)').innerText;
+    tr.querySelectorAll('td:first-child .key').forEach(key => {
+      const k = key.innerText;
+      if (/^[a-z]$/.test(k)) res[k] = t;  // must be a single letter (key)
+    });
+  });
+  d.body.setAttribute('data-at-shortcutkeys', JSON.stringify(res));
+})(document);
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
 (function() {
   var links = document.getElementsByTagName('a');
   for (var i = 0; i < links.length; i++) {
@@ -396,7 +434,23 @@ if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
     }
   }
 })();
-</script>
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
 
 <script>
 slideshow._releaseMath = function(el) {
