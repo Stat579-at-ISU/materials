@@ -32,7 +32,7 @@ class: middle, inverse, center
 
 Messy (4): *Values for a single observational unit are stored across multiple tables.*
 
-After data are normalized by splitting, we want to de-normalize again by *joining* datasets.
+&lt;!--After data are normalized by splitting, we want to de-normalize again by *joining* datasets.--&gt;
 
 ---
 
@@ -43,97 +43,119 @@ Sean Lahman is a database journalist, who started databases of historical sports
 
 ```r
 library(Lahman)
-LahmanData
+# ?Lahman
+head(LahmanData)
 ```
 
 ```
-##                   file      class   nobs nvar                     title
-## 1          AllstarFull data.frame   5454    8         AllstarFull table
-## 2          Appearances data.frame 110423   21         Appearances table
-## 3       AwardsManagers data.frame    179    6      AwardsManagers table
-## 4        AwardsPlayers data.frame   6531    6       AwardsPlayers table
-## 5  AwardsShareManagers data.frame    425    7 AwardsShareManagers table
-## 6   AwardsSharePlayers data.frame   6879    7  AwardsSharePlayers table
-## 7              Batting data.frame 110495   22             Batting table
-## 8          BattingPost data.frame  15879   22         BattingPost table
-## 9       CollegePlaying data.frame  17350    3      CollegePlaying table
-## 10            Fielding data.frame 147080   18            Fielding table
-## 11          FieldingOF data.frame  12028    6          FieldingOF table
-## 12     FieldingOFsplit data.frame  34563   18     FieldingOFsplit table
-## 13        FieldingPost data.frame  15063   17         FieldingPost data
-## 14          HallOfFame data.frame   4191    9  Hall of Fame Voting Data
-## 15           HomeGames data.frame   3195    9           HomeGames table
-## 16            Managers data.frame   3684   10            Managers table
-## 17        ManagersHalf data.frame     93   10        ManagersHalf table
-## 18               Parks data.frame    255    6               Parks table
-## 19              People data.frame  20370   26              People table
-## 20            Pitching data.frame  49430   30            Pitching table
-## 21        PitchingPost data.frame   6308   30        PitchingPost table
-## 22            Salaries data.frame  26428    5            Salaries table
-## 23             Schools data.frame   1207    5             Schools table
-## 24          SeriesPost data.frame    367    9          SeriesPost table
-## 25               Teams data.frame   2985   48               Teams table
-## 26     TeamsFranchises data.frame    120    4      TeamFranchises table
-## 27           TeamsHalf data.frame     52   10           TeamsHalf table
+##                  file      class   nobs nvar                     title
+## 1         AllstarFull data.frame   5454    8         AllstarFull table
+## 2         Appearances data.frame 110423   21         Appearances table
+## 3      AwardsManagers data.frame    179    6      AwardsManagers table
+## 4       AwardsPlayers data.frame   6531    6       AwardsPlayers table
+## 5 AwardsShareManagers data.frame    425    7 AwardsShareManagers table
+## 6  AwardsSharePlayers data.frame   6879    7  AwardsSharePlayers table
 ```
 
 ---
 
 # Lahman database
 
-The Lahman database consists of 24 data frames that are linked by `playerID`. &lt;br&gt;
-This is clean, but not very readable. &lt;br&gt;
-The `Master` table includes names and other attributes for each player. &lt;br&gt;
+The Lahman database consists of 27 data frames that are linked by `playerID`. 
+
+
+This is clean, but not very readable. 
+
+The `People` table includes names and other attributes for each player (and coaches, managers, ...)
+
 *Joining* multiple tables helps us to bring together (pieces of) information from multiple sources.
 
 ---
 
 # Example: Hall of Fame
 
-Who was inducted in the Hall of Fame in 2018?
+Who was inducted in the Hall of Fame in 2022?
 
 
 ```r
-HallOfFame %&gt;% filter(yearID==2018) 
+HallOfFame %&gt;% filter(yearID==2022) 
 ```
 
 ```
-##     playerID yearID  votedBy ballots needed votes inducted category needed_note
-## 1  jonesch06   2018    BBWAA     422    317   410        Y   Player        &lt;NA&gt;
-## 2  guerrvl01   2018    BBWAA     422    317   392        Y   Player        &lt;NA&gt;
-## 3  thomeji01   2018    BBWAA     422    317   379        Y   Player        &lt;NA&gt;
-## 4  hoffmtr01   2018    BBWAA     422    317   337        Y   Player        &lt;NA&gt;
-## 5  martied01   2018    BBWAA     422    317   297        N   Player        &lt;NA&gt;
-## 6  mussimi01   2018    BBWAA     422    317   268        N   Player        &lt;NA&gt;
-## 7  clemero02   2018    BBWAA     422    317   242        N   Player        &lt;NA&gt;
-## 8  bondsba01   2018    BBWAA     422    317   238        N   Player        &lt;NA&gt;
-## 9  schilcu01   2018    BBWAA     422    317   216        N   Player        &lt;NA&gt;
-## 10 vizquom01   2018    BBWAA     422    317   156        N   Player        &lt;NA&gt;
-## 11 walkela01   2018    BBWAA     422    317   144        N   Player        &lt;NA&gt;
-## 12 mcgrifr01   2018    BBWAA     422    317    98        N   Player        &lt;NA&gt;
-## 13 ramirma02   2018    BBWAA     422    317    93        N   Player        &lt;NA&gt;
-## 14  kentje01   2018    BBWAA     422    317    61        N   Player        &lt;NA&gt;
-## 15 sheffga01   2018    BBWAA     422    317    47        N   Player        &lt;NA&gt;
-## 16 wagnebi02   2018    BBWAA     422    317    47        N   Player        &lt;NA&gt;
-## 17 rolensc01   2018    BBWAA     422    317    43        N   Player        &lt;NA&gt;
-## 18  sosasa01   2018    BBWAA     422    317    33        N   Player        &lt;NA&gt;
-## 19 jonesan01   2018    BBWAA     422    317    31        N   Player        &lt;NA&gt;
-## 20 moyerja01   2018    BBWAA     422    317    10        N   Player        &lt;NA&gt;
-## 21 santajo01   2018    BBWAA     422    317    10        N   Player        &lt;NA&gt;
-## 22 damonjo01   2018    BBWAA     422    317     8        N   Player        &lt;NA&gt;
-## 23 matsuhi01   2018    BBWAA     422    317     4        N   Player        &lt;NA&gt;
-## 24 carpech01   2018    BBWAA     422    317     2        N   Player        &lt;NA&gt;
-## 25  woodke02   2018    BBWAA     422    317     2        N   Player        &lt;NA&gt;
-## 26 hernali01   2018    BBWAA     422    317     1        N   Player        &lt;NA&gt;
-## 27   leeca01   2018    BBWAA     422    317     1        N   Player        &lt;NA&gt;
-## 28 hudsoor01   2018    BBWAA     422    317     0        N   Player        &lt;NA&gt;
-## 29  huffau01   2018    BBWAA     422    317     0        N   Player        &lt;NA&gt;
-## 30 isrinja01   2018    BBWAA     422    317     0        N   Player        &lt;NA&gt;
-## 31 lidgebr01   2018    BBWAA     422    317     0        N   Player        &lt;NA&gt;
-## 32 millwke01   2018    BBWAA     422    317     0        N   Player        &lt;NA&gt;
-## 33 zambrca01   2018    BBWAA     422    317     0        N   Player        &lt;NA&gt;
-## 34 morrija02   2018 Veterans      NA     NA    NA        Y   Player        &lt;NA&gt;
-## 35 trammal01   2018 Veterans      NA     NA    NA        Y   Player        &lt;NA&gt;
+##     playerID yearID  votedBy ballots needed votes inducted          category
+## 1  ortizda01   2022    BBWAA     394    296   307        Y            Player
+## 2  bondsba01   2022    BBWAA     394    296   260        N            Player
+## 3  clemero02   2022    BBWAA     394    296   257        N            Player
+## 4  rolensc01   2022    BBWAA     394    296   249        N            Player
+## 5  schilcu01   2022    BBWAA     394    296   231        N            Player
+## 6  heltoto01   2022    BBWAA     394    296   205        N            Player
+## 7  wagnebi02   2022    BBWAA     394    296   201        N            Player
+## 8  jonesan01   2022    BBWAA     394    296   163        N            Player
+## 9  sheffga01   2022    BBWAA     394    296   160        N            Player
+## 10 rodrial01   2022    BBWAA     394    296   135        N            Player
+## 11  kentje01   2022    BBWAA     394    296   129        N            Player
+## 12 ramirma02   2022    BBWAA     394    296   114        N            Player
+## 13 vizquom01   2022    BBWAA     394    296    94        N            Player
+## 14  sosasa01   2022    BBWAA     394    296    73        N            Player
+## 15 pettian01   2022    BBWAA     394    296    42        N            Player
+## 16 rolliji01   2022    BBWAA     394    296    37        N            Player
+## 17 abreubo01   2022    BBWAA     394    296    34        N            Player
+## 18 buehrma01   2022    BBWAA     394    296    23        N            Player
+## 19 hunteto01   2022    BBWAA     394    296    21        N            Player
+## 20 nathajo01   2022    BBWAA     394    296    17        N            Player
+## 21 hudsoti01   2022    BBWAA     394    296    12        N            Player
+## 22 linceti01   2022    BBWAA     394    296     9        N            Player
+## 23 howarry01   2022    BBWAA     394    296     8        N            Player
+## 24 teixema01   2022    BBWAA     394    296     6        N            Player
+## 25 papeljo01   2022    BBWAA     394    296     5        N            Player
+## 26 morneju01   2022    BBWAA     394    296     5        N            Player
+## 27 pierzaj01   2022    BBWAA     394    296     2        N            Player
+## 28 fieldpr01   2022    BBWAA     394    296     2        N            Player
+## 29 peavyja01   2022    BBWAA     394    296     0        N            Player
+## 30 crawfca02   2022    BBWAA     394    296     0        N            Player
+## 31 fowlebu99   2022 Veterans      NA     NA    NA        Y Pioneer/Executive
+## 32 hodgegi01   2022 Veterans      NA     NA    NA        Y            Player
+## 33  kaatji01   2022 Veterans      NA     NA    NA        Y            Player
+## 34 minosmi01   2022 Veterans      NA     NA    NA        Y            Player
+## 35 oneilbu01   2022 Veterans      NA     NA    NA        Y Pioneer/Executive
+## 36 olivato01   2022 Veterans      NA     NA    NA        Y            Player
+##    needed_note
+## 1         &lt;NA&gt;
+## 2         &lt;NA&gt;
+## 3         &lt;NA&gt;
+## 4         &lt;NA&gt;
+## 5         &lt;NA&gt;
+## 6         &lt;NA&gt;
+## 7         &lt;NA&gt;
+## 8         &lt;NA&gt;
+## 9         &lt;NA&gt;
+## 10        &lt;NA&gt;
+## 11        &lt;NA&gt;
+## 12        &lt;NA&gt;
+## 13        &lt;NA&gt;
+## 14        &lt;NA&gt;
+## 15        &lt;NA&gt;
+## 16        &lt;NA&gt;
+## 17        &lt;NA&gt;
+## 18        &lt;NA&gt;
+## 19        &lt;NA&gt;
+## 20        &lt;NA&gt;
+## 21        &lt;NA&gt;
+## 22        &lt;NA&gt;
+## 23        &lt;NA&gt;
+## 24        &lt;NA&gt;
+## 25        &lt;NA&gt;
+## 26        &lt;NA&gt;
+## 27        &lt;NA&gt;
+## 28        &lt;NA&gt;
+## 29        &lt;NA&gt;
+## 30        &lt;NA&gt;
+## 31        &lt;NA&gt;
+## 32        &lt;NA&gt;
+## 33        &lt;NA&gt;
+## 34        &lt;NA&gt;
+## 35        &lt;NA&gt;
+## 36        &lt;NA&gt;
 ```
 
 ---
@@ -141,9 +163,9 @@ class: inverse
 # Your turn 
 
 
-For this your turn use the `HallOfFame` and `Master` data from the `Lahman` package 
+For this your turn use the `HallOfFame` and `People` data from the `Lahman` package 
 
-- Identify all players who were inducted in the Hall of Fame in 2018, by filtering the `Master` data for their player IDs. 
+- Identify all players who were inducted in the Hall of Fame in 2022, by filtering the `People` data for their player IDs. 
 
 
 ---
@@ -276,11 +298,11 @@ class:inverse
 
 - Load the `Lahman` package into your R session.
 
-- Join (relevant pieces of) the `Master` data set and the `HallOfFame` data.
+- Join (relevant pieces of) the `People` data set and the `HallOfFame` data.
 
-- Find all Hall of Famers who were alive as of 2018.
+- Find all Hall of Famers who were alive as of 2022.
 
-- How many attempts at being inducted to the HoF does Sammy Sosa have already?
+- How often was Sammy Sosa on the HoF ballot? 
 
 
 ---
@@ -331,7 +353,7 @@ anti_join(df2, df1, by="id") # no values for id in df1
 
 ---
 class: inverse
-# Your turn  - Homework #9
+# Your turn 
 
 For this example, use the data from the `classdata` package
 
